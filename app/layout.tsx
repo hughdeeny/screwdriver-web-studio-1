@@ -15,19 +15,23 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Screwdriver Web Studio | Websites that bring Adelaide businesses more customers",
+  title: "Screwdriver Web Studio | Websites for tradies & local service businesses — Adelaide",
   description:
-    "Clear websites, reliable online care, and helpful smart extras — plus marketing when you need a push. Plain English. Based in Adelaide.",
+    "Conversion-focused websites, SEO landing pages, Google Business Profile support, lead tracking, AI tools, and care plans for Adelaide tradies, cleaners, landscapers, and local service businesses.",
   keywords: [
-    "Adelaide website design",
-    "website for small business Australia",
-    "get more customers online",
+    "Adelaide web studio",
+    "websites for tradies",
+    "local service business website",
+    "lead generation website",
+    "SEO landing pages",
+    "Google Business Profile support",
+    "AI tools for small businesses",
     "Screwdriver Web Studio",
   ],
   openGraph: {
-    title: "Screwdriver Web Studio — Look sharp online and win more enquiries",
+    title: "Screwdriver Web Studio — More customers, less headaches",
     description:
-      "We help South Australian businesses turn their website into something customers actually use — without the tech talk.",
+      "We build the digital system that helps local service businesses get found, look trustworthy, and turn visitors into tracked calls, quotes, and bookings.",
     type: "website",
     locale: "en_AU",
   },

@@ -117,6 +117,21 @@ body {
 .hero-animate > *:nth-child(5) {
   animation-delay: 0.36s;
 }
+.hero-animate > *:nth-child(6) {
+  animation-delay: 0.42s;
+}
+.hero-animate > *:nth-child(7) {
+  animation-delay: 0.48s;
+}
+.hero-animate > *:nth-child(8) {
+  animation-delay: 0.54s;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
