@@ -2,12 +2,12 @@ import { ContactForm } from "./components/ContactForm";
 import { TrackedLink } from "./components/TrackedLink";
 
 const STRATEGY_MAIL =
-  "mailto:hello@screwdriverwebstudio.com.au?subject=Free%20strategy%20call%20request";
+  "mailto:hello@screwdrivermarketing.com.au?subject=Free%20strategy%20call%20request";
 
 const serviceCards = [
   {
     title: "Conversion-focused websites",
-    body: "Clear services, strong trust signals, and phone / quote / booking paths that work on mobile — so visitors know what you do and how to reach you fast.",
+    body: "Clear services, strong trust signals, and phone, quote, and booking paths that work on mobile — so visitors know what you do and how to reach you fast.",
   },
   {
     title: "SEO landing pages",
@@ -40,7 +40,7 @@ const packages = [
       "Clear services and service areas",
       "Foundations ready for tracking when you are",
     ],
-    note: "Pricing after a quick scope call — no surprise packages.",
+    note: "Pricing after a quick scope call — no pricing surprises.",
   },
   {
     name: "Lead System Website",
@@ -48,7 +48,7 @@ const packages = [
     outcomes: [
       "Conversion-led structure and stronger CTAs",
       "Tracking on calls, forms, quote clicks, and key pages",
-      "GBP and landing page alignment where it matters",
+      "Google Business Profile and landing page alignment where it matters",
     ],
     note: "Ideal when you want to know what actually drives leads.",
   },
@@ -75,19 +75,19 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Do you work with Google Business Profile?",
-    a: "Yes. We help keep your Profile consistent with your website and offers, so people get one clear story whether they find you on Maps or search.",
+    a: "Yes. We help keep your Profile consistent with your website and offers, so people get one clear story whether they find you on Maps or in search.",
   },
   {
     q: "Do you run Google Ads?",
-    a: "We&apos;re not a full-time ads agency. We can advise, set up basic tracking for ads traffic, and work with your ads person — our core work is the site, SEO pages, Profile, and lead systems.",
+    a: "We&apos;re not a full-time ads agency. We can advise, set up basic tracking for ads traffic, and work with your ads specialist — our core work is the website, SEO pages, Google Business Profile, and lead systems.",
   },
   {
     q: "What types of businesses do you work with?",
-    a: "Local service businesses: tradies, cleaners, landscapers, home services, allied health, and similar — anyone who lives on calls, quotes, bookings, and local Google.",
+    a: "Local service businesses: tradies, cleaners, landscapers, home services, allied health, and similar — anyone who relies on calls, quotes, bookings, and local Google.",
   },
   {
     q: "Do you offer monthly support?",
-    a: "Yes, through Care + Growth — updates, fixes, reporting, and small improvements so the system keeps working after launch.",
+    a: "Yes, through our Care + Growth Plan — updates, fixes, reporting, and small improvements so the system keeps working after launch.",
   },
   {
     q: "How quickly can a website be built?",
@@ -152,7 +152,7 @@ export default function Home() {
               S
             </span>
             <span className="font-display text-lg font-bold tracking-tight sm:text-xl">
-              Screwdriver <span className="text-accent">Web Studio</span>
+              Screwdriver <span className="text-accent">Marketing</span>
             </span>
           </a>
 
@@ -229,7 +229,7 @@ export default function Home() {
             <div className="hero-animate grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
               <div className="flex max-w-xl flex-col gap-5 lg:max-w-none">
                 <p className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--border)] bg-bg-elevated/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-signal">
-                  Adelaide web studio · Local service businesses
+                  We help you find customers · You focus on the job
                 </p>
                 <h1
                   id="hero-heading"
@@ -242,29 +242,30 @@ export default function Home() {
                   .
                 </h1>
                 <p className="text-lg leading-relaxed text-muted sm:text-xl">
-                  Screwdriver Web Studio builds websites, SEO landing pages, AI tools, and lead tracking
-                  for tradies, cleaners, landscapers, clinics, and local pros who want more calls, quote
-                  requests, and bookings — with a website and Google presence that actually work
-                  together.
+                  Screwdriver Marketing helps tradies, cleaners, landscapers, clinics, and local pros get
+                  found online and turn visitors into calls, quotes, and bookings — so you spend less
+                  time chasing leads and guessing what worked, and more time getting the job done. We
+                  handle the website, SEO pages, Google Business Profile, tracking, AI helpers, and ongoing care
+                  as one practical system.
                 </p>
                 <ul className="flex flex-col gap-2 text-sm text-cream/90 sm:text-base">
                   <li className="flex gap-2">
                     <span className="text-signal" aria-hidden>
                       ✓
                     </span>
-                    Built for local service businesses
+                    We help bring the right enquiries in — you stay on the tools or with clients
                   </li>
                   <li className="flex gap-2">
                     <span className="text-signal" aria-hidden>
                       ✓
                     </span>
-                    Track calls, forms, and quote clicks — know what creates enquiries
+                    Track calls, forms, and quote clicks — so you know what creates enquiries
                   </li>
                   <li className="flex gap-2">
                     <span className="text-signal" aria-hidden>
                       ✓
                     </span>
-                    Websites, SEO pages, AI helpers, Profile support, and ongoing care
+                    Websites, SEO pages, AI helpers, Google Business Profile support, and ongoing care
                   </li>
                 </ul>
                 <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
@@ -294,7 +295,7 @@ export default function Home() {
                   >
                     See how the system works
                   </TrackedLink>{" "}
-                  — or scroll for the honest problem/solution breakdown.
+                  — or scroll for the honest problem-and-solution breakdown.
                 </p>
               </div>
               <LeadFlowVisual />
@@ -342,7 +343,7 @@ export default function Home() {
                 "Phone and quote buttons are buried, especially on mobile.",
                 "Your Google Business Profile and website tell different stories.",
                 "You don&apos;t know which clicks turn into real enquiries.",
-                "Admin piles up: same questions, manual follow-ups, lost messages.",
+                "Admin piles up: the same questions, manual follow-ups, and lost messages.",
               ].map((item) => (
                 <li key={item} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
@@ -361,13 +362,14 @@ export default function Home() {
               matters.
             </h2>
             <p className="mt-4 max-w-2xl text-lg text-muted">
-              We&apos;re not selling “a beautiful website” as the prize. We tighten the digital system so
+              We&apos;re not selling &quot;a beautiful website&quot; as the prize. We tighten the digital system so
               more of the right people find you, believe you, and reach out — and you can see what&apos;s
-              working.
+              working. That way you&apos;re not the marketing department after hours; you&apos;re free
+              to focus on getting the job done.
             </p>
             <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
               {[
-                { step: "1", title: "Get found", text: "Site, landing pages, and Profile aligned for local search." },
+                { step: "1", title: "Get found", text: "Your site, landing pages, and Google Business Profile aligned for local search." },
                 { step: "2", title: "Build trust", text: "Clear services, proof, and a professional first impression." },
                 { step: "3", title: "Make contact easy", text: "Calls, forms, quotes, and bookings obvious on mobile." },
                 { step: "4", title: "Track what matters", text: "Know which pages and actions create real leads." },
@@ -389,8 +391,8 @@ export default function Home() {
             <div className="max-w-2xl">
               <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">What we build and fix</h2>
               <p className="mt-3 text-lg text-muted">
-                Each piece supports the same outcome: more qualified enquiries with less guesswork and
-                admin.
+                Same goal for every piece: more qualified enquiries, less admin — so you can focus on
+                the work, not the website.
               </p>
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -419,7 +421,7 @@ export default function Home() {
                 },
                 {
                   title: "Build",
-                  body: "We create or improve the site, landing pages, structure, and conversion paths — mobile first.",
+                  body: "We create or improve the site, landing pages, structure, and conversion paths — mobile-first.",
                 },
                 {
                   title: "Track",
@@ -445,11 +447,11 @@ export default function Home() {
           <div className="mx-auto max-w-6xl lg:grid lg:grid-cols-2 lg:gap-12 lg:items-start">
             <div>
               <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                Know what is actually creating enquiries
+                Know what&apos;s actually creating enquiries
               </h2>
               <p className="mt-4 text-lg text-muted">
                 Without basic tracking, you&apos;re flying blind — you can&apos;t tell whether Google, a
-                flyer, or word of mouth drove that job. We wire up simple, privacy-conscious event
+                flyer, or word-of-mouth drove that job. We wire up simple, privacy-conscious event
                 tracking so you can see which parts of your site earn calls and forms.
               </p>
             </div>
@@ -517,7 +519,7 @@ export default function Home() {
             <p className="mt-4 text-muted leading-relaxed">
               Early client project — we&apos;re careful not to overclaim results. Here&apos;s what we
               focused on together: a professional website launch, clearer service positioning, a stronger
-              link between the Google Business Profile and the site, lead actions set up ready to track,
+              link between the Google Business Profile and the site, lead actions set up and ready to track,
               and a mobile-first path from search to quote request. Where Profile-driven traffic showed
               up early, we used it as one signal among others — the main win was a cleaner customer
               journey and a site that matched how they actually win work.
@@ -600,8 +602,9 @@ export default function Home() {
                   Want more of the right customers finding and contacting you?
                 </h2>
                 <p className="mt-4 text-lg text-muted">
-                  Let&apos;s look at your website, Google presence, and lead flow, then find the simplest
-                  way to improve it — no fluff, no obligation to proceed.
+                  Let&apos;s look at your website, Google presence, and lead flow, then tighten the
+                  simplest things first — so more of the right people reach out while you stay focused on
+                  the job. No fluff, no obligation to proceed.
                 </p>
                 <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap">
                   <TrackedLink
@@ -635,25 +638,26 @@ export default function Home() {
         <div className="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <span className="font-display text-lg font-bold">
-              Screwdriver <span className="text-accent">Web Studio</span>
+              Screwdriver <span className="text-accent">Marketing</span>
             </span>
             <p className="mt-2 max-w-sm text-sm text-muted">
-              Digital systems for local service businesses — more customers, less headaches.
+              We help you find customers and fix the digital side — so you can focus on getting the job
+              done. More customers, less headaches.
             </p>
           </div>
           <div className="text-sm text-muted">
             <p className="font-medium text-cream">Get in touch</p>
             <TrackedLink
-              href="mailto:hello@screwdriverwebstudio.com.au"
+              href="mailto:hello@screwdrivermarketing.com.au"
               eventName="email_click"
               eventData={{ location: "footer" }}
               className="mt-2 block text-signal underline-offset-2 hover:underline"
             >
-              hello@screwdriverwebstudio.com.au
+              hello@screwdrivermarketing.com.au
             </TrackedLink>
           </div>
           <p className="text-sm text-muted sm:text-right">
-            © {new Date().getFullYear()} Screwdriver Web Studio — Adelaide, Australia.
+            © {new Date().getFullYear()} Screwdriver Marketing — Adelaide, Australia.
           </p>
         </div>
       </footer>

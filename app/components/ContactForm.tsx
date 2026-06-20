@@ -29,9 +29,9 @@ export function ContactForm() {
 
     const subject = encodeURIComponent(`Website audit request — ${business}`);
     const body = encodeURIComponent(
-      `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nPhone: ${phone}\nWebsite: ${website || "(not provided)"}\n\nWhat they want help with:\n${help}`,
+      `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nPhone: ${phone}\nWebsite: ${website || "(not provided)"}\n\nWhat they need help with:\n${help}`,
     );
-    window.location.href = `mailto:hello@screwdriverwebstudio.com.au?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:hello@screwdrivermarketing.com.au?subject=${subject}&body=${body}`;
     setStatus(null);
   }
 
@@ -129,7 +129,7 @@ export function ContactForm() {
           name="help"
           rows={4}
           required
-          placeholder="e.g. More quote calls from Google, clearer services on mobile, not sure if our site is costing us leads…"
+          placeholder="e.g. More quote calls from Google, clearer services on mobile, not sure if our site is costing us leads..."
           className={`${inputClass} min-h-[120px] resize-y py-3`}
         />
       </div>
