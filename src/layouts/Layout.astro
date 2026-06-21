@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Screwdriver Marketing | Websites for tradies and local service businesses — Adelaide",
+  description = "Adelaide marketing for tradies and local service businesses: we help find customers and track what works so you can focus on getting the job done — websites, SEO pages, Google Business Profile, lead tracking, AI tools, and care plans.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-AU" class="h-full antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#070605" />
+    <meta name="keywords" content="Adelaide marketing, websites for tradies, local service business website, lead generation website, SEO landing pages, Google Business Profile support, AI tools for small businesses, Screwdriver Marketing" />
+    <meta property="og:title" content="Screwdriver Marketing — More customers, less headaches" />
+    <meta property="og:description" content="We help local service businesses get found and win enquiries — so you can spend less time on marketing guesswork and more time getting the job done." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="noise min-h-full font-sans">
+    <slot />
+    <script>
+      function trackEvent(name: string, data: Record<string, string> = {}) {
+        console.log("Tracking event:", name, data);
+      }
+
+      document.addEventListener("click", (e) => {
+        const target = e.target as Element | null;
+        const el = target?.closest("[data-track]") as HTMLElement | null;
+        if (!el) return;
+
+        const name = el.getAttribute("data-track");
+        if (!name) return;
+
+        const data: Record<string, string> = {
+          href: el.getAttribute("href") ?? "",
+        };
+
+        for (const attr of el.attributes) {
+          if (attr.name.startsWith("data-track-")) {
+            data[attr.name.slice("data-track-".length)] = attr.value;
+          }
+        }
+
+        trackEvent(name, data);
+      });
+    </script>
+  </body>
+</html>

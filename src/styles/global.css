@@ -10,6 +10,8 @@
   --cream: #f4f0e8;
   --muted: #9c968a;
   --border: rgba(244, 240, 232, 0.08);
+  --font-dm-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-syne: "Syne", ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme inline {
@@ -21,8 +23,8 @@
   --color-signal-dim: var(--signal-dim);
   --color-cream: var(--cream);
   --color-muted: var(--muted);
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-syne);
 }
 
 html {
@@ -40,7 +42,6 @@ body {
   color: #fff;
 }
 
-/* Noise texture overlay */
 .noise::before {
   content: "";
   pointer-events: none;
@@ -173,7 +174,6 @@ button:focus-visible {
   color: transparent;
 }
 
-/* Hide details marker for custom menu */
 summary::-webkit-details-marker {
   display: none;
 }

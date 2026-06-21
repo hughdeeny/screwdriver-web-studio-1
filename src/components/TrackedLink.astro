@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  event: string;
+  cta?: string;
+  pkg?: string;
+  source?: string;
+  location?: string;
+  class?: string;
+}
+
+const { href, event, cta, pkg, source, location, class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  class={className}
+  data-track={event}
+  {...cta ? { "data-track-cta": cta } : {}}
+  {...pkg ? { "data-track-package": pkg } : {}}
+  {...source ? { "data-track-source": source } : {}}
+  {...location ? { "data-track-location": location } : {}}
+>
+  <slot />
+</a>

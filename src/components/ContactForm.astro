@@ -1,0 +1,169 @@
+<form class="space-y-5" id="audit" novalidate>
+  <h3 class="font-display text-xl font-bold text-cream">Request my website audit</h3>
+  <p class="text-sm text-muted">
+    Tell us a bit about your business. We'll reply with plain-English notes on what to tighten
+    first — no obligation.
+  </p>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="audit-name" class="mb-1.5 block text-sm font-medium text-cream">
+        Your name <span class="text-accent">*</span>
+      </label>
+      <input
+        id="audit-name"
+        name="name"
+        type="text"
+        required
+        autocomplete="name"
+        placeholder="Jane Smith"
+        class="input-field"
+      />
+    </div>
+    <div>
+      <label for="audit-business" class="mb-1.5 block text-sm font-medium text-cream">
+        Business name <span class="text-accent">*</span>
+      </label>
+      <input
+        id="audit-business"
+        name="business"
+        type="text"
+        required
+        autocomplete="organization"
+        placeholder="Smith Plumbing"
+        class="input-field"
+      />
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="audit-email" class="mb-1.5 block text-sm font-medium text-cream">
+        Email <span class="text-accent">*</span>
+      </label>
+      <input
+        id="audit-email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="you@yourbusiness.com.au"
+        class="input-field"
+      />
+    </div>
+    <div>
+      <label for="audit-phone" class="mb-1.5 block text-sm font-medium text-cream">
+        Phone <span class="text-accent">*</span>
+      </label>
+      <input
+        id="audit-phone"
+        name="phone"
+        type="tel"
+        required
+        autocomplete="tel"
+        placeholder="04xx xxx xxx"
+        class="input-field"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="audit-website" class="mb-1.5 block text-sm font-medium text-cream">
+      Website URL <span class="text-muted">(optional)</span>
+    </label>
+    <input
+      id="audit-website"
+      name="website"
+      type="url"
+      inputmode="url"
+      autocomplete="url"
+      placeholder="https://"
+      class="input-field"
+    />
+  </div>
+
+  <div>
+    <label for="audit-help" class="mb-1.5 block text-sm font-medium text-cream">
+      What do you want help with? <span class="text-accent">*</span>
+    </label>
+    <textarea
+      id="audit-help"
+      name="help"
+      rows={4}
+      required
+      placeholder="e.g. More quote calls from Google, clearer services on mobile, not sure if our site is costing us leads..."
+      class="input-field min-h-[120px] resize-y py-3"></textarea>
+  </div>
+
+  <p id="audit-status" class="hidden text-sm text-accent" role="alert"></p>
+
+  <p class="text-xs text-muted">
+    Opens your email with everything filled in. We usually reply within one business day.
+  </p>
+
+  <button
+    type="submit"
+    class="w-full min-h-[52px] rounded-full bg-gradient-to-r from-accent to-accent-glow px-6 text-base font-bold text-bg-deep shadow-lg shadow-accent/25 transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+  >
+    Request my website audit
+  </button>
+</form>
+
+<style>
+  .input-field {
+    width: 100%;
+    min-height: 48px;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
+    padding: 0.75rem 1rem;
+    color: var(--cream);
+    outline: none;
+    transition: box-shadow 0.15s;
+  }
+  .input-field::placeholder {
+    color: var(--muted);
+  }
+  .input-field:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--signal) 40%, transparent);
+  }
+</style>
+
+<script>
+  function trackEvent(name: string, data: Record<string, unknown> = {}) {
+    console.log("Tracking event:", name, data);
+  }
+
+  const form = document.getElementById("audit") as HTMLFormElement | null;
+  const status = document.getElementById("audit-status");
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const business = String(data.get("business") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const website = String(data.get("website") ?? "").trim();
+    const help = String(data.get("help") ?? "").trim();
+
+    if (!name || !business || !email || !phone || !help) {
+      if (status) {
+        status.textContent =
+          "Please fill in all required fields (name, business, email, phone, and what you need help with).";
+        status.classList.remove("hidden");
+      }
+      return;
+    }
+
+    trackEvent("form_submit", { form: "website_audit" });
+
+    const subject = encodeURIComponent(`Website audit request — ${business}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nPhone: ${phone}\nWebsite: ${website || "(not provided)"}\n\nWhat they need help with:\n${help}`,
+    );
+    window.location.href = `mailto:hello@screwdrivermarketing.com.au?subject=${subject}&body=${body}`;
+
+    if (status) status.classList.add("hidden");
+  });
+</script>

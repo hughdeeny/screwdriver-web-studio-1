@@ -1,0 +1,27 @@
+---
+import { leadFlowSteps } from "../data/site";
+---
+
+<div
+  class="glass relative overflow-hidden rounded-2xl border border-[var(--border)] p-5 sm:p-6"
+  aria-label="Lead flow: visitor to tracked lead"
+>
+  <p class="text-center text-xs font-semibold uppercase tracking-wider text-muted">
+    Simple lead flow
+  </p>
+  <div class="mt-4 flex flex-col items-stretch gap-3 text-sm">
+    {
+      leadFlowSteps.map((step, i) => (
+        <div class="flex items-center gap-3">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/20 font-display text-xs font-bold text-accent">
+            {i + 1}
+          </span>
+          <div class="min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-bg-deep/60 px-3 py-2">
+            <p class="font-semibold text-cream">{step.label}</p>
+            <p class="text-xs text-muted">{step.sub}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
