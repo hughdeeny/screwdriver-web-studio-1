@@ -3,9 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import LeadFlowVisual from "../components/LeadFlowVisual.astro";
 import ContactForm from "../components/ContactForm.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import {
   STRATEGY_MAIL,
-  CONTACT_EMAIL,
   serviceCards,
   packages,
   faqs,
@@ -16,8 +16,6 @@ import {
   trackableActions,
   aiItems,
 } from "../data/site";
-
-const year = new Date().getFullYear();
 ---
 
 <Layout>
@@ -459,32 +457,6 @@ const year = new Date().getFullYear();
       </section>
     </main>
 
-    <footer class="relative z-10 border-t border-[var(--border)] px-5 py-12 sm:px-6">
-      <div class="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <span class="font-display text-lg font-bold">
-            Screwdriver <span class="text-accent">Marketing</span>
-          </span>
-          <p class="mt-2 max-w-sm text-sm text-muted">
-            We help you find customers and fix the digital side — so you can focus on getting the job done. More
-            customers, less headaches.
-          </p>
-        </div>
-        <div class="text-sm text-muted">
-          <p class="font-medium text-cream">Get in touch</p>
-          <TrackedLink
-            href={`mailto:${CONTACT_EMAIL}`}
-            event="email_click"
-            location="footer"
-            class="mt-2 block text-signal underline-offset-2 hover:underline"
-          >
-            {CONTACT_EMAIL}
-          </TrackedLink>
-        </div>
-        <p class="text-sm text-muted sm:text-right">
-          © {year} Screwdriver Marketing — Adelaide, Australia.
-        </p>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </Layout>

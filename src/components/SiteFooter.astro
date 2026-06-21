@@ -1,0 +1,39 @@
+---
+import TrackedLink from "./TrackedLink.astro";
+import { CONTACT_EMAIL } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative z-10 border-t border-[var(--border)] px-5 py-12 sm:px-6">
+  <div class="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+    <div>
+      <span class="font-display text-lg font-bold">
+        Screwdriver <span class="text-accent">Marketing</span>
+      </span>
+      <p class="mt-2 max-w-sm text-sm text-muted">
+        We help you find customers and fix the digital side — so you can focus on getting the job done. More
+        customers, less headaches.
+      </p>
+      <p class="mt-3 text-sm">
+        <a href="/privacy" class="text-muted underline-offset-2 transition hover:text-cream hover:underline">
+          Privacy policy
+        </a>
+      </p>
+    </div>
+    <div class="text-sm text-muted">
+      <p class="font-medium text-cream">Get in touch</p>
+      <TrackedLink
+        href={`mailto:${CONTACT_EMAIL}`}
+        event="email_click"
+        location="footer"
+        class="mt-2 block text-signal underline-offset-2 hover:underline"
+      >
+        {CONTACT_EMAIL}
+      </TrackedLink>
+    </div>
+    <p class="text-sm text-muted sm:text-right">
+      © {year} Screwdriver Marketing — Adelaide, Australia.
+    </p>
+  </div>
+</footer>
