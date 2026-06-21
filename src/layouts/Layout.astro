@@ -24,7 +24,8 @@ const {
     <meta property="og:description" content="We help local service businesses get found and win enquiries — so you can spend less time on marketing guesswork and more time getting the job done." />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_AU" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -32,6 +33,11 @@ const {
   </head>
   <body class="noise min-h-full font-sans">
     <slot />
+    <script
+      is:inline
+      src="https://link.msgsndr.com/js/external-tracking.js"
+      data-tracking-id="tk_3f252748a43142b881d6311214236a7e"
+    ></script>
     <script>
       function trackEvent(name: string, data: Record<string, string> = {}) {
         console.log("Tracking event:", name, data);
