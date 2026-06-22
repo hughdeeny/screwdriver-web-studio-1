@@ -1,0 +1,80 @@
+---
+import TrackedLink from "./TrackedLink.astro";
+import { STRATEGY_MAIL } from "../data/site";
+
+const navLinks = [
+  { href: "#services", label: "Services" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#packages", label: "Packages" },
+  { href: "#proof", label: "Proof" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--border)] bg-bg-deep/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
+    <a href="#top" class="group flex items-center gap-2">
+      <span
+        class="font-display flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-glow text-lg font-extrabold text-bg-deep shadow-lg shadow-accent/20 transition group-hover:scale-105"
+        aria-hidden="true">S</span
+      >
+      <span class="font-display text-lg font-bold tracking-tight text-cream sm:text-xl">
+        Screwdriver <span class="text-accent">Marketing</span>
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-5 text-sm font-medium text-muted lg:flex" aria-label="Primary">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="transition hover:text-cream">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <TrackedLink
+        href={STRATEGY_MAIL}
+        event="cta_click"
+        cta="header_book_call"
+        class="hidden min-h-[44px] items-center justify-center rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-bg-deep transition hover:bg-accent-glow sm:inline-flex"
+      >
+        Book a free strategy call
+      </TrackedLink>
+
+      <details class="relative lg:hidden">
+        <summary
+          class="flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-full border border-[var(--border)] bg-bg-elevated px-4 py-2 text-sm font-medium text-cream"
+        >
+          <span class="sr-only">Open menu</span>
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+          Menu
+        </summary>
+        <div
+          class="absolute right-0 top-full z-20 mt-2 w-56 rounded-2xl border border-[var(--border)] bg-bg-elevated p-2 shadow-2xl"
+        >
+          {
+            navLinks.map((link) => (
+              <a href={link.href} class="block min-h-[44px] rounded-xl px-4 py-3 text-sm hover:bg-white/5">
+                {link.label}
+              </a>
+            ))
+          }
+          <TrackedLink
+            href={STRATEGY_MAIL}
+            event="cta_click"
+            cta="mobile_nav_book_call"
+            class="mt-1 block min-h-[44px] rounded-xl px-4 py-3 text-sm font-semibold text-accent hover:bg-white/5"
+          >
+            Book a free strategy call
+          </TrackedLink>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
