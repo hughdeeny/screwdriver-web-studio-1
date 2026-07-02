@@ -1,0 +1,11 @@
+---
+import LandingLayout from "../../layouts/LandingLayout.astro";
+import QuizPage from "../../components/landing/QuizPage";
+---
+
+<LandingLayout
+  title="Free Reputation Health Check | Screwdriver Marketing"
+  description="Answer 15 quick questions and get your free Reputation Health Score with immediate recommendations."
+>
+  <QuizPage client:load />
+</LandingLayout>
