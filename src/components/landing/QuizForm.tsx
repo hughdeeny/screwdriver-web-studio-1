@@ -1,7 +1,14 @@
 import { useCallback, useRef, useState } from "react";
 import { SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission } from "../../lib/result-generator";
-import type { ContactDetails, QuizAnswers } from "../../lib/quiz-types";
+import type { ContactDetails, QuizAnswers, QuizResults } from "../../lib/quiz-types";
+import ResultsSection from "./ResultsSection";
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
 
 const EMPTY_ANSWERS: QuizAnswers = {
   q1: null, q2: null, q3: null, q4: null, q5: null,
@@ -11,7 +18,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 
 const STEP_LABELS = ["Your business", "Reputation health", "Your goals"];
 
-type Phase = "contact" | "scored" | "situation";
+type Phase = "contact" | "scored" | "situation" | "results";
 
 interface QuizFormProps {
   onComplete?: () => void;
@@ -33,6 +40,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   });
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
+  const [results, setResults] = useState<QuizResults | null>(null);
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -129,7 +137,18 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const submitQuiz = async () => {
     setSubmitting(true);
     const submission = buildSubmission(contact, answers);
+    setResults(submission.results);
+    setPhase("results");
     onComplete?.();
+    scrollToContainer();
+
+    // Meta Pixel: quiz completion is the funnel conversion
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "Lead", {
+        content_name: "Reputation Health Check",
+        content_category: "Free Audit / Enquiry",
+      });
+    }
 
     try {
       await fetch("/api/submit-quiz", {
@@ -156,10 +175,9 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         }),
       });
     } catch {
-      // Redirect even if webhook fails — lead was captured in the quiz
+      // Results still shown even if webhook fails
     } finally {
       setSubmitting(false);
-      window.location.href = "/landing/thank-you";
     }
   };
 
@@ -168,20 +186,22 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   return (
     <div ref={containerRef}>
-      <div className="mb-8">
-        <div className="flex items-center justify-between text-sm font-medium text-muted">
-          <span>
-            Step {getStepNumber()} of 3: {STEP_LABELS[getStepNumber() - 1]}
-          </span>
-          <span>{Math.round(getProgress())}%</span>
+      {phase !== "results" && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between text-sm font-medium text-muted">
+            <span>
+              Step {getStepNumber()} of 3: {STEP_LABELS[getStepNumber() - 1]}
+            </span>
+            <span>{Math.round(getProgress())}%</span>
+          </div>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
+            <div
+              className="h-full rounded-full bg-accent transition-all duration-300 ease-out"
+              style={{ width: `${getProgress()}%` }}
+            />
+          </div>
         </div>
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
-          <div
-            className="h-full rounded-full bg-accent transition-all duration-300 ease-out"
-            style={{ width: `${getProgress()}%` }}
-          />
-        </div>
-      </div>
+      )}
 
       {phase === "contact" && (
         <form onSubmit={handleContactSubmit} className="space-y-4">
@@ -320,24 +340,38 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         </div>
       )}
 
+      {phase === "results" && results && (
+        <ResultsSection results={results} businessName={contact.businessName} />
+      )}
     </div>
   );
 }
 
 export function QuizSection({ onComplete }: { onComplete?: () => void }) {
+  const [completed, setCompleted] = useState(false);
+
   return (
     <section id="quiz" className="bg-page py-14 sm:py-20">
       <div className="mx-auto max-w-4xl px-5 sm:px-8">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-10">
-          <h2 className="text-center text-2xl font-bold text-navy sm:text-3xl">
-            Get Your Free Reputation Health Score
-          </h2>
-          <p className="mt-3 text-center text-muted">
-            Answer a few quick questions and get immediate recommendations for
-            improving your online reputation.
-          </p>
-          <div className="mt-8">
-            <QuizForm onComplete={onComplete} />
+          {!completed && (
+            <>
+              <h2 className="text-center text-2xl font-bold text-navy sm:text-3xl">
+                Get Your Free Reputation Health Score
+              </h2>
+              <p className="mt-3 text-center text-muted">
+                Answer a few quick questions and get immediate recommendations for
+                improving your online reputation.
+              </p>
+            </>
+          )}
+          <div className={completed ? "" : "mt-8"}>
+            <QuizForm
+              onComplete={() => {
+                setCompleted(true);
+                onComplete?.();
+              }}
+            />
           </div>
         </div>
       </div>
