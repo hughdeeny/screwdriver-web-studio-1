@@ -12,8 +12,16 @@ export default function Footer() {
             </p>
           </div>
           <div className="text-sm text-muted">
-            <p>contact@screwdrivermarketing.com</p>
-            <p className="mt-1">1300 000 000</p>
+            <p>
+              <a href="mailto:hugh@screwdrivermarketing.com.au" className="transition hover:text-navy">
+                hugh@screwdrivermarketing.com.au
+              </a>
+            </p>
+            <p className="mt-1">
+              <a href="tel:+61475624247" className="transition hover:text-navy">
+                +61 475 624 247
+              </a>
+            </p>
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:justify-between">

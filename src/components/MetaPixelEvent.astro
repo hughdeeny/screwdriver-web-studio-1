@@ -1,0 +1,25 @@
+---
+interface Props {
+  event: string;
+  params?: Record<string, string>;
+}
+
+const { event, params = {} } = Astro.props;
+const paramsJson = JSON.stringify(params);
+---
+
+<script is:inline define:vars={{ event, paramsJson }}>
+  (function () {
+    function track() {
+      if (typeof fbq !== "function") return;
+      try {
+        const params = JSON.parse(paramsJson);
+        fbq("track", event, params);
+      } catch {
+        /* ignore if fbq or params unavailable */
+      }
+    }
+    if (document.readyState === "complete") track();
+    else window.addEventListener("load", track);
+  })();
+</script>

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import MetaPixel from "../components/MetaPixel.astro";
 
 interface Props {
   title?: string;
@@ -28,6 +29,7 @@ const {
       rel="stylesheet"
     />
     <title>{title}</title>
+    <MetaPixel />
   </head>
   <body class="theme-landing min-h-full font-sans">
     <slot />

@@ -1,8 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission } from "../../lib/result-generator";
-import type { ContactDetails, QuizAnswers, QuizResults } from "../../lib/quiz-types";
-import ResultsSection from "./ResultsSection";
+import type { ContactDetails, QuizAnswers } from "../../lib/quiz-types";
 
 const EMPTY_ANSWERS: QuizAnswers = {
   q1: null, q2: null, q3: null, q4: null, q5: null,
@@ -12,7 +11,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 
 const STEP_LABELS = ["Your business", "Reputation health", "Your goals"];
 
-type Phase = "contact" | "scored" | "situation" | "results";
+type Phase = "contact" | "scored" | "situation";
 
 interface QuizFormProps {
   onComplete?: () => void;
@@ -34,7 +33,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   });
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
-  const [results, setResults] = useState<QuizResults | null>(null);
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -131,10 +129,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const submitQuiz = async () => {
     setSubmitting(true);
     const submission = buildSubmission(contact, answers);
-    setResults(submission.results);
-    setPhase("results");
     onComplete?.();
-    scrollToContainer();
 
     try {
       await fetch("/api/submit-quiz", {
@@ -161,9 +156,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         }),
       });
     } catch {
-      // Results still shown even if webhook fails
+      // Redirect even if webhook fails — lead was captured in the quiz
     } finally {
       setSubmitting(false);
+      window.location.href = "/landing/thank-you";
     }
   };
 
@@ -172,22 +168,20 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   return (
     <div ref={containerRef}>
-      {phase !== "results" && (
-        <div className="mb-8">
-          <div className="flex items-center justify-between text-sm font-medium text-muted">
-            <span>
-              Step {getStepNumber()} of 3: {STEP_LABELS[getStepNumber() - 1]}
-            </span>
-            <span>{Math.round(getProgress())}%</span>
-          </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
-            <div
-              className="h-full rounded-full bg-accent transition-all duration-300 ease-out"
-              style={{ width: `${getProgress()}%` }}
-            />
-          </div>
+      <div className="mb-8">
+        <div className="flex items-center justify-between text-sm font-medium text-muted">
+          <span>
+            Step {getStepNumber()} of 3: {STEP_LABELS[getStepNumber() - 1]}
+          </span>
+          <span>{Math.round(getProgress())}%</span>
         </div>
-      )}
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
+          <div
+            className="h-full rounded-full bg-accent transition-all duration-300 ease-out"
+            style={{ width: `${getProgress()}%` }}
+          />
+        </div>
+      </div>
 
       {phase === "contact" && (
         <form onSubmit={handleContactSubmit} className="space-y-4">
@@ -326,9 +320,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         </div>
       )}
 
-      {phase === "results" && results && (
-        <ResultsSection results={results} businessName={contact.businessName} />
-      )}
     </div>
   );
 }
