@@ -74,6 +74,17 @@ export default function ResultsSection({ results, businessName }: ResultsSection
         </div>
       </div>
 
+      <div className="mt-10 text-center">
+        <a
+          href="https://app.localo.com/place/1qWfBoyAEOZWiGO9doKYcg/tasks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
+        >
+          Book Free Audit
+        </a>
+      </div>
+
       {businessName && (
         <p className="mt-6 text-center text-sm text-muted">
           Results prepared for <strong className="text-navy">{businessName}</strong>

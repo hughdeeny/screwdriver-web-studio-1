@@ -26,7 +26,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Screwdriver Marketing. All rights reserved.</p>
-          <a href="#" className="transition hover:text-navy">
+          <a href="/privacy" className="transition hover:text-navy">
             Privacy Policy
           </a>
         </div>
