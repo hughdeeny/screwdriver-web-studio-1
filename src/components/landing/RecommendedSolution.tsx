@@ -1,3 +1,6 @@
+const BOOKING_URL =
+  "https://links.screwdrivermarketing.com.au/widget/booking/fndvYKV1tve0cVC5F2iM";
+
 const components = [
   {
     title: "Past customer review reactivation",
@@ -21,19 +24,7 @@ const components = [
   },
 ];
 
-interface RecommendedSolutionProps {
-  onClaimSetup?: () => void;
-}
-
-export default function RecommendedSolution({ onClaimSetup }: RecommendedSolutionProps) {
-  const handleClaim = () => {
-    if (onClaimSetup) {
-      onClaimSetup();
-    } else {
-      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+export default function RecommendedSolution() {
   return (
     <section className="bg-navy py-14 text-white sm:py-20">
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
@@ -63,12 +54,14 @@ export default function RecommendedSolution({ onClaimSetup }: RecommendedSolutio
         </div>
 
         <div className="mt-10 text-center">
-          <button
-            onClick={handleClaim}
-            className="w-full rounded-xl bg-accent-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto"
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-full rounded-xl bg-accent-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto"
           >
             Claim Free Setup
-          </button>
+          </a>
           <p className="mt-3 text-sm text-white/50">
             Includes free setup, basic tracking, ongoing support, and a 30-day
             money-back guarantee.
