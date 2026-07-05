@@ -1,11 +1,14 @@
 import type { Category, QuizAnswers, QuizScores } from "./quiz-types";
 
-const TRUST_QUESTIONS: (keyof QuizAnswers)[] = ["q3", "q5", "q6", "q7"];
+const TRUST_QUESTIONS: (keyof QuizAnswers)[] = ["q3", "q5", "q7"];
 const VISIBILITY_QUESTIONS: (keyof QuizAnswers)[] = ["q8", "q9"];
-const CONVERSION_QUESTIONS: (keyof QuizAnswers)[] = ["q1", "q2", "q4", "q10"];
+const REVENUE_QUESTIONS: (keyof QuizAnswers)[] = ["q1", "q2", "q4", "q6", "q10"];
 
 function sumQuestions(answers: QuizAnswers, keys: (keyof QuizAnswers)[]): number {
-  return keys.reduce((sum, key) => sum + (answers[key] ?? 0), 0);
+  return keys.reduce((sum, key) => {
+    const value = answers[key];
+    return sum + (typeof value === "number" ? value : 0);
+  }, 0);
 }
 
 function toPercent(score: number, max: number): number {
@@ -15,21 +18,21 @@ function toPercent(score: number, max: number): number {
 export function calculateScores(answers: QuizAnswers): QuizScores {
   const trust = sumQuestions(answers, TRUST_QUESTIONS);
   const visibility = sumQuestions(answers, VISIBILITY_QUESTIONS);
-  const conversion = sumQuestions(answers, CONVERSION_QUESTIONS);
+  const revenue = sumQuestions(answers, REVENUE_QUESTIONS);
 
-  const scoredKeys: (keyof QuizAnswers)[] = [
+  const scoredKeys = [
     "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10",
-  ];
+  ] as const;
   const total = scoredKeys.reduce((sum, key) => sum + (answers[key] ?? 0), 0);
 
   return {
     total,
     trust,
     visibility,
-    conversion,
-    trustPercent: toPercent(trust, 40),
+    revenue,
+    trustPercent: toPercent(trust, 30),
     visibilityPercent: toPercent(visibility, 20),
-    conversionPercent: toPercent(conversion, 40),
+    revenuePercent: toPercent(revenue, 50),
   };
 }
 
@@ -44,22 +47,22 @@ export function getLowestCategory(scores: QuizScores): Category {
   const categories: { name: Category; percent: number }[] = [
     { name: "Trust", percent: scores.trustPercent },
     { name: "Visibility", percent: scores.visibilityPercent },
-    { name: "Revenue", percent: scores.conversionPercent },
+    { name: "Revenue", percent: scores.revenuePercent },
   ];
 
   return categories.reduce((lowest, current) =>
-    current.percent < lowest.percent ? current : lowest
+    current.percent < lowest.percent ? current : lowest,
   ).name;
 }
 
-export function getBiggestOpportunityCopy(category: Category): string {
-  const copy: Record<Category, string> = {
-    Trust:
-      "Your biggest opportunity is Trust. Your business may do great work, but your online presence may not be giving customers enough confidence before they contact you.",
-    Visibility:
-      "Your biggest opportunity is Visibility. You may have happy customers, but your reputation may not be creating enough fresh, visible proof online.",
-    Revenue:
-      "Your biggest opportunity is Revenue. Your profile may be getting attention, but you may not have a strong enough system to turn happy customers into reviews, enquiries, and booked jobs.",
-  };
-  return copy[category];
+export function getStrongestCategory(scores: QuizScores): Category {
+  const categories: { name: Category; percent: number }[] = [
+    { name: "Trust", percent: scores.trustPercent },
+    { name: "Visibility", percent: scores.visibilityPercent },
+    { name: "Revenue", percent: scores.revenuePercent },
+  ];
+
+  return categories.reduce((best, current) =>
+    current.percent > best.percent ? current : best,
+  ).name;
 }

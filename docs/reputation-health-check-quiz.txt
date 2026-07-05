@@ -1,0 +1,131 @@
+REPUTATION HEALTH CHECK QUIZ — CURRENT SPEC
+==========================================
+
+Flow (3 steps):
+1. Scored questions Q1–Q10
+2. Situation questions Q11–Q15 (Q15 optional open text)
+3. Contact form → in-page results
+
+Public results show ONLY:
+- Overall Reputation Health Score /100
+- Score category
+- Short intro paragraph
+- "Your current system" — 3 analysis points
+- "Recommended next steps" — 2–3 steps
+- Recommended solution + dynamic CTA
+
+NOT shown publicly:
+- Trust / Visibility / Revenue scores or percentages
+- Raw pillar calculations
+- "Conversion" label
+
+---
+
+SCORED QUESTIONS (Q1–Q10)
+Scoring: Strong=10, Good/manual=7, Weak=4, None/not sure=0
+
+Q1. Do you ask customers for a review after a job is completed?
+  Internal pillar: Revenue
+
+Q2. Are review requests sent while the customer experience is still fresh?
+  Internal pillar: Revenue
+
+Q3. Do you make it easy for customers to leave a review with a Google review link?
+  Internal pillar: Trust
+
+Q4. Do happy customers usually get a reminder if they forget to leave a review?
+  Internal pillar: Revenue
+
+Q5. Do you reply to Google reviews in a way that makes future customers trust you more?
+  Internal pillar: Trust
+
+Q6. Do you have a list of past happy customers you could contact for a review request?
+  Internal pillar: Revenue
+
+Q7. If you received a negative or unfair review, would you know exactly how to respond?
+  Internal pillar: Trust
+
+Q8. Do you use positive reviews or customer feedback as social proof on your website or social media?
+  Internal pillar: Visibility
+
+Q9. Do you know whether your Google Business Profile is generating calls, website visits, or enquiries?
+  Internal pillar: Visibility
+
+Q10. Does your review process still happen when the business gets busy?
+  Internal pillar: Revenue
+
+---
+
+UNSCORED QUESTIONS (Q11–Q15)
+
+Q11. Which best describes your current situation?
+Q12. Which desired outcome would you want to achieve in the next 90 days?
+Q13. What do you think is the biggest obstacle getting in your way?
+Q14. Which type of solution would suit you best?
+Q15. Is there anything else you think we should know about? (optional open text)
+
+---
+
+SCORING
+
+Total = Q1 + Q2 + ... + Q10 (max 100)
+
+Score categories:
+  >= 80  → Strong reputation system
+  >= 60  → Good foundation, but room to improve
+  >= 40  → Clear reputation growth opportunity
+  <  40  → Weak online trust system
+
+Internal pillars (not displayed):
+  Trust:      Q3 + Q5 + Q7 (max 30)
+  Visibility: Q8 + Q9 (max 20)
+  Revenue:    Q1 + Q2 + Q4 + Q6 + Q10 (max 50)
+
+  trustPercent      = round((trust / 30) * 100)
+  visibilityPercent = round((visibility / 20) * 100)
+  revenuePercent    = round((revenue / 50) * 100)
+
+  lowestPillar    = pillar with lowest percentage
+  strongestPillar = pillar with highest percentage
+
+---
+
+RESULT GENERATION
+
+Analysis points (exactly 3): priority = lowest pillar → Q13 → Q12 → Q11 → strongest pillar
+Next steps (2–3): priority = Q12 → Q13 → lowest pillar → fallbacks
+Recommended solution + CTA + leadType: based on Q14
+
+---
+
+GHL WEBHOOK PAYLOAD (POST /api/submit-quiz)
+
+Contact: firstName, businessName, email, phone, role, suburb
+
+Public score: totalScore, scoreCategory
+
+Internal scores: trustScore, visibilityScore, revenueScore,
+  trustPercent, visibilityPercent, revenuePercent,
+  lowestPillar, strongestPillar
+
+Dynamic results: resultIntro, analysisPoints, nextSteps,
+  recommendedSolution, recommendedCTA
+
+Situation: currentSituation, desiredOutcome, biggestObstacle,
+  solutionPreference, extraNotes
+
+Lead: leadType, timestamp, source
+
+Answer labels: q1–q15 (Q15 = open text)
+
+---
+
+FILES
+
+src/lib/quiz-questions.ts
+src/lib/quiz-scoring.ts
+src/lib/quiz-types.ts
+src/lib/result-generator.ts
+src/components/landing/QuizForm.tsx
+src/components/landing/ResultsSection.tsx
+src/pages/api/submit-quiz.ts

@@ -1,208 +1,445 @@
 import { SCORED_QUESTIONS, SITUATION_QUESTIONS } from "./quiz-questions";
 import {
   calculateScores,
-  getBiggestOpportunityCopy,
   getLowestCategory,
   getScoreCategory,
+  getStrongestCategory,
 } from "./quiz-scoring";
-import type { Category, QuizAnswers, QuizResults, QuizSubmission } from "./quiz-types";
+import type {
+  AnalysisPoint,
+  Category,
+  ContactDetails,
+  QuizAnswers,
+  QuizResults,
+  QuizSubmission,
+} from "./quiz-types";
 
-function getAnswerLabel(
-  questionId: keyof QuizAnswers,
-  index: number | null
-): string {
+function getSituationLabel(id: "q11" | "q12" | "q13" | "q14", index: number | null): string {
   if (index === null) return "";
-
-  const scored = SCORED_QUESTIONS.find((q) => q.id === questionId);
-  if (scored) return scored.options[index]?.label ?? "";
-
-  const situation = SITUATION_QUESTIONS.find((q) => q.id === questionId);
-  if (situation) return situation.options[index]?.label ?? "";
-
-  return "";
+  const question = SITUATION_QUESTIONS.find((q) => q.id === id);
+  return question?.options[index]?.label ?? "";
 }
 
-function getStrongestCategory(scores: ReturnType<typeof calculateScores>): Category {
-  const categories: { name: Category; percent: number }[] = [
-    { name: "Trust", percent: scores.trustPercent },
-    { name: "Visibility", percent: scores.visibilityPercent },
-    { name: "Revenue", percent: scores.conversionPercent },
-  ];
-  return categories.reduce((best, current) =>
-    current.percent > best.percent ? current : best
-  ).name;
+function getScoredLabel(id: keyof QuizAnswers, score: number | null): string {
+  if (score === null) return "";
+  const question = SCORED_QUESTIONS.find((q) => q.id === id);
+  return question?.options.find((o) => o.score === score)?.label ?? "";
 }
 
-function generateWhatIsWorking(
-  scores: ReturnType<typeof calculateScores>,
-  answers: QuizAnswers
-): string {
-  const strongest = getStrongestCategory(scores);
-  const parts: string[] = [];
-
-  if (scores.total >= 60) {
-    parts.push("You already have some reputation habits in place.");
+export function buildAnswerLabels(answers: QuizAnswers): Record<string, string> {
+  const labels: Record<string, string> = {};
+  for (const q of SCORED_QUESTIONS) {
+    labels[q.id] = getScoredLabel(q.id, answers[q.id]);
   }
-
-  if (strongest === "Trust" && scores.trustPercent >= 50) {
-    parts.push(
-      "Your review replies and customer-facing responses help build confidence before people call."
-    );
-  } else if (strongest === "Visibility" && scores.visibilityPercent >= 50) {
-    parts.push(
-      "You are starting to turn customer feedback into visible proof online."
-    );
-  } else if (strongest === "Revenue" && scores.conversionPercent >= 50) {
-    parts.push(
-      "You have elements of a review collection process that can be strengthened with automation."
-    );
+  for (const q of SITUATION_QUESTIONS) {
+    labels[q.id] = getSituationLabel(q.id, answers[q.id] as number | null);
   }
-
-  const situation = getAnswerLabel("q11", answers.q11);
-  if (situation.includes("word-of-mouth")) {
-    parts.push(
-      "Word-of-mouth is clearly working for your business — that is a strong foundation to build on."
-    );
-  }
-
-  if (parts.length === 0) {
-    parts.push(
-      "You are taking the right first step by reviewing how your reputation system works today."
-    );
-  }
-
-  return parts.join(" ");
+  labels.q15 = answers.q15?.trim() ?? "";
+  return labels;
 }
 
-function generateWhatIsHoldingBack(
-  lowest: Category,
-  answers: QuizAnswers
-): string {
-  const parts: string[] = [];
+const Q11_APPEND: Record<string, string> = {
+  "We get enough work, but our reviews don't reflect how good we are":
+    "The good news is that you likely already have happy customers — the gap is getting that proof to show up online.",
+  "We get enquiries, but customers often compare us with competitors first":
+    "When people compare businesses, stronger reviews, better replies, and fresher proof can influence who they contact first.",
+  "We want more consistent calls and booked jobs from Google":
+    "Your Google presence can become a stronger enquiry source if it looks active, trusted, and easy to choose.",
+  "We are too busy to manually chase reviews or follow-ups":
+    "The system needs to work even when the team is busy, not only when someone remembers.",
+  "We are not sure where our enquiries are coming from":
+    "Tracking calls, website visits, and enquiries from your Google profile will make it clearer what is actually working.",
+};
 
-  if (lowest === "Trust") {
-    parts.push(
-      "Inconsistent review replies or missing responses may be making your business look less responsive than it really is."
-    );
-  } else if (lowest === "Visibility") {
-    parts.push(
-      "Positive customer experiences may not be showing up as fresh reviews and social proof where new customers compare you."
-    );
+function buildResultIntro(total: number, q11Label: string): string {
+  let intro: string;
+  if (total >= 80) {
+    intro =
+      "Your reputation system is already strong. The main opportunity is to make it more consistent, easier to track, and better connected to calls, enquiries, and booked jobs.";
+  } else if (total >= 60) {
+    intro =
+      "You already have a decent foundation, but there are still gaps that may be costing you trust, visibility, or enquiries when customers compare you online.";
+  } else if (total >= 40) {
+    intro =
+      "There is a clear opportunity to improve how your business turns happy customers into reviews, trust, visibility, and enquiries.";
   } else {
-    parts.push(
-      "Happy customers may not be turning into Google reviews and follow-up enquiries reliably enough."
-    );
+    intro =
+      "Your current review process may be too manual, inconsistent, or unclear. That can make it harder for future customers to trust you before they contact you.";
   }
 
-  const barrier = getAnswerLabel("q14", answers.q14);
-  if (barrier.includes("Forgetting")) {
-    parts.push("Forgetting to ask is a common issue — and exactly what automation solves.");
-  } else if (barrier.includes("say they will")) {
-    parts.push(
-      "Customers often intend to leave a review but need a simple reminder at the right time."
-    );
-  } else if (barrier.includes("Too busy")) {
-    parts.push(
-      "When you are busy on jobs, manual follow-up is usually the first thing that gets dropped."
-    );
-  } else if (barrier.includes("No clear process")) {
-    parts.push("Without a clear process, review collection depends on whoever remembers on the day.");
+  const append = Q11_APPEND[q11Label];
+  if (append) {
+    intro += ` ${append}`;
   }
-
-  const situation = getAnswerLabel("q11", answers.q11);
-  if (situation.includes("Competitors")) {
-    parts.push(
-      "Competitors with stronger review activity can close the trust gap even when your work is better."
-    );
-  }
-
-  return parts.join(" ");
+  return intro;
 }
 
-function generateFastestNextStep(answers: QuizAnswers, lowest: Category): string {
-  const base =
-    "Run a review reactivation campaign using past customers, then set up automated SMS/email review requests for future jobs.";
+const LOWEST_PILLAR_POINTS: Record<Category, AnalysisPoint> = {
+  Trust: {
+    title: "Trust may be leaking before customers contact you",
+    body: "Your business may do great work, but future customers need to see enough proof, reassurance, and professional responses before they feel confident choosing you.",
+  },
+  Visibility: {
+    title: "Your happy customers may not be visible enough",
+    body: "Positive customer experiences are more valuable when they show up clearly on Google, your website, and social media. If they stay hidden, competitors can look more active and trusted.",
+  },
+  Revenue: {
+    title: "Completed jobs may not be turning into future enquiries",
+    body: "Happy customers are one of your best sources of reviews and trust. If there is no consistent follow-up process, good jobs can finish without creating any public proof.",
+  },
+};
 
-  const outcome = getAnswerLabel("q12", answers.q12);
-  const help = getAnswerLabel("q15", answers.q15);
+const Q13_POINTS: Record<string, AnalysisPoint> = {
+  "We forget to ask when things get busy": {
+    title: "The process depends too much on memory",
+    body: "When asking for reviews relies on someone remembering, it usually gets missed during busy periods. That means strong customer experiences can disappear without becoming reviews.",
+  },
+  "Customers say they will leave a review but don't": {
+    title: "Happy customers often need a reminder",
+    body: "Many customers intend to leave a review but forget. A simple reminder at the right time can recover reviews that would otherwise be missed.",
+  },
+  "We don't have a clear process": {
+    title: "There is no clear review system yet",
+    body: "Without a repeatable process, review collection becomes inconsistent. The business may only get reviews when someone happens to ask.",
+  },
+  "We don't have time to follow up manually": {
+    title: "Manual follow-up is easy to drop",
+    body: "When the team is busy, manual follow-up usually gets pushed aside. That is why the review process needs to run in the background.",
+  },
+  "We're not sure what to say": {
+    title: "The message may be slowing you down",
+    body: "If the team is unsure what to say, review requests can feel awkward or get delayed. Clear wording makes the process easier and more professional.",
+  },
+};
 
-  const extras: string[] = [];
+const Q12_POINTS: Record<string, AnalysisPoint> = {
+  "Get more calls and enquiries from Google": {
+    title: "Google should be treated as an enquiry channel",
+    body: "The goal is not just more reviews. The goal is making your profile look active and trusted enough that more people call, click, or enquire.",
+  },
+  "Turn more happy customers into Google reviews": {
+    title: "There may be untapped reviews in your customer base",
+    body: "If you already have happy customers, the opportunity is to make it easier and more consistent for them to leave a Google review.",
+  },
+  "Look more trusted when customers compare us with competitors": {
+    title: "Comparison matters before the first call",
+    body: "Future customers often compare reviews, replies, photos, and proof before contacting a business. A stronger reputation can help you win trust earlier.",
+  },
+  "Save time by automating review requests and follow-ups": {
+    title: "Automation could remove the manual chasing",
+    body: "A simple automated process can ask at the right time, follow up when needed, and keep working while the business is busy.",
+  },
+  "Understand what is costing us trust, visibility, or revenue online": {
+    title: "You need clearer visibility on what is working",
+    body: "Without tracking and diagnosis, it is hard to know whether your Google profile, reviews, website, or follow-up process is costing you enquiries.",
+  },
+};
 
-  if (outcome.includes("Less manual follow-up")) {
-    extras.push("Prioritise automation so the system keeps running when you are on site.");
-  }
-  if (outcome.includes("More calls from Google")) {
-    extras.push("Focus on fresh reviews and professional replies to improve call-through from your profile.");
-  }
-  if (outcome.includes("Looking more trusted")) {
-    extras.push("Reactivate past happy customers first to close the trust gap quickly.");
-  }
-  if (lowest === "Trust") {
-    extras.push("Set up consistent, professional review replies alongside new review requests.");
-  }
-  if (lowest === "Visibility") {
-    extras.push("Turn new positive reviews into simple Facebook and Instagram posts automatically.");
+const Q11_POINTS: Record<string, AnalysisPoint> = {
+  "We get enough work, but our reviews don't reflect how good we are": {
+    title: "Your reputation may not reflect your real quality",
+    body: "If the business already does good work, the main issue may be that enough of that proof is not showing up publicly.",
+  },
+  "We get enquiries, but customers often compare us with competitors first": {
+    title: "Competitors may be winning the trust battle",
+    body: "When customers compare options, the business with stronger visible proof can feel like the safer choice.",
+  },
+  "We want more consistent calls and booked jobs from Google": {
+    title: "Your Google profile could work harder",
+    body: "Reviews, replies, recent activity, and tracking can all help turn your Google profile into a more reliable source of calls and enquiries.",
+  },
+  "We are too busy to manually chase reviews or follow-ups": {
+    title: "The system needs to survive busy periods",
+    body: "A good review process should not stop when the business gets busy. It should keep working without adding more admin.",
+  },
+  "We are not sure where our enquiries are coming from": {
+    title: "Attribution is currently unclear",
+    body: "If you are not sure where enquiries come from, it is harder to know which parts of your online presence are producing results.",
+  },
+};
+
+const STRONGEST_PILLAR_POINTS: Record<Category, AnalysisPoint> = {
+  Trust: {
+    title: "You already have some trust-building habits",
+    body: "Some parts of your review and response process are already helping customers feel more confident. The next step is making that more consistent.",
+  },
+  Visibility: {
+    title: "You already have some visible proof",
+    body: "Some customer feedback is already being used publicly. The opportunity is to make that proof fresher, clearer, and more consistent.",
+  },
+  Revenue: {
+    title: "You already have part of the follow-up process working",
+    body: "There are signs that completed jobs are sometimes being turned into review opportunities. The next step is making that process more reliable.",
+  },
+};
+
+function pickAnalysisPoints(
+  lowestPillar: Category,
+  strongestPillar: Category,
+  q11Label: string,
+  q12Label: string,
+  q13Label: string,
+): AnalysisPoint[] {
+  const candidates: AnalysisPoint[] = [];
+
+  candidates.push(LOWEST_PILLAR_POINTS[lowestPillar]);
+
+  if (q13Label && Q13_POINTS[q13Label]) {
+    candidates.push(Q13_POINTS[q13Label]);
   }
 
-  if (help.includes("Set it up for me")) {
-    return `${base} We can handle setup for you — claim your free setup to get started.`;
-  }
-  if (help.includes("understand the opportunity")) {
-    return `${base} Book a quick review call if you would like to walk through what this looks like for your business.`;
+  if (q12Label && Q12_POINTS[q12Label]) {
+    candidates.push(Q12_POINTS[q12Label]);
   }
 
-  if (extras.length > 0) {
-    return `${base} ${extras[0]}`;
+  if (q11Label && Q11_POINTS[q11Label]) {
+    candidates.push(Q11_POINTS[q11Label]);
   }
 
-  return base;
+  if (strongestPillar !== lowestPillar) {
+    candidates.push(STRONGEST_PILLAR_POINTS[strongestPillar]);
+  }
+
+  const seen = new Set<string>();
+  const picked: AnalysisPoint[] = [];
+  for (const point of candidates) {
+    if (seen.has(point.title)) continue;
+    seen.add(point.title);
+    picked.push(point);
+    if (picked.length === 3) break;
+  }
+
+  if (picked.length < 3) {
+    const fallback = STRONGEST_PILLAR_POINTS[strongestPillar];
+    if (!seen.has(fallback.title)) {
+      picked.push(fallback);
+    }
+  }
+
+  return picked.slice(0, 3);
 }
 
-function generateRecommendedSolution(answers: QuizAnswers): string {
-  const help = getAnswerLabel("q15", answers.q15);
+const Q12_NEXT_STEPS: Record<string, string> = {
+  "Get more calls and enquiries from Google":
+    "Improve your Google Business Profile so it looks more active and trusted, then track calls, website visits, and enquiries.",
+  "Turn more happy customers into Google reviews":
+    "Start with a review reactivation campaign using past happy customers, then request reviews automatically after future jobs.",
+  "Look more trusted when customers compare us with competitors":
+    "Improve the proof customers see before contacting you: recent reviews, professional replies, strong website proof, and visible customer feedback.",
+  "Save time by automating review requests and follow-ups":
+    "Set up automated SMS/email review requests and reminders so the process keeps running without manual chasing.",
+  "Understand what is costing us trust, visibility, or revenue online":
+    "Run a reputation audit to find where reviews, replies, Google visibility, website proof, or tracking may be costing you enquiries.",
+};
 
-  if (help.includes("Set it up for me")) {
-    return "Based on your results, we recommend claiming your free setup so we can install automated review collection, professional replies, and social proof content for your business.";
+const Q13_NEXT_STEPS: Record<string, string> = {
+  "We forget to ask when things get busy":
+    "Create a simple trigger so every completed job gets a review request without relying on memory.",
+  "Customers say they will leave a review but don't":
+    "Add one polite reminder for customers who said they were happy but did not leave a review.",
+  "We don't have a clear process":
+    "Create a clear review request process with timing, message templates, follow-up rules, and ownership.",
+  "We don't have time to follow up manually":
+    "Remove manual follow-up by automating the request and reminder sequence.",
+  "We're not sure what to say":
+    "Use simple review request templates so the message feels professional, natural, and easy to send.",
+};
+
+const LOWEST_PILLAR_NEXT_STEPS: Record<Category, string> = {
+  Trust:
+    "Reply to reviews in a way that reassures future customers, answers doubts, and shows the business is professional.",
+  Visibility:
+    "Turn strong reviews and customer feedback into visible proof on your website, social media, and Google profile.",
+  Revenue:
+    "Build a repeatable system that turns completed jobs into reviews, trust, and future enquiries.",
+};
+
+const FALLBACK_NEXT_STEPS = [
+  "Review your past customer list and identify happy customers who could be asked for a genuine review.",
+  "Make your Google review link easy to access and include it in follow-up messages.",
+  "Check your Google Business Profile performance so you know whether it is generating calls, website visits, and enquiries.",
+];
+
+function pickNextSteps(
+  q12Label: string,
+  q13Label: string,
+  lowestPillar: Category,
+): string[] {
+  const candidates: string[] = [];
+
+  if (q12Label && Q12_NEXT_STEPS[q12Label]) {
+    candidates.push(Q12_NEXT_STEPS[q12Label]);
   }
-  if (help.includes("understand the opportunity")) {
-    return "Based on your results, a short review call is the best next step to see how the system would work for your business before committing.";
+  if (q13Label && Q13_NEXT_STEPS[q13Label]) {
+    candidates.push(Q13_NEXT_STEPS[q13Label]);
   }
-  return "Based on your results, the fastest way to improve your reputation health is to install a system that collects reviews consistently, replies professionally, and turns positive feedback into social proof automatically.";
+  candidates.push(LOWEST_PILLAR_NEXT_STEPS[lowestPillar]);
+
+  const seen = new Set<string>();
+  const picked: string[] = [];
+  for (const step of candidates) {
+    if (seen.has(step)) continue;
+    seen.add(step);
+    picked.push(step);
+    if (picked.length === 3) break;
+  }
+
+  for (const step of FALLBACK_NEXT_STEPS) {
+    if (picked.length >= 3) break;
+    if (!seen.has(step)) {
+      seen.add(step);
+      picked.push(step);
+    }
+  }
+
+  return picked.slice(0, Math.max(2, Math.min(3, picked.length)));
 }
 
-export function generateResults(answers: QuizAnswers): QuizResults {
-  const scores = calculateScores(answers);
-  const biggestOpportunity = getLowestCategory(scores);
+const Q14_SOLUTIONS: Record<
+  string,
+  { recommendedSolution: string; recommendedCTA: string; leadType: string }
+> = {
+  "An automated system that handles review requests and follow-ups automatically": {
+    recommendedSolution:
+      "Based on your answers, the best fit is an automated review system. This would help you request reviews after completed jobs, send reminders to happy customers, and create a more consistent process without relying on manual follow-up.",
+    recommendedCTA: "Claim Your Free Setup",
+    leadType: "Hot — Wants Automation",
+  },
+  "Guidance, templates, and a clear process we can follow ourselves": {
+    recommendedSolution:
+      "Based on your answers, the best fit is a clear review growth process with templates and guidance. This would give your team a simple way to ask for reviews, follow up professionally, and use positive feedback as proof.",
+    recommendedCTA: "Get The Review Growth Plan",
+    leadType: "Warm — Wants DIY Process",
+  },
+  "A one-off audit so we can understand the opportunity first": {
+    recommendedSolution:
+      "Based on your answers, the best fit is a one-off reputation audit. This would show where your Google profile, reviews, replies, and online proof may be costing you trust, visibility, or enquiries.",
+    recommendedCTA: "Book A Quick Reputation Review",
+    leadType: "Warm — Wants Audit First",
+  },
+  "Not sure yet — we'd like to see what would make the biggest difference": {
+    recommendedSolution:
+      "Based on your answers, the best fit is a quick review of your current reputation system. This will help identify the biggest opportunity before deciding whether automation, templates, or an audit makes the most sense.",
+    recommendedCTA: "Show Me What's Missing",
+    leadType: "Nurture — Needs Diagnosis",
+  },
+};
 
-  return {
-    scores,
-    scoreCategory: getScoreCategory(scores.total),
-    biggestOpportunity,
-    biggestOpportunityCopy: getBiggestOpportunityCopy(biggestOpportunity),
-    whatIsWorking: generateWhatIsWorking(scores, answers),
-    whatIsHoldingBack: generateWhatIsHoldingBack(biggestOpportunity, answers),
-    fastestNextStep: generateFastestNextStep(answers, biggestOpportunity),
-    recommendedSolution: generateRecommendedSolution(answers),
-  };
-}
+const DEFAULT_SOLUTION = Q14_SOLUTIONS[
+  "Not sure yet — we'd like to see what would make the biggest difference"
+];
 
 export function buildSubmission(
-  contact: import("./quiz-types").ContactDetails,
-  answers: QuizAnswers
+  contact: ContactDetails,
+  answers: QuizAnswers,
 ): QuizSubmission {
   const results = generateResults(answers);
-
-  const answerLabels: Record<string, string> = {};
-  for (let i = 1; i <= 15; i++) {
-    const key = `q${i}` as keyof QuizAnswers;
-    answerLabels[key] = getAnswerLabel(key, answers[key]);
-  }
-
+  const answerLabels = buildAnswerLabels(answers);
   return {
     ...contact,
     answers,
     answerLabels,
     results,
     timestamp: new Date().toISOString(),
+  };
+}
+
+export function generateResults(answers: QuizAnswers): QuizResults {
+  const scores = calculateScores(answers);
+  const scoreCategory = getScoreCategory(scores.total);
+  const lowestPillar = getLowestCategory(scores);
+  const strongestPillar = getStrongestCategory(scores);
+
+  const q11Label = getSituationLabel("q11", answers.q11);
+  const q12Label = getSituationLabel("q12", answers.q12);
+  const q13Label = getSituationLabel("q13", answers.q13);
+  const q14Label = getSituationLabel("q14", answers.q14);
+
+  const resultIntro = buildResultIntro(scores.total, q11Label);
+  const analysisPoints = pickAnalysisPoints(
+    lowestPillar,
+    strongestPillar,
+    q11Label,
+    q12Label,
+    q13Label,
+  );
+  const nextSteps = pickNextSteps(q12Label, q13Label, lowestPillar);
+
+  const solution = Q14_SOLUTIONS[q14Label] ?? DEFAULT_SOLUTION;
+
+  return {
+    scores,
+    scoreCategory,
+    lowestPillar,
+    strongestPillar,
+    resultIntro,
+    analysisPoints,
+    nextSteps,
+    recommendedSolution: solution.recommendedSolution,
+    recommendedCTA: solution.recommendedCTA,
+    leadType: solution.leadType,
+  };
+}
+
+export function buildWebhookPayload(
+  contact: ContactDetails,
+  answers: QuizAnswers,
+  suburb: string,
+): Record<string, unknown> {
+  const results = generateResults(answers);
+  const labels = buildAnswerLabels(answers);
+  const { scores } = results;
+
+  return {
+    firstName: contact.firstName,
+    businessName: contact.businessName,
+    email: contact.email,
+    phone: contact.phone,
+    role: contact.role,
+    suburb,
+
+    totalScore: scores.total,
+    scoreCategory: results.scoreCategory,
+
+    trustScore: scores.trust,
+    visibilityScore: scores.visibility,
+    revenueScore: scores.revenue,
+    trustPercent: scores.trustPercent,
+    visibilityPercent: scores.visibilityPercent,
+    revenuePercent: scores.revenuePercent,
+    lowestPillar: results.lowestPillar,
+    strongestPillar: results.strongestPillar,
+
+    resultIntro: results.resultIntro,
+    analysisPoints: results.analysisPoints,
+    nextSteps: results.nextSteps,
+    recommendedSolution: results.recommendedSolution,
+    recommendedCTA: results.recommendedCTA,
+
+    currentSituation: labels.q11,
+    desiredOutcome: labels.q12,
+    biggestObstacle: labels.q13,
+    solutionPreference: labels.q14,
+    extraNotes: labels.q15,
+
+    leadType: results.leadType,
+    timestamp: new Date().toISOString(),
+    source: "Reputation Health Check Quiz",
+
+    q1: labels.q1,
+    q2: labels.q2,
+    q3: labels.q3,
+    q4: labels.q4,
+    q5: labels.q5,
+    q6: labels.q6,
+    q7: labels.q7,
+    q8: labels.q8,
+    q9: labels.q9,
+    q10: labels.q10,
+    q11: labels.q11,
+    q12: labels.q12,
+    q13: labels.q13,
+    q14: labels.q14,
+    q15: labels.q15,
   };
 }

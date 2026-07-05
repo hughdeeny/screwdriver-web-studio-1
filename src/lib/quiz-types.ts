@@ -23,28 +23,35 @@ export interface QuizAnswers {
   q12: number | null;
   q13: number | null;
   q14: number | null;
-  q15: number | null;
+  q15: string | null;
 }
 
 export interface QuizScores {
   total: number;
   trust: number;
   visibility: number;
-  conversion: number;
+  revenue: number;
   trustPercent: number;
   visibilityPercent: number;
-  conversionPercent: number;
+  revenuePercent: number;
+}
+
+export interface AnalysisPoint {
+  title: string;
+  body: string;
 }
 
 export interface QuizResults {
   scores: QuizScores;
   scoreCategory: string;
-  biggestOpportunity: Category;
-  biggestOpportunityCopy: string;
-  whatIsWorking: string;
-  whatIsHoldingBack: string;
-  fastestNextStep: string;
+  lowestPillar: Category;
+  strongestPillar: Category;
+  resultIntro: string;
+  analysisPoints: AnalysisPoint[];
+  nextSteps: string[];
   recommendedSolution: string;
+  recommendedCTA: string;
+  leadType: string;
 }
 
 export interface QuizSubmission extends ContactDetails {

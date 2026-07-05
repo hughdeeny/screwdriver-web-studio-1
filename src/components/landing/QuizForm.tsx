@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
-import { SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
-import { buildSubmission } from "../../lib/result-generator";
+import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
+import { buildSubmission, buildWebhookPayload } from "../../lib/result-generator";
 import type { ContactDetails, QuizAnswers, QuizResults } from "../../lib/quiz-types";
 import ResultsSection from "./ResultsSection";
 
@@ -9,6 +9,8 @@ declare global {
     fbq?: (...args: unknown[]) => void;
   }
 }
+
+const SITUATION_STEP_COUNT = SITUATION_QUESTIONS.length + 1;
 
 const EMPTY_ANSWERS: QuizAnswers = {
   q1: null, q2: null, q3: null, q4: null, q5: null,
@@ -56,7 +58,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const getProgress = (): number => {
     if (phase === "scored") return 5 + ((scoredIndex + 1) / SCORED_QUESTIONS.length) * 55;
-    if (phase === "situation") return 60 + ((situationIndex + 1) / SITUATION_QUESTIONS.length) * 25;
+    if (phase === "situation") return 60 + ((situationIndex + 1) / SITUATION_STEP_COUNT) * 25;
     if (phase === "contact") return 90;
     return 100;
   };
@@ -72,6 +74,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     }));
   };
 
+  const updateOpenAnswer = (value: string) => {
+    setAnswers((prev) => ({ ...prev, q15: value.trim() || null }));
+  };
+
   const isContactValid = () =>
     contact.firstName.trim() &&
     contact.email.trim() &&
@@ -85,7 +91,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const handleContactBack = () => {
     setPhase("situation");
-    setSituationIndex(SITUATION_QUESTIONS.length - 1);
+    setSituationIndex(SITUATION_STEP_COUNT - 1);
     scrollToContainer();
   };
 
@@ -110,11 +116,15 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     }
   };
 
-  const handleSituationNext = () => {
-    const current = SITUATION_QUESTIONS[situationIndex];
-    if (answers[current.id] === null) return;
+  const isOnOpenQuestion = situationIndex === SITUATION_QUESTIONS.length;
 
-    if (situationIndex < SITUATION_QUESTIONS.length - 1) {
+  const handleSituationNext = () => {
+    if (!isOnOpenQuestion) {
+      const current = SITUATION_QUESTIONS[situationIndex];
+      if (answers[current.id] === null) return;
+    }
+
+    if (situationIndex < SITUATION_STEP_COUNT - 1) {
       setSituationIndex((i) => i + 1);
       scrollToContainer();
     } else {
@@ -138,11 +148,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     setSubmitting(true);
     const submission = buildSubmission(contact, answers);
 
-    let suburb: string | undefined;
+    let suburb = "";
     try {
       const geoRes = await fetch("/api/visitor-location");
       const geo = await geoRes.json();
-      suburb = geo.suburb ?? undefined;
+      suburb = geo.suburb ?? "";
     } catch {
       /* suburb detection is optional */
     }
@@ -152,7 +162,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     onComplete?.();
     scrollToContainer();
 
-    // Meta Pixel: quiz completion is the funnel conversion
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "Lead", {
         content_name: "Reputation Health Check",
@@ -164,26 +173,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       await fetch("/api/submit-quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: contact.firstName,
-          businessName: contact.businessName.trim() || undefined,
-          email: contact.email,
-          phone: contact.phone,
-          role: contact.role.trim() || undefined,
-          suburb,
-          answers: submission.answerLabels,
-          totalScore: submission.results.scores.total,
-          trustScore: submission.results.scores.trustPercent,
-          visibilityScore: submission.results.scores.visibilityPercent,
-          revenueScore: submission.results.scores.conversionPercent,
-          scoreCategory: submission.results.scoreCategory,
-          biggestOpportunity: submission.results.biggestOpportunity,
-          whatIsWorking: submission.results.whatIsWorking,
-          whatIsHoldingBack: submission.results.whatIsHoldingBack,
-          fastestNextStep: submission.results.fastestNextStep,
-          recommendedSolution: submission.results.recommendedSolution,
-          timestamp: submission.timestamp,
-        }),
+        body: JSON.stringify(buildWebhookPayload(contact, answers, suburb)),
       });
     } catch {
       // Results still shown even if webhook fails
@@ -193,7 +183,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const currentScored = SCORED_QUESTIONS[scoredIndex];
-  const currentSituation = SITUATION_QUESTIONS[situationIndex];
+  const currentSituation = isOnOpenQuestion ? null : SITUATION_QUESTIONS[situationIndex];
 
   return (
     <div ref={containerRef}>
@@ -287,13 +277,13 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             {currentScored.question}
           </h3>
           <div className="mt-6 space-y-3">
-            {currentScored.options.map((option, i) => {
+            {currentScored.options.map((option) => {
               const selected = answers[currentScored.id] === option.score;
               return (
                 <button
                   key={option.label}
                   type="button"
-                  onClick={() => selectAnswer(currentScored.id, i, option.score)}
+                  onClick={() => selectAnswer(currentScored.id, 0, option.score)}
                   className={`w-full rounded-xl border-2 px-5 py-4 text-left text-base font-medium transition ${
                     selected
                       ? "border-accent bg-accent/5 text-navy"
@@ -322,6 +312,40 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               onClick={handleScoredNext}
               disabled={answers[currentScored.id] === null}
               className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {phase === "situation" && isOnOpenQuestion && (
+        <div>
+          <p className="mb-2 text-sm font-medium text-muted">Question 15 of 15</p>
+          <h3 className="text-xl font-bold leading-snug text-navy sm:text-2xl">
+            {OPEN_QUESTION.question}
+          </h3>
+          <p className="mt-2 text-sm text-muted">Optional</p>
+          <textarea
+            id="q15"
+            value={answers.q15 ?? ""}
+            onChange={(e) => updateOpenAnswer(e.target.value)}
+            placeholder={OPEN_QUESTION.placeholder}
+            rows={4}
+            className="mt-6 w-full rounded-xl border border-border bg-page px-4 py-3.5 text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+          />
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={handleSituationBack}
+              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={handleSituationNext}
+              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
             >
               Continue
             </button>
