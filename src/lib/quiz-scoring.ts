@@ -44,7 +44,7 @@ export function getLowestCategory(scores: QuizScores): Category {
   const categories: { name: Category; percent: number }[] = [
     { name: "Trust", percent: scores.trustPercent },
     { name: "Visibility", percent: scores.visibilityPercent },
-    { name: "Conversion", percent: scores.conversionPercent },
+    { name: "Revenue", percent: scores.conversionPercent },
   ];
 
   return categories.reduce((lowest, current) =>
@@ -58,8 +58,8 @@ export function getBiggestOpportunityCopy(category: Category): string {
       "Your biggest opportunity is Trust. Your business may do great work, but your online presence may not be giving customers enough confidence before they contact you.",
     Visibility:
       "Your biggest opportunity is Visibility. You may have happy customers, but your reputation may not be creating enough fresh, visible proof online.",
-    Conversion:
-      "Your biggest opportunity is Conversion. Your profile may be getting attention, but you may not have a strong enough system to turn happy customers into reviews and enquiries.",
+    Revenue:
+      "Your biggest opportunity is Revenue. Your profile may be getting attention, but you may not have a strong enough system to turn happy customers into reviews, enquiries, and booked jobs.",
   };
   return copy[category];
 }

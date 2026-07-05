@@ -12,10 +12,10 @@ const pillars = [
     description: "Strengthen the signals that help your business stand out on Google.",
   },
   {
-    title: "Conversion",
+    title: "Revenue",
     color: "border-conversion/30 bg-conversion/5",
     titleColor: "text-conversion",
-    description: "Turn more profile visitors into calls, enquiries, and booked jobs.",
+    description: "Turn more profile visitors into calls, enquiries, and revenue from booked jobs.",
   },
 ];
 

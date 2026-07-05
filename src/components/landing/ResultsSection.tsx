@@ -36,7 +36,7 @@ export default function ResultsSection({ results, businessName }: ResultsSection
           />
           <ScoreGauge
             score={scores.conversionPercent}
-            label="Conversion"
+            label="Revenue"
             color="var(--conversion)"
           />
         </div>

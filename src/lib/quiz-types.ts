@@ -6,7 +6,7 @@ export interface ContactDetails {
   location: string;
 }
 
-export type Category = "Trust" | "Visibility" | "Conversion";
+export type Category = "Trust" | "Visibility" | "Revenue";
 
 export interface QuizAnswers {
   q1: number | null;

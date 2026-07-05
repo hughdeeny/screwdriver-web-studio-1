@@ -26,7 +26,7 @@ function getStrongestCategory(scores: ReturnType<typeof calculateScores>): Categ
   const categories: { name: Category; percent: number }[] = [
     { name: "Trust", percent: scores.trustPercent },
     { name: "Visibility", percent: scores.visibilityPercent },
-    { name: "Conversion", percent: scores.conversionPercent },
+    { name: "Revenue", percent: scores.conversionPercent },
   ];
   return categories.reduce((best, current) =>
     current.percent > best.percent ? current : best
@@ -52,7 +52,7 @@ function generateWhatIsWorking(
     parts.push(
       "You are starting to turn customer feedback into visible proof online."
     );
-  } else if (strongest === "Conversion" && scores.conversionPercent >= 50) {
+  } else if (strongest === "Revenue" && scores.conversionPercent >= 50) {
     parts.push(
       "You have elements of a review collection process that can be strengthened with automation."
     );
@@ -90,7 +90,7 @@ function generateWhatIsHoldingBack(
     );
   } else {
     parts.push(
-      "Happy customers may not be converting into Google reviews and follow-up enquiries reliably enough."
+      "Happy customers may not be turning into Google reviews and follow-up enquiries reliably enough."
     );
   }
 

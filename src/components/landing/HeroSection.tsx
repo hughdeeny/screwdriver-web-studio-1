@@ -3,7 +3,7 @@ import BrandLogo from "./BrandLogo";
 const pillars = [
   { label: "trust", color: "border-trust/30 bg-trust/5", textColor: "text-trust" },
   { label: "visibility", color: "border-visibility/30 bg-visibility/5", textColor: "text-visibility" },
-  { label: "conversions", color: "border-conversion/30 bg-conversion/5", textColor: "text-conversion" },
+  { label: "revenue", color: "border-conversion/30 bg-conversion/5", textColor: "text-conversion" },
 ];
 
 const stats = [

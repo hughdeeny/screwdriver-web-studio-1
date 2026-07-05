@@ -164,7 +164,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
           totalScore: submission.results.scores.total,
           trustScore: submission.results.scores.trustPercent,
           visibilityScore: submission.results.scores.visibilityPercent,
-          conversionScore: submission.results.scores.conversionPercent,
+          revenueScore: submission.results.scores.conversionPercent,
           scoreCategory: submission.results.scoreCategory,
           biggestOpportunity: submission.results.biggestOpportunity,
           whatIsWorking: submission.results.whatIsWorking,
