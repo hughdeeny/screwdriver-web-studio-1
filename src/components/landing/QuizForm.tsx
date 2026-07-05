@@ -36,7 +36,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     businessName: "",
     email: "",
     phone: "",
-    location: "",
+    role: "",
   });
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
@@ -74,10 +74,8 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const isContactValid = () =>
     contact.firstName.trim() &&
-    contact.businessName.trim() &&
     contact.email.trim() &&
-    contact.phone.trim() &&
-    contact.location.trim();
+    contact.phone.trim();
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,6 +137,16 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const submitQuiz = async () => {
     setSubmitting(true);
     const submission = buildSubmission(contact, answers);
+
+    let suburb: string | undefined;
+    try {
+      const geoRes = await fetch("/api/visitor-location");
+      const geo = await geoRes.json();
+      suburb = geo.suburb ?? undefined;
+    } catch {
+      /* suburb detection is optional */
+    }
+
     setResults(submission.results);
     setPhase("results");
     onComplete?.();
@@ -158,10 +166,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName: contact.firstName,
-          businessName: contact.businessName,
+          businessName: contact.businessName.trim() || undefined,
           email: contact.email,
           phone: contact.phone,
-          location: contact.location,
+          role: contact.role.trim() || undefined,
+          suburb,
           answers: submission.answerLabels,
           totalScore: submission.results.scores.total,
           trustScore: submission.results.scores.trustPercent,
@@ -212,21 +221,23 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
           </p>
           {(
             [
-              { id: "firstName", label: "First name", type: "text", placeholder: "John" },
-              { id: "businessName", label: "Business name", type: "text", placeholder: "Smith Plumbing" },
-              { id: "email", label: "Email", type: "email", placeholder: "john@smithplumbing.com" },
-              { id: "phone", label: "Phone", type: "tel", placeholder: "0400 000 000" },
-              { id: "location", label: "Location / service area", type: "text", placeholder: "Melbourne's eastern suburbs" },
+              { id: "firstName", label: "First name", type: "text", placeholder: "John", optional: false },
+              { id: "businessName", label: "Business name", type: "text", placeholder: "Smith Plumbing", optional: true },
+              { id: "email", label: "Email", type: "email", placeholder: "john@smithplumbing.com", optional: false },
+              { id: "phone", label: "Phone", type: "tel", placeholder: "0400 000 000", optional: false },
             ] as const
           ).map((field) => (
             <div key={field.id}>
               <label htmlFor={field.id} className="mb-1.5 block text-sm font-semibold text-navy">
                 {field.label}
+                {field.optional && (
+                  <span className="font-normal text-muted"> (optional)</span>
+                )}
               </label>
               <input
                 id={field.id}
                 type={field.type}
-                required
+                required={!field.optional}
                 value={contact[field.id]}
                 onChange={(e) => updateContact(field.id, e.target.value)}
                 placeholder={field.placeholder}
@@ -234,6 +245,19 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               />
             </div>
           ))}
+          <div>
+            <label htmlFor="role" className="mb-1.5 block text-sm font-semibold text-navy">
+              Describe your role <span className="font-normal text-muted">(optional)</span>
+            </label>
+            <input
+              id="role"
+              type="text"
+              value={contact.role}
+              onChange={(e) => updateContact("role", e.target.value)}
+              placeholder="Owner, marketing team, other, etc."
+              className="w-full rounded-xl border border-border bg-page px-4 py-3.5 text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+            />
+          </div>
           <div className="mt-8 flex gap-3">
             <button
               type="button"

@@ -3,7 +3,7 @@ export interface ContactDetails {
   businessName: string;
   email: string;
   phone: string;
-  location: string;
+  role: string;
 }
 
 export type Category = "Trust" | "Visibility" | "Revenue";
