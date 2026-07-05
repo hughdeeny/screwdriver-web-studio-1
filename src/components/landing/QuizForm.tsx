@@ -16,7 +16,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
   q11: null, q12: null, q13: null, q14: null, q15: null,
 };
 
-const STEP_LABELS = ["Your business", "Reputation health", "Your goals"];
+const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
@@ -26,7 +26,7 @@ interface QuizFormProps {
 
 export default function QuizForm({ onComplete }: QuizFormProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [phase, setPhase] = useState<Phase>("contact");
+  const [phase, setPhase] = useState<Phase>("scored");
   const [scoredIndex, setScoredIndex] = useState(0);
   const [situationIndex, setSituationIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -49,15 +49,15 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   }, []);
 
   const getStepNumber = (): number => {
-    if (phase === "contact") return 1;
-    if (phase === "scored") return 2;
+    if (phase === "scored") return 1;
+    if (phase === "situation") return 2;
     return 3;
   };
 
   const getProgress = (): number => {
-    if (phase === "contact") return 5;
-    if (phase === "scored") return 10 + ((scoredIndex + 1) / SCORED_QUESTIONS.length) * 55;
-    if (phase === "situation") return 65 + ((situationIndex + 1) / SITUATION_QUESTIONS.length) * 30;
+    if (phase === "scored") return 5 + ((scoredIndex + 1) / SCORED_QUESTIONS.length) * 55;
+    if (phase === "situation") return 60 + ((situationIndex + 1) / SITUATION_QUESTIONS.length) * 25;
+    if (phase === "contact") return 90;
     return 100;
   };
 
@@ -79,11 +79,15 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     contact.phone.trim() &&
     contact.location.trim();
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isContactValid()) return;
-    setPhase("scored");
-    setScoredIndex(0);
+    await submitQuiz();
+  };
+
+  const handleContactBack = () => {
+    setPhase("situation");
+    setSituationIndex(SITUATION_QUESTIONS.length - 1);
     scrollToContainer();
   };
 
@@ -105,13 +109,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     if (scoredIndex > 0) {
       setScoredIndex((i) => i - 1);
       scrollToContainer();
-    } else {
-      setPhase("contact");
-      scrollToContainer();
     }
   };
 
-  const handleSituationNext = async () => {
+  const handleSituationNext = () => {
     const current = SITUATION_QUESTIONS[situationIndex];
     if (answers[current.id] === null) return;
 
@@ -119,7 +120,8 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       setSituationIndex((i) => i + 1);
       scrollToContainer();
     } else {
-      await submitQuiz();
+      setPhase("contact");
+      scrollToContainer();
     }
   };
 
@@ -206,7 +208,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       {phase === "contact" && (
         <form onSubmit={handleContactSubmit} className="space-y-4">
           <p className="mb-6 text-sm text-muted">
-            Tell us about your business so we can personalise your results.
+            Almost done — tell us about your business so we can personalise your results.
           </p>
           {(
             [
@@ -232,13 +234,23 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               />
             </div>
           ))}
-          <button
-            type="submit"
-            disabled={!isContactValid()}
-            className="mt-4 w-full rounded-xl bg-accent px-6 py-4 text-lg font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Continue To Reputation Check
-          </button>
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={handleContactBack}
+              disabled={submitting}
+              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={!isContactValid() || submitting}
+              className="flex-1 rounded-xl bg-accent px-6 py-4 text-lg font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {submitting ? "Calculating..." : "See My Results"}
+            </button>
+          </div>
         </form>
       )}
 
@@ -270,13 +282,17 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             })}
           </div>
           <div className="mt-8 flex gap-3">
-            <button
-              type="button"
-              onClick={handleScoredBack}
-              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
-            >
-              Back
-            </button>
+            {scoredIndex > 0 ? (
+              <button
+                type="button"
+                onClick={handleScoredBack}
+                className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+              >
+                Back
+              </button>
+            ) : (
+              <div className="hidden sm:block sm:w-[88px]" aria-hidden="true" />
+            )}
             <button
               type="button"
               onClick={handleScoredNext}
@@ -327,14 +343,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             <button
               type="button"
               onClick={handleSituationNext}
-              disabled={answers[currentSituation.id] === null || submitting}
+              disabled={answers[currentSituation.id] === null}
               className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {situationIndex === SITUATION_QUESTIONS.length - 1
-                ? submitting
-                  ? "Calculating..."
-                  : "See My Results"
-                : "Continue"}
+              Continue
             </button>
           </div>
         </div>

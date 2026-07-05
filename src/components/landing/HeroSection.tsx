@@ -75,7 +75,7 @@ export default function HeroSection() {
 
         <div className="mx-auto mt-12 max-w-3xl">
           <h2 className="text-2xl font-bold text-navy sm:text-3xl">
-            Why Your Online Reputation Affects Who Gets The Call
+            Why Your Online Reputation Decides Who Gets The Call
           </h2>
           <p className="mt-4 text-muted leading-relaxed">
             Before most customers contact a local business, they compare. Your
