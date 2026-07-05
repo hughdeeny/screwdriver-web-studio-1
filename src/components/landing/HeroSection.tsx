@@ -78,9 +78,10 @@ export default function HeroSection() {
             Why Your Online Reputation Decides Who Gets The Call
           </h2>
           <p className="mt-4 text-muted leading-relaxed">
-            Before most customers contact a local business, they compare. Your
-            reviews, recent activity, and review replies all shape whether your
-            business feels like the safer choice.
+            When 71% of consumers use Google, 49% use Facebook, and 45% use AI
+            tools for local business recommendations, your reviews, replies, and
+            recent activity can decide whether your business feels like the
+            trusted choice.
           </p>
 
           <div className="mt-8 grid gap-4 text-left sm:grid-cols-3">
