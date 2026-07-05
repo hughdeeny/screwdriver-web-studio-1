@@ -173,6 +173,107 @@ const STRONGEST_PILLAR_POINTS: Record<Category, AnalysisPoint> = {
   },
 };
 
+const FALLBACK_ANALYSIS_POINTS: AnalysisPoint[] = [
+  {
+    title: "Reviews may not be happening consistently",
+    body: "Without a repeatable process, review collection often depends on who remembers to ask and when.",
+  },
+  {
+    title: "Your Google presence could be stronger",
+    body: "Active reviews, replies, and visible proof help future customers feel confident before they call.",
+  },
+  {
+    title: "There may be untapped proof in past jobs",
+    body: "Happy customers from completed work can still be turned into reviews and online trust with the right follow-up.",
+  },
+];
+
+const FALLBACK_NEXT_STEPS = [
+  "Review your past customer list and identify happy customers who could be asked for a genuine review.",
+  "Make your Google review link easy to access and include it in follow-up messages.",
+  "Check your Google Business Profile performance so you know whether it is generating calls, website visits, and enquiries.",
+];
+
+const STOP_WORDS = new Set([
+  "the", "a", "an", "is", "are", "to", "and", "or", "your", "you", "that", "when",
+  "if", "it", "in", "on", "for", "with", "may", "not", "be", "can", "more", "have",
+  "has", "this", "they", "their", "our", "we", "as", "at", "by", "from", "into",
+  "before", "after", "who", "what", "how", "without", "still", "need", "needs",
+]);
+
+function keywordSet(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, " ")
+      .split(/\s+/)
+      .filter((word) => word.length > 3 && !STOP_WORDS.has(word)),
+  );
+}
+
+function overlapRatio(a: string, b: string): number {
+  const setA = keywordSet(a);
+  const setB = keywordSet(b);
+  if (setA.size === 0 || setB.size === 0) return 0;
+
+  let overlap = 0;
+  for (const word of setA) {
+    if (setB.has(word)) overlap++;
+  }
+  return overlap / Math.min(setA.size, setB.size);
+}
+
+function isNearDuplicateText(text: string, existing: string[], threshold = 0.45): boolean {
+  return existing.some((item) => overlapRatio(text, item) >= threshold);
+}
+
+function pointText(point: AnalysisPoint): string {
+  return `${point.title} ${point.body}`;
+}
+
+function isNearDuplicatePoint(point: AnalysisPoint, picked: AnalysisPoint[]): boolean {
+  const text = pointText(point);
+  return isNearDuplicateText(text, picked.map(pointText));
+}
+
+function pickUniquePoints(candidates: AnalysisPoint[], count: number): AnalysisPoint[] {
+  const picked: AnalysisPoint[] = [];
+
+  for (const point of candidates) {
+    if (isNearDuplicatePoint(point, picked)) continue;
+    picked.push(point);
+    if (picked.length === count) break;
+  }
+
+  for (const point of FALLBACK_ANALYSIS_POINTS) {
+    if (picked.length === count) break;
+    if (isNearDuplicatePoint(point, picked)) continue;
+    picked.push(point);
+  }
+
+  return picked.slice(0, count);
+}
+
+function pickUniqueSteps(candidates: string[], count: number): string[] {
+  const picked: string[] = [];
+
+  for (const step of candidates) {
+    if (isNearDuplicateText(step, picked)) continue;
+    picked.push(step);
+    if (picked.length === count) break;
+  }
+
+  if (picked.length < count) {
+    for (const step of FALLBACK_NEXT_STEPS) {
+      if (picked.length === count) break;
+      if (isNearDuplicateText(step, picked)) continue;
+      picked.push(step);
+    }
+  }
+
+  return picked.slice(0, Math.max(2, Math.min(count, picked.length)));
+}
+
 function pickAnalysisPoints(
   lowestPillar: Category,
   strongestPillar: Category,
@@ -180,9 +281,9 @@ function pickAnalysisPoints(
   q12Label: string,
   q13Label: string,
 ): AnalysisPoint[] {
-  const candidates: AnalysisPoint[] = [];
-
-  candidates.push(LOWEST_PILLAR_POINTS[lowestPillar]);
+  const candidates: AnalysisPoint[] = [
+    LOWEST_PILLAR_POINTS[lowestPillar],
+  ];
 
   if (q13Label && Q13_POINTS[q13Label]) {
     candidates.push(Q13_POINTS[q13Label]);
@@ -200,23 +301,9 @@ function pickAnalysisPoints(
     candidates.push(STRONGEST_PILLAR_POINTS[strongestPillar]);
   }
 
-  const seen = new Set<string>();
-  const picked: AnalysisPoint[] = [];
-  for (const point of candidates) {
-    if (seen.has(point.title)) continue;
-    seen.add(point.title);
-    picked.push(point);
-    if (picked.length === 3) break;
-  }
+  candidates.push(...FALLBACK_ANALYSIS_POINTS);
 
-  if (picked.length < 3) {
-    const fallback = STRONGEST_PILLAR_POINTS[strongestPillar];
-    if (!seen.has(fallback.title)) {
-      picked.push(fallback);
-    }
-  }
-
-  return picked.slice(0, 3);
+  return pickUniquePoints(candidates, 3);
 }
 
 const Q12_NEXT_STEPS: Record<string, string> = {
@@ -254,12 +341,6 @@ const LOWEST_PILLAR_NEXT_STEPS: Record<Category, string> = {
     "Build a repeatable system that turns completed jobs into reviews, trust, and future enquiries.",
 };
 
-const FALLBACK_NEXT_STEPS = [
-  "Review your past customer list and identify happy customers who could be asked for a genuine review.",
-  "Make your Google review link easy to access and include it in follow-up messages.",
-  "Check your Google Business Profile performance so you know whether it is generating calls, website visits, and enquiries.",
-];
-
 function pickNextSteps(
   q12Label: string,
   q13Label: string,
@@ -274,25 +355,9 @@ function pickNextSteps(
     candidates.push(Q13_NEXT_STEPS[q13Label]);
   }
   candidates.push(LOWEST_PILLAR_NEXT_STEPS[lowestPillar]);
+  candidates.push(...FALLBACK_NEXT_STEPS);
 
-  const seen = new Set<string>();
-  const picked: string[] = [];
-  for (const step of candidates) {
-    if (seen.has(step)) continue;
-    seen.add(step);
-    picked.push(step);
-    if (picked.length === 3) break;
-  }
-
-  for (const step of FALLBACK_NEXT_STEPS) {
-    if (picked.length >= 3) break;
-    if (!seen.has(step)) {
-      seen.add(step);
-      picked.push(step);
-    }
-  }
-
-  return picked.slice(0, Math.max(2, Math.min(3, picked.length)));
+  return pickUniqueSteps(candidates, 3);
 }
 
 const Q14_SOLUTIONS: Record<

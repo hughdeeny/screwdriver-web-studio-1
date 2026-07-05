@@ -25,7 +25,7 @@ export default function ResultsSection({ results, businessName }: ResultsSection
       </div>
 
       <div className="mt-10 flex justify-center">
-        <ScoreGauge score={scores.total} max={100} label="Overall score" color="var(--accent)" size="lg" />
+        <ScoreGauge score={scores.total} max={100} label="Reputation Health Score" color="var(--accent)" size="lg" />
       </div>
 
       <p className="mt-8 text-center leading-relaxed text-muted">{results.resultIntro}</p>

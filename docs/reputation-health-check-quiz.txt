@@ -74,7 +74,7 @@ Score categories:
   >= 80  → Strong reputation system
   >= 60  → Good foundation, but room to improve
   >= 40  → Clear reputation growth opportunity
-  <  40  → Weak online trust system
+  <  40  → Reputation system needs attention
 
 Internal pillars (not displayed):
   Trust:      Q3 + Q5 + Q7 (max 30)

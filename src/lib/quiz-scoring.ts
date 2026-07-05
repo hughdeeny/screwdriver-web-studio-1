@@ -40,7 +40,7 @@ export function getScoreCategory(total: number): string {
   if (total >= 80) return "Strong reputation system";
   if (total >= 60) return "Good foundation, but room to improve";
   if (total >= 40) return "Clear reputation growth opportunity";
-  return "Weak online trust system";
+  return "Reputation system needs attention";
 }
 
 export function getLowestCategory(scores: QuizScores): Category {

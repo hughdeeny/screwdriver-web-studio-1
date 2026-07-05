@@ -18,7 +18,7 @@ export interface SituationQuestion {
 export const SCORED_QUESTIONS: ScoredQuestion[] = [
   {
     id: "q1",
-    question: "Do you ask customers for a review after a job is completed?",
+    question: "Do you ask happy customers for a Google review after a job is completed?",
     options: [
       { label: "Yes, automatically", score: 10 },
       { label: "Yes, manually", score: 7 },
@@ -133,7 +133,7 @@ export const SITUATION_QUESTIONS: SituationQuestion[] = [
   },
   {
     id: "q12",
-    question: "Which desired outcome would you want to achieve in the next 90 days?",
+    question: "What outcome would be most valuable in the next 90 days?",
     options: [
       { label: "Get more calls and enquiries from Google" },
       { label: "Turn more happy customers into Google reviews" },
