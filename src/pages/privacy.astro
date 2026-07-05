@@ -5,12 +5,7 @@ import { CONTACT_EMAIL } from "../data/site";
 
 const CONTACT_PHONE_DISPLAY = "0475 624 247";
 const CONTACT_PHONE_TEL = "+61475624247";
-
-const lastUpdated = new Intl.DateTimeFormat("en-AU", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-}).format(new Date());
+const LAST_UPDATED = "5 July 2026";
 ---
 
 <Layout
@@ -20,7 +15,7 @@ const lastUpdated = new Intl.DateTimeFormat("en-AU", {
   <div class="relative min-h-screen overflow-x-hidden">
     <header class="relative z-10 border-b border-[var(--border)] bg-bg-deep/80 backdrop-blur-md">
       <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
-        <a href="/" class="group flex items-center gap-2">
+        <a href="/landing" class="group flex items-center gap-2">
           <span
             class="font-display flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-glow text-lg font-extrabold text-bg-deep shadow-lg shadow-accent/20 transition group-hover:scale-105"
             aria-hidden="true">S</span
@@ -29,7 +24,7 @@ const lastUpdated = new Intl.DateTimeFormat("en-AU", {
             Screwdriver <span class="text-accent">Marketing</span>
           </span>
         </a>
-        <a href="/" class="text-sm font-medium text-muted transition hover:text-cream">← Back to home</a>
+        <a href="/landing" class="text-sm font-medium text-muted transition hover:text-cream">← Back to landing</a>
       </div>
     </header>
 
@@ -37,28 +32,29 @@ const lastUpdated = new Intl.DateTimeFormat("en-AU", {
       <article class="legal-prose mx-auto max-w-3xl">
         <p class="text-xs font-semibold uppercase tracking-widest text-accent">Legal</p>
         <h1 class="font-display mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Privacy Policy</h1>
-        <p class="mt-3 text-sm text-muted">Last updated: {lastUpdated}</p>
+        <p class="mt-3 text-sm text-muted">Last updated: {LAST_UPDATED}</p>
 
         <p class="mt-8 leading-relaxed">
-          Screwdriver Marketing respects your privacy and is committed to handling your personal information responsibly.
+          Screwdriver Marketing respects your privacy and is committed to handling personal information responsibly.
         </p>
         <p class="mt-4 leading-relaxed">
-          This Privacy Policy explains how we collect, use, store, and protect personal information when you use our website, complete a form, book a call, or contact us.
+          This Privacy Policy explains how we collect, use, store, disclose, and protect personal information when you use our website, complete a form, take a quiz, request an audit, book a call, or contact us.
         </p>
 
         <h2>1. Information we collect</h2>
-        <p>We may collect personal information you provide to us, including:</p>
+        <p>We may collect personal information that you provide to us, including:</p>
         <ul>
           <li>your name</li>
           <li>business name</li>
           <li>email address</li>
           <li>phone number</li>
           <li>website or Google Business Profile link</li>
+          <li>suburb or general business location</li>
           <li>information you submit through forms, quizzes, audits, or enquiries</li>
-          <li>details about your business, services, reviews, marketing, or online presence</li>
+          <li>details about your business, services, reviews, marketing, online presence, or goals</li>
         </ul>
         <p>
-          We may also collect basic website usage information through tools such as cookies, analytics, advertising pixels, and similar technologies.
+          We may also collect basic website and marketing information through cookies, analytics tools, advertising pixels, forms, and similar technologies.
         </p>
         <p>This may include:</p>
         <ul>
@@ -68,80 +64,101 @@ const lastUpdated = new Intl.DateTimeFormat("en-AU", {
           <li>approximate location</li>
           <li>referral source</li>
           <li>advertising or campaign interactions</li>
+          <li>form or quiz activity</li>
         </ul>
 
         <h2>2. How we use your information</h2>
-        <p>We use your information to:</p>
+        <p>We may use your information to:</p>
         <ul>
-          <li>provide your requested audit, health check, snapshot, or recommendations</li>
+          <li>provide your requested audit, health check, quiz result, snapshot, recommendation, or service</li>
           <li>contact you about your enquiry or form submission</li>
-          <li>book and manage calls</li>
-          <li>provide marketing, website, reputation management, automation, or related services</li>
-          <li>improve our website, advertising, and services</li>
+          <li>book, confirm, and manage calls</li>
+          <li>provide marketing, website, reputation management, automation, advertising, or related services</li>
+          <li>personalise your results, recommendations, and follow-up</li>
+          <li>improve our website, advertising, forms, quiz, offers, and services</li>
           <li>follow up about relevant services that may help your business</li>
-          <li>maintain records and manage client relationships</li>
+          <li>maintain business records and manage client relationships</li>
+          <li>comply with legal, regulatory, or operational requirements</li>
         </ul>
 
         <h2>3. Marketing and follow-up communication</h2>
         <p>
-          If you submit a form or request information from us, we may contact you about your request, your results, recommendations, and related services.
+          If you submit a form, complete a quiz, request information, book a call, or otherwise contact us, we may contact you about your request, results, recommendations, and related services.
         </p>
+        <p>We may contact you by email, phone, SMS, or other contact methods you provide.</p>
         <p>You can opt out of marketing communications at any time.</p>
         <ul>
           <li>For email, use the unsubscribe link if provided or contact us directly.</li>
           <li>For SMS, reply STOP to opt out.</li>
         </ul>
         <p>
-          Commercial electronic messages in Australia generally need consent, must identify the sender, and must include a way to unsubscribe.
+          Commercial electronic messages in Australia generally require consent, must identify the sender, and must include a functional unsubscribe option.
         </p>
 
         <h2>4. Cookies, analytics, and advertising tools</h2>
-        <p>We may use third-party tools to understand website activity and improve our marketing, including:</p>
+        <p>
+          We may use third-party tools to understand website activity, improve our marketing, measure campaign performance, and follow up with people who interact with our website.
+        </p>
+        <p>These tools may include:</p>
         <ul>
           <li>Meta Pixel</li>
           <li>Google Analytics</li>
           <li>Google Tag Manager</li>
-          <li>GoHighLevel or similar CRM/marketing tools</li>
+          <li>GoHighLevel or similar CRM and marketing tools</li>
           <li>website hosting and analytics providers</li>
+          <li>advertising platforms</li>
+          <li>booking, email, SMS, and automation tools</li>
         </ul>
         <p>
-          These tools may collect information about how you use our website and may use cookies or similar technologies.
+          These tools may collect information about how you use our website and may use cookies, pixels, tags, or similar technologies.
         </p>
-        <p>You can control cookies through your browser settings.</p>
+        <p>
+          You can control or disable cookies through your browser settings. Some website features may not work properly if cookies are disabled.
+        </p>
 
         <h2>5. Disclosure to third parties</h2>
         <p>We do not sell your personal information.</p>
         <p>
-          We may share information with trusted service providers who help us operate our website, manage enquiries, deliver services, run advertising, host data, or communicate with you.
+          We may disclose personal information to trusted service providers who help us operate our website, manage enquiries, deliver services, run advertising, process payments, host data, or communicate with you.
         </p>
         <p>These may include providers for:</p>
         <ul>
           <li>website hosting</li>
           <li>analytics</li>
-          <li>CRM and email/SMS systems</li>
+          <li>CRM systems</li>
+          <li>email and SMS communication</li>
           <li>advertising platforms</li>
           <li>payment processing</li>
           <li>calendar booking</li>
-          <li>business operations</li>
+          <li>automation tools</li>
+          <li>business operations and administration</li>
         </ul>
-        <p>We may also disclose information if required by law.</p>
+        <p>We may also disclose information where required or authorised by law.</p>
 
         <h2>6. Storage and security</h2>
         <p>
-          We take reasonable steps to protect personal information from misuse, loss, unauthorised access, modification, or disclosure.
+          We take reasonable steps to protect personal information from misuse, interference, loss, unauthorised access, modification, or disclosure. Australian privacy guidance expects organisations to take reasonable steps to secure personal information they hold.
         </p>
         <p>
-          However, no online system is completely secure, and we cannot guarantee absolute security.
+          However, no online system, website, platform, or method of electronic transmission is completely secure. We cannot guarantee absolute security.
         </p>
 
         <h2>7. Accessing or correcting your information</h2>
         <p>
-          You may request access to the personal information we hold about you or ask us to correct inaccurate information.
+          You may request access to the personal information we hold about you or ask us to correct information you believe is inaccurate, incomplete, or out of date.
         </p>
-        <p>To do this, contact us using the details below.</p>
+        <p>To make a request, contact us using the details below.</p>
 
-        <h2>8. Contact</h2>
-        <p>For privacy questions, access requests, corrections, or unsubscribe requests, contact:</p>
+        <h2>8. Retention of information</h2>
+        <p>
+          We keep personal information for as long as reasonably necessary for the purposes described in this Privacy Policy, including providing services, managing enquiries, maintaining records, improving our business, and complying with legal or operational requirements.
+        </p>
+        <p>
+          When information is no longer needed, we may delete, de-identify, or securely archive it.
+        </p>
+
+        <h2>9. Contact</h2>
+        <p>For privacy questions, access requests, correction requests, or unsubscribe requests, contact:</p>
         <p>
           <strong class="text-cream">Screwdriver Marketing</strong><br />
           Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a><br />
@@ -149,11 +166,11 @@ const lastUpdated = new Intl.DateTimeFormat("en-AU", {
           Location: Adelaide, South Australia
         </p>
 
-        <h2>9. Changes to this policy</h2>
+        <h2>10. Changes to this policy</h2>
         <p>
           We may update this Privacy Policy from time to time. The latest version will be published on this website.
         </p>
-        <p class="text-sm">Last updated: {lastUpdated}</p>
+        <p class="text-sm">Last updated: {LAST_UPDATED}</p>
       </article>
     </main>
 

@@ -6,30 +6,29 @@ const pillars = [
   { label: "revenue", color: "border-conversion/30 bg-conversion/5", textColor: "text-conversion" },
 ];
 
+const STATS_SOURCE = {
+  label: "BrightLocal, Local Consumer Review Survey (2026)",
+  url: "https://www.brightlocal.com/research/local-consumer-review-survey/",
+};
+
 const stats = [
   {
     stat: "97%",
     headline: "of consumers read reviews for local businesses",
     description:
       "Reviews are now part of the normal buying process. If your profile has too few reviews, old reviews, or looks unmanaged, customers may lose trust before they ever call.",
-    source: "BrightLocal, Local Consumer Review Survey (2026)",
-    sourceUrl: "https://www.brightlocal.com/research/local-consumer-review-survey/",
   },
   {
     stat: "65%",
     headline: "of consumers write a review after being asked",
     description:
       "Many happy customers do not leave reviews on their own. A simple review request system helps turn real customer experiences into visible proof.",
-    source: "BrightLocal, Local Consumer Review Survey (2026)",
-    sourceUrl: "https://www.brightlocal.com/research/local-consumer-review-survey/",
   },
   {
     stat: "47%",
     headline: "of consumers won't use a business that has fewer than 20 reviews",
     description:
       "Review volume is a credibility threshold. If your profile looks thin compared to competitors, many customers may rule you out before they ever read a single comment.",
-    source: "BrightLocal, Local Consumer Review Survey (2026)",
-    sourceUrl: "https://www.brightlocal.com/research/local-consumer-review-survey/",
   },
 ];
 
@@ -99,20 +98,20 @@ export default function HeroSection() {
                 <p className="mt-3 text-sm leading-relaxed text-muted">
                   {item.description}
                 </p>
-                <p className="mt-4 border-t border-border pt-3 text-xs leading-relaxed text-muted">
-                  Source:{" "}
-                  <a
-                    href={item.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-border underline-offset-2 transition hover:text-navy"
-                  >
-                    {item.source}
-                  </a>
-                </p>
               </div>
             ))}
           </div>
+          <p className="mt-4 text-center text-xs leading-relaxed text-muted">
+            Source:{" "}
+            <a
+              href={STATS_SOURCE.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-border underline-offset-2 transition hover:text-navy"
+            >
+              {STATS_SOURCE.label}
+            </a>
+          </p>
         </div>
 
         <div className="mx-auto mt-10 max-w-2xl">
