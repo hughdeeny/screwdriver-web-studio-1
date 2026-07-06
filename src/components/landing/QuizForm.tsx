@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload, isWebhookContactValid, normalizeContact } from "../../lib/result-generator";
 import { postQuizWebhook } from "../../lib/submit-quiz-client";
@@ -20,6 +20,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
+const ANSWER_ADVANCE_MS = 500;
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
@@ -53,6 +54,27 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
   const [results, setResults] = useState<QuizResults | null>(null);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearAdvanceTimer = useCallback(() => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => clearAdvanceTimer(), [clearAdvanceTimer]);
+
+  const scheduleAdvance = useCallback(
+    (advance: () => void) => {
+      clearAdvanceTimer();
+      advanceTimerRef.current = window.setTimeout(() => {
+        advanceTimerRef.current = null;
+        advance();
+      }, ANSWER_ADVANCE_MS);
+    },
+    [clearAdvanceTimer],
+  );
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -120,9 +142,9 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     }));
 
     if (score !== undefined) {
-      advanceScoredQuestion();
+      scheduleAdvance(advanceScoredQuestion);
     } else if (questionId !== "q15") {
-      advanceSituationQuestion();
+      scheduleAdvance(advanceSituationQuestion);
     }
   };
 
@@ -157,12 +179,14 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const handleContactBack = () => {
+    clearAdvanceTimer();
     setPhase("situation");
     setSituationIndex(SITUATION_STEP_COUNT - 1);
     scrollToContainer();
   };
 
   const handleScoredBack = () => {
+    clearAdvanceTimer();
     if (scoredIndex > 0) {
       setScoredIndex((i) => i - 1);
       scrollToContainer();
@@ -176,6 +200,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const handleSituationBack = () => {
+    clearAdvanceTimer();
     if (situationIndex > 0) {
       setSituationIndex((i) => i - 1);
       scrollToContainer();
