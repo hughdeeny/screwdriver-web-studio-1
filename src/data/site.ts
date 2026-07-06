@@ -2,12 +2,12 @@ export const SITE_URL = "https://screwdrivermarketing.com.au";
 export const OG_IMAGE_PATH = "/og-image.jpg";
 
 export const STRATEGY_MAIL =
-  "mailto:hello@screwdrivermarketing.com.au?subject=Free%20strategy%20call%20request";
+  "mailto:hugh@screwdrivermarketing.com.au?subject=Free%20strategy%20call%20request";
 
 export const MISSED_CALL_MAIL =
-  "mailto:hello@screwdrivermarketing.com.au?subject=Missed-call%20text-back%20enquiry";
+  "mailto:hugh@screwdrivermarketing.com.au?subject=Missed-call%20text-back%20enquiry";
 
-export const CONTACT_EMAIL = "hello@screwdrivermarketing.com.au";
+export const CONTACT_EMAIL = "hugh@screwdrivermarketing.com.au";
 
 export const serviceCards = [
   {

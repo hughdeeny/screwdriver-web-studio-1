@@ -77,8 +77,8 @@ export default function HeroSection() {
             Why Your Online Reputation Decides Who Gets The Call
           </h2>
           <p className="mt-4 text-muted leading-relaxed">
-            When 71% of consumers use Google, 49% use Facebook, and 45% use AI
-            tools for local business recommendations, your reviews, replies, and
+            71% of consumers use Google, 49% use Facebook, and 45% use AI
+            tools for local business recommendations so your reviews, replies, and
             recent activity can decide whether your business feels like the
             trusted choice.
           </p>
@@ -115,6 +115,9 @@ export default function HeroSection() {
         </div>
 
         <div className="mx-auto mt-10 max-w-2xl">
+          <p className="mb-4 text-lg font-semibold text-navy sm:text-xl">
+            Get your free digital reputation check
+          </p>
           <a
             href="/landing/quiz"
             className="inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"

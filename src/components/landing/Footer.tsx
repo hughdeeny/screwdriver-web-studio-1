@@ -1,4 +1,5 @@
 import BrandLogo from "./BrandLogo";
+import { CONTACT_EMAIL } from "../../data/site";
 
 export default function Footer() {
   return (
@@ -13,8 +14,8 @@ export default function Footer() {
           </div>
           <div className="text-sm text-muted">
             <p>
-              <a href="mailto:hugh@screwdrivermarketing.com.au" className="transition hover:text-navy">
-                hugh@screwdrivermarketing.com.au
+              <a href={`mailto:${CONTACT_EMAIL}`} className="transition hover:text-navy">
+                {CONTACT_EMAIL}
               </a>
             </p>
             <p className="mt-1">

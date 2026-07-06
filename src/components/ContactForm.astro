@@ -1,3 +1,7 @@
+---
+import { CONTACT_EMAIL } from "../data/site";
+---
+
 <form class="space-y-5" id="audit" novalidate>
   <h3 class="font-display text-xl font-bold text-cream">Request your free website audit</h3>
   <p class="text-sm text-muted">
@@ -128,7 +132,7 @@
   }
 </style>
 
-<script>
+<script define:vars={{ contactEmail: CONTACT_EMAIL }}>
   function trackEvent(name: string, data: Record<string, unknown> = {}) {
     console.log("Tracking event:", name, data);
   }
@@ -161,7 +165,7 @@
     const body = encodeURIComponent(
       `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nPhone: ${phone}\nWebsite: ${website || "(not provided)"}\n\nWhat they need help with:\n${help}`,
     );
-    window.location.href = `mailto:hello@screwdrivermarketing.com.au?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
 
     if (status) status.classList.add("hidden");
   });
