@@ -1,19 +1,11 @@
 ---
 import LandingLayout from "../../layouts/LandingLayout.astro";
 import LandingPage from "../../components/landing/LandingPage";
-import MetaPixelEvent from "../../components/MetaPixelEvent.astro";
 ---
 
 <LandingLayout
   title="Free Reputation Health Check | Screwdriver Marketing"
   description="Take the free Reputation Health Check for local service businesses. Measure your Trust, Visibility, and Revenue — get immediate recommendations."
 >
-  <MetaPixelEvent
-    event="ViewContent"
-    params={{
-      content_name: "Screwdriver Marketing Landing Page",
-      content_category: "Lead Generation",
-    }}
-  />
   <LandingPage client:load />
 </LandingLayout>

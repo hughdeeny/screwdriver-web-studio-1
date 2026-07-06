@@ -2,11 +2,10 @@
 import LandingLayout from "../../layouts/LandingLayout.astro";
 import QuizPage from "../../components/landing/QuizPage";
 
-// The native quiz shows dynamic results in-page on completion (see QuizForm.tsx)
-// and fires the Meta Pixel "Lead" event at that point.
-// If you replace this with a GoHighLevel or other embedded form that cannot fire
-// the event itself, set that form's post-submit redirect to /landing/thank-you in
-// the external provider's settings so the Lead event still fires there.
+// The native quiz shows dynamic results in-page on completion (see QuizForm.tsx).
+// Meta Pixel Lead fires only after a successful POST to /api/submit-quiz.
+// If you replace this with an external embedded form, wire equivalent events
+// in that provider or redirect to /landing/thank-you only if Lead is tracked there.
 ---
 
 <LandingLayout

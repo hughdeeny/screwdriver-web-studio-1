@@ -1,14 +1,14 @@
 import { useCallback, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload } from "../../lib/result-generator";
+import {
+  META_QUIZ_CONTENT,
+  META_STORAGE_KEYS,
+  trackMetaCustomEventOnce,
+  trackMetaEvent,
+} from "../../lib/meta-pixel";
 import type { ContactDetails, QuizAnswers, QuizResults } from "../../lib/quiz-types";
 import ResultsSection from "./ResultsSection";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 const SITUATION_STEP_COUNT = SITUATION_QUESTIONS.length + 1;
 
@@ -68,6 +68,13 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const selectAnswer = (questionId: keyof QuizAnswers, optionIndex: number, score?: number) => {
+    if (score !== undefined) {
+      trackMetaCustomEventOnce(META_STORAGE_KEYS.quizStarted, "QuizStarted", {
+        ...META_QUIZ_CONTENT,
+        question_id: questionId,
+      });
+    }
+
     setAnswers((prev) => ({
       ...prev,
       [questionId]: score !== undefined ? score : optionIndex,
@@ -128,6 +135,9 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       setSituationIndex((i) => i + 1);
       scrollToContainer();
     } else {
+      trackMetaCustomEventOnce(META_STORAGE_KEYS.section2Complete, "Section2Complete", {
+        ...META_QUIZ_CONTENT,
+      });
       setPhase("contact");
       scrollToContainer();
     }
@@ -162,19 +172,16 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     onComplete?.();
     scrollToContainer();
 
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-      window.fbq("track", "Lead", {
-        content_name: "Reputation Health Check",
-        content_category: "Free Audit / Enquiry",
-      });
-    }
-
     try {
-      await fetch("/api/submit-quiz", {
+      const response = await fetch("/api/submit-quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(buildWebhookPayload(contact, answers, suburb)),
       });
+
+      if (response.ok) {
+        trackMetaEvent("Lead", META_QUIZ_CONTENT);
+      }
     } catch {
       // Results still shown even if webhook fails
     } finally {

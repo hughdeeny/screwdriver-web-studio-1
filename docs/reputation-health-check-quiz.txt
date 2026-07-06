@@ -1,74 +1,158 @@
-REPUTATION HEALTH CHECK QUIZ — CURRENT SPEC
-==========================================
+REPUTATION HEALTH CHECK QUIZ — LIVE SPEC (matches implementation)
+================================================================
 
-Flow (3 steps):
-1. Scored questions Q1–Q10
-2. Situation questions Q11–Q15 (Q15 optional open text)
-3. Contact form → in-page results
+Last synced with codebase. All copy below is verbatim from source files.
 
-Public results show ONLY:
-- Overall Reputation Health Score /100
-- Score category
-- Short intro paragraph
-- "Your current system" — 3 analysis points
-- "Recommended next steps" — 2–3 steps
-- Recommended solution + dynamic CTA
 
-NOT shown publicly:
-- Trust / Visibility / Revenue scores or percentages
-- Raw pillar calculations
-- "Conversion" label
+FLOW
+----
 
----
+Step 1 — Scored questions Q1–Q10 (label: "Reputation health")
+Step 2 — Situation questions Q11–Q15 (label: "Your goals")
+Step 3 — Contact form (label: "Your business")
+Step 4 — In-page results (no redirect)
+
+Quiz section heading: "Get Your Free Reputation Health Score"
+Quiz section subtext: "Answer a few quick questions and get immediate recommendations for improving your online reputation."
+
+Contact step intro: "Almost done — tell us about your business so we can personalise your results."
+
+Buttons: "Continue" | "Back" | "See My Results" | "Calculating..." (while submitting)
+
+
+CONTACT FORM
+------------
+
+Required:
+  First name (placeholder: John)
+  Email (placeholder: john@smithplumbing.com)
+  Phone (placeholder: 0400 000 000)
+
+Optional:
+  Business name (placeholder: Smith Plumbing)
+  Describe your role (placeholder: Owner, marketing team, other, etc.)
+
+Suburb: not shown to user; detected from IP on submit via /api/visitor-location
+
 
 SCORED QUESTIONS (Q1–Q10)
-Scoring: Strong=10, Good/manual=7, Weak=4, None/not sure=0
+--------------------------
 
-Q1. Do you ask customers for a review after a job is completed?
+Scoring: Strong = 10 | Good/manual = 7 | Weak = 4 | None/not sure = 0
+Answers store score values (not option index).
+
+Q1. Do you ask happy customers for a Google review after a job is completed?
   Internal pillar: Revenue
+  • Yes, automatically — 10
+  • Yes, manually — 7
+  • Sometimes — 4
+  • No — 0
 
 Q2. Are review requests sent while the customer experience is still fresh?
   Internal pillar: Revenue
+  • Yes, same day or next day — 10
+  • Usually within a week — 7
+  • Sometimes later — 4
+  • Rarely or never — 0
 
 Q3. Do you make it easy for customers to leave a review with a Google review link?
   Internal pillar: Trust
+  • Yes, every time — 10
+  • Sometimes — 7
+  • Not consistently — 4
+  • No — 0
 
 Q4. Do happy customers usually get a reminder if they forget to leave a review?
   Internal pillar: Revenue
+  • Yes, automatically — 10
+  • Yes, manually — 7
+  • Sometimes — 4
+  • No — 0
 
 Q5. Do you reply to Google reviews in a way that makes future customers trust you more?
   Internal pillar: Trust
+  • Yes, every review gets a personal and professional reply — 10
+  • Most reviews get a good reply — 7
+  • Some reviews get replied to — 4
+  • Rarely or never — 0
 
 Q6. Do you have a list of past happy customers you could contact for a review request?
   Internal pillar: Revenue
+  • Yes, with names, phone numbers, and emails — 10
+  • Yes, but it would need cleaning up — 7
+  • Some, but it is not organised — 4
+  • No — 0
+  • Not sure — 0
 
 Q7. If you received a negative or unfair review, would you know exactly how to respond?
   Internal pillar: Trust
+  • Yes, we have a clear response process — 10
+  • Mostly, but it depends on the situation — 7
+  • Not really — 4
+  • No — 0
 
 Q8. Do you use positive reviews or customer feedback as social proof on your website or social media?
   Internal pillar: Visibility
+  • Yes, consistently — 10
+  • Sometimes — 7
+  • Rarely — 4
+  • Never — 0
 
 Q9. Do you know whether your Google Business Profile is generating calls, website visits, or enquiries?
   Internal pillar: Visibility
+  • Yes, we check this regularly — 10
+  • Sometimes — 7
+  • Rarely — 4
+  • No — 0
 
 Q10. Does your review process still happen when the business gets busy?
   Internal pillar: Revenue
+  • Yes, it runs in the background — 10
+  • Partly — 7
+  • Not really — 4
+  • No, it depends on us remembering — 0
 
----
 
 UNSCORED QUESTIONS (Q11–Q15)
+----------------------------
 
 Q11. Which best describes your current situation?
-Q12. Which desired outcome would you want to achieve in the next 90 days?
-Q13. What do you think is the biggest obstacle getting in your way?
-Q14. Which type of solution would suit you best?
-Q15. Is there anything else you think we should know about? (optional open text)
+  • We get enough work, but our reviews don't reflect how good we are
+  • We get enquiries, but customers often compare us with competitors first
+  • We want more consistent calls and booked jobs from Google
+  • We are too busy to manually chase reviews or follow-ups
+  • We are not sure where our enquiries are coming from
 
----
+Q12. What outcome would be most valuable in the next 90 days?
+  • Get more calls and enquiries from Google
+  • Turn more happy customers into Google reviews
+  • Look more trusted when customers compare us with competitors
+  • Save time by automating review requests and follow-ups
+  • Understand what is costing us trust, visibility, or revenue online
+
+Q13. What do you think is the biggest obstacle getting in your way?
+  • We forget to ask when things get busy
+  • Customers say they will leave a review but don't
+  • We don't have a clear process
+  • We don't have time to follow up manually
+  • We're not sure what to say
+
+Q14. Which type of solution would suit you best?
+  • An automated system that handles review requests and follow-ups automatically
+  • Guidance, templates, and a clear process we can follow ourselves
+  • A one-off audit so we can understand the opportunity first
+  • Not sure yet — we'd like to see what would make the biggest difference
+
+Q15. Is there anything else you think we should know about?
+  Type: optional open text
+  Placeholder: "Optional — share anything that would help us understand your business"
+  Sent to GHL as: extraNotes and q15
+
 
 SCORING
+-------
 
-Total = Q1 + Q2 + ... + Q10 (max 100)
+Total = Q1 + Q2 + Q3 + Q4 + Q5 + Q6 + Q7 + Q8 + Q9 + Q10 (max 100)
 
 Score categories:
   >= 80  → Strong reputation system
@@ -76,51 +160,316 @@ Score categories:
   >= 40  → Clear reputation growth opportunity
   <  40  → Reputation system needs attention
 
-Internal pillars (not displayed):
+Internal pillars (NOT displayed publicly):
   Trust:      Q3 + Q5 + Q7 (max 30)
   Visibility: Q8 + Q9 (max 20)
   Revenue:    Q1 + Q2 + Q4 + Q6 + Q10 (max 50)
 
-  trustPercent      = round((trust / 30) * 100)
-  visibilityPercent = round((visibility / 20) * 100)
-  revenuePercent    = round((revenue / 50) * 100)
+  trustPercent      = Math.round((trust / 30) * 100)
+  visibilityPercent = Math.round((visibility / 20) * 100)
+  revenuePercent    = Math.round((revenue / 50) * 100)
 
   lowestPillar    = pillar with lowest percentage
   strongestPillar = pillar with highest percentage
 
----
 
-RESULT GENERATION
+PUBLIC RESULTS PAGE
+-------------------
 
-Analysis points (exactly 3): priority = lowest pillar → Q13 → Q12 → Q11 → strongest pillar
-Next steps (2–3): priority = Q12 → Q13 → lowest pillar → fallbacks
-Recommended solution + CTA + leadType: based on Q14
+Shows ONLY:
+  • One "Reputation Health Score" out of 100 (single gauge)
+  • Score category
+  • Short intro paragraph (dynamic)
+  • "Your current system" — exactly 3 analysis points
+  • "Recommended next steps" — 2–3 steps
+  • "Recommended solution" + dynamic CTA button
 
----
+Does NOT show publicly:
+  • Trust / Visibility / Revenue scores, percentages, or gauges
+  • Raw pillar calculations
+  • "Conversion" label
+
+Results page copy (static headings):
+  Eyebrow: "Your results are ready"
+  Headline: "Your Reputation Health Score"
+  Gauge label: "Reputation Health Score"
+  Section: "Your current system"
+  Section: "Recommended next steps"
+  Section: "Recommended solution"
+  Footer (if business name provided): "Results prepared for {businessName}"
+
+CTA links to: https://links.screwdrivermarketing.com.au/widget/booking/fndvYKV1tve0cVC5F2iM
+
+
+RESULT INTRO (by total score)
+-----------------------------
+
+>= 80:
+"Your reputation system is already strong. The main opportunity is to make it more consistent, easier to track, and better connected to calls, enquiries, and booked jobs."
+
+>= 60:
+"You already have a decent foundation, but there are still gaps that may be costing you trust, visibility, or enquiries when customers compare you online."
+
+>= 40:
+"There is a clear opportunity to improve how your business turns happy customers into reviews, trust, visibility, and enquiries."
+
+< 40:
+"Your current review process may be too manual, inconsistent, or unclear. That can make it harder for future customers to trust you before they contact you."
+
+Optional Q11 append (added after intro paragraph when Q11 matches):
+
+"We get enough work, but our reviews don't reflect how good we are":
+"The good news is that you likely already have happy customers — the gap is getting that proof to show up online."
+
+"We get enquiries, but customers often compare us with competitors first":
+"When people compare businesses, stronger reviews, better replies, and fresher proof can influence who they contact first."
+
+"We want more consistent calls and booked jobs from Google":
+"Your Google presence can become a stronger enquiry source if it looks active, trusted, and easy to choose."
+
+"We are too busy to manually chase reviews or follow-ups":
+"The system needs to work even when the team is busy, not only when someone remembers."
+
+"We are not sure where our enquiries are coming from":
+"Tracking calls, website visits, and enquiries from your Google profile will make it clearer what is actually working."
+
+
+ANALYSIS POINTS (exactly 3)
+---------------------------
+
+Priority: lowest pillar → Q13 → Q12 → Q11 → strongest pillar → fallback
+Near-duplicate points are skipped (keyword overlap threshold 0.45).
+
+--- LOWEST PILLAR ---
+
+Trust:
+  Title: "Trust may be leaking before customers contact you"
+  Body: "Your business may do great work, but future customers need to see enough proof, reassurance, and professional responses before they feel confident choosing you."
+
+Visibility:
+  Title: "Your happy customers may not be visible enough"
+  Body: "Positive customer experiences are more valuable when they show up clearly on Google, your website, and social media. If they stay hidden, competitors can look more active and trusted."
+
+Revenue:
+  Title: "Completed jobs may not be turning into future enquiries"
+  Body: "Happy customers are one of your best sources of reviews and trust. If there is no consistent follow-up process, good jobs can finish without creating any public proof."
+
+--- Q13 OBSTACLE ---
+
+"We forget to ask when things get busy":
+  Title: "The process depends too much on memory"
+  Body: "When asking for reviews relies on someone remembering, it usually gets missed during busy periods. That means strong customer experiences can disappear without becoming reviews."
+
+"Customers say they will leave a review but don't":
+  Title: "Happy customers often need a reminder"
+  Body: "Many customers intend to leave a review but forget. A simple reminder at the right time can recover reviews that would otherwise be missed."
+
+"We don't have a clear process":
+  Title: "There is no clear review system yet"
+  Body: "Without a repeatable process, review collection becomes inconsistent. The business may only get reviews when someone happens to ask."
+
+"We don't have time to follow up manually":
+  Title: "Manual follow-up is easy to drop"
+  Body: "When the team is busy, manual follow-up usually gets pushed aside. That is why the review process needs to run in the background."
+
+"We're not sure what to say":
+  Title: "The message may be slowing you down"
+  Body: "If the team is unsure what to say, review requests can feel awkward or get delayed. Clear wording makes the process easier and more professional."
+
+--- Q12 OUTCOME ---
+
+"Get more calls and enquiries from Google":
+  Title: "Google should be treated as an enquiry channel"
+  Body: "The goal is not just more reviews. The goal is making your profile look active and trusted enough that more people call, click, or enquire."
+
+"Turn more happy customers into Google reviews":
+  Title: "There may be untapped reviews in your customer base"
+  Body: "If you already have happy customers, the opportunity is to make it easier and more consistent for them to leave a Google review."
+
+"Look more trusted when customers compare us with competitors":
+  Title: "Comparison matters before the first call"
+  Body: "Future customers often compare reviews, replies, photos, and proof before contacting a business. A stronger reputation can help you win trust earlier."
+
+"Save time by automating review requests and follow-ups":
+  Title: "Automation could remove the manual chasing"
+  Body: "A simple automated process can ask at the right time, follow up when needed, and keep working while the business is busy."
+
+"Understand what is costing us trust, visibility, or revenue online":
+  Title: "You need clearer visibility on what is working"
+  Body: "Without tracking and diagnosis, it is hard to know whether your Google profile, reviews, website, or follow-up process is costing you enquiries."
+
+--- Q11 SITUATION ---
+
+"We get enough work, but our reviews don't reflect how good we are":
+  Title: "Your reputation may not reflect your real quality"
+  Body: "If the business already does good work, the main issue may be that enough of that proof is not showing up publicly."
+
+"We get enquiries, but customers often compare us with competitors first":
+  Title: "Competitors may be winning the trust battle"
+  Body: "When customers compare options, the business with stronger visible proof can feel like the safer choice."
+
+"We want more consistent calls and booked jobs from Google":
+  Title: "Your Google profile could work harder"
+  Body: "Reviews, replies, recent activity, and tracking can all help turn your Google profile into a more reliable source of calls and enquiries."
+
+"We are too busy to manually chase reviews or follow-ups":
+  Title: "The system needs to survive busy periods"
+  Body: "A good review process should not stop when the business gets busy. It should keep working without adding more admin."
+
+"We are not sure where our enquiries are coming from":
+  Title: "Attribution is currently unclear"
+  Body: "If you are not sure where enquiries come from, it is harder to know which parts of your online presence are producing results."
+
+--- STRONGEST PILLAR (if different from lowest) ---
+
+Trust:
+  Title: "You already have some trust-building habits"
+  Body: "Some parts of your review and response process are already helping customers feel more confident. The next step is making that more consistent."
+
+Visibility:
+  Title: "You already have some visible proof"
+  Body: "Some customer feedback is already being used publicly. The opportunity is to make that proof fresher, clearer, and more consistent."
+
+Revenue:
+  Title: "You already have part of the follow-up process working"
+  Body: "There are signs that completed jobs are sometimes being turned into review opportunities. The next step is making that process more reliable."
+
+--- FALLBACK ANALYSIS POINTS ---
+
+  Title: "Reviews may not be happening consistently"
+  Body: "Without a repeatable process, review collection often depends on who remembers to ask and when."
+
+  Title: "Your Google presence could be stronger"
+  Body: "Active reviews, replies, and visible proof help future customers feel confident before they call."
+
+  Title: "There may be untapped proof in past jobs"
+  Body: "Happy customers from completed work can still be turned into reviews and online trust with the right follow-up."
+
+
+NEXT STEPS (2–3)
+----------------
+
+Priority: Q12 → Q13 → lowest pillar → fallback
+Near-duplicate steps are skipped (keyword overlap threshold 0.45).
+
+--- Q12 ---
+
+"Get more calls and enquiries from Google":
+"Improve your Google Business Profile so it looks more active and trusted, then track calls, website visits, and enquiries."
+
+"Turn more happy customers into Google reviews":
+"Start with a review reactivation campaign using past happy customers, then request reviews automatically after future jobs."
+
+"Look more trusted when customers compare us with competitors":
+"Improve the proof customers see before contacting you: recent reviews, professional replies, strong website proof, and visible customer feedback."
+
+"Save time by automating review requests and follow-ups":
+"Set up automated SMS/email review requests and reminders so the process keeps running without manual chasing."
+
+"Understand what is costing us trust, visibility, or revenue online":
+"Run a reputation audit to find where reviews, replies, Google visibility, website proof, or tracking may be costing you enquiries."
+
+--- Q13 ---
+
+"We forget to ask when things get busy":
+"Create a simple trigger so every completed job gets a review request without relying on memory."
+
+"Customers say they will leave a review but don't":
+"Add one polite reminder for customers who said they were happy but did not leave a review."
+
+"We don't have a clear process":
+"Create a clear review request process with timing, message templates, follow-up rules, and ownership."
+
+"We don't have time to follow up manually":
+"Remove manual follow-up by automating the request and reminder sequence."
+
+"We're not sure what to say":
+"Use simple review request templates so the message feels professional, natural, and easy to send."
+
+--- LOWEST PILLAR ---
+
+Trust:
+"Reply to reviews in a way that reassures future customers, answers doubts, and shows the business is professional."
+
+Visibility:
+"Turn strong reviews and customer feedback into visible proof on your website, social media, and Google profile."
+
+Revenue:
+"Build a repeatable system that turns completed jobs into reviews, trust, and future enquiries."
+
+--- FALLBACK NEXT STEPS ---
+
+"Review your past customer list and identify happy customers who could be asked for a genuine review."
+"Make your Google review link easy to access and include it in follow-up messages."
+"Check your Google Business Profile performance so you know whether it is generating calls, website visits, and enquiries."
+
+
+RECOMMENDED SOLUTION (by Q14)
+-----------------------------
+
+"An automated system that handles review requests and follow-ups automatically":
+  Solution: "Based on your answers, the best fit is an automated review system. This would help you request reviews after completed jobs, send reminders to happy customers, and create a more consistent process without relying on manual follow-up."
+  CTA: "Claim Your Free Setup"
+  Lead type: "Hot — Wants Automation"
+
+"Guidance, templates, and a clear process we can follow ourselves":
+  Solution: "Based on your answers, the best fit is a clear review growth process with templates and guidance. This would give your team a simple way to ask for reviews, follow up professionally, and use positive feedback as proof."
+  CTA: "Get The Review Growth Plan"
+  Lead type: "Warm — Wants DIY Process"
+
+"A one-off audit so we can understand the opportunity first":
+  Solution: "Based on your answers, the best fit is a one-off reputation audit. This would show where your Google profile, reviews, replies, and online proof may be costing you trust, visibility, or enquiries."
+  CTA: "Book A Quick Reputation Review"
+  Lead type: "Warm — Wants Audit First"
+
+"Not sure yet — we'd like to see what would make the biggest difference":
+  Solution: "Based on your answers, the best fit is a quick review of your current reputation system. This will help identify the biggest opportunity before deciding whether automation, templates, or an audit makes the most sense."
+  CTA: "Show Me What's Missing"
+  Lead type: "Nurture — Needs Diagnosis"
+
+Default (if Q14 missing): same as "Not sure yet" option above.
+
 
 GHL WEBHOOK PAYLOAD (POST /api/submit-quiz)
+-------------------------------------------
 
-Contact: firstName, businessName, email, phone, role, suburb
+Contact:
+  firstName, businessName, email, phone, role, suburb
 
-Public score: totalScore, scoreCategory
+Public score:
+  totalScore, scoreCategory
 
-Internal scores: trustScore, visibilityScore, revenueScore,
-  trustPercent, visibilityPercent, revenuePercent,
+Internal scores (for segmentation, not shown to user):
+  trustScore, visibilityScore, revenueScore
+  trustPercent, visibilityPercent, revenuePercent
   lowestPillar, strongestPillar
 
-Dynamic results: resultIntro, analysisPoints, nextSteps,
+Dynamic results:
+  resultIntro, analysisPoints, nextSteps
   recommendedSolution, recommendedCTA
 
-Situation: currentSituation, desiredOutcome, biggestObstacle,
+Situation fields:
+  currentSituation, desiredOutcome, biggestObstacle
   solutionPreference, extraNotes
 
-Lead: leadType, timestamp, source
+Lead management:
+  leadType, timestamp, source ("Reputation Health Check Quiz")
 
-Answer labels: q1–q15 (Q15 = open text)
+Answer labels:
+  q1, q2, q3, q4, q5, q6, q7, q8, q9, q10
+  q11, q12, q13, q14, q15 (Q15 = open text)
 
----
 
-FILES
+TRACKING
+--------
+
+Meta Pixel Lead event fires on quiz completion (QuizForm.tsx):
+  content_name: "Reputation Health Check"
+  content_category: "Free Audit / Enquiry"
+
+
+SOURCE FILES
+------------
 
 src/lib/quiz-questions.ts
 src/lib/quiz-scoring.ts
@@ -129,3 +478,4 @@ src/lib/result-generator.ts
 src/components/landing/QuizForm.tsx
 src/components/landing/ResultsSection.tsx
 src/pages/api/submit-quiz.ts
+src/pages/api/visitor-location.ts

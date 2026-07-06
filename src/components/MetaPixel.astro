@@ -6,7 +6,8 @@
  * Override via .env: PUBLIC_META_PIXEL_ID=1345042127603466
  *
  * Installed in <head> via Layout.astro and LandingLayout.astro (every page).
- * ViewContent → /landing | Lead → /landing/thank-you
+ * PageView fires once per page load. ViewContent, quiz funnel events, and Lead
+ * are tracked via src/lib/meta-pixel.ts in landing/quiz React components.
  */
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID || "1345042127603466";
 ---

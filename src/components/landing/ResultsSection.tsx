@@ -1,8 +1,6 @@
 import ScoreGauge from "./ScoreGauge";
 import type { QuizResults } from "../../lib/quiz-types";
-
-const BOOKING_URL =
-  "https://links.screwdrivermarketing.com.au/widget/booking/fndvYKV1tve0cVC5F2iM";
+import { BOOKING_URL, trackMeetingClicked } from "../../lib/booking";
 
 interface ResultsSectionProps {
   results: QuizResults;
@@ -67,6 +65,7 @@ export default function ResultsSection({ results, businessName }: ResultsSection
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackMeetingClicked(results.recommendedCTA)}
             className="inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
           >
             {results.recommendedCTA}

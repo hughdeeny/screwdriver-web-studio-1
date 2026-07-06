@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BrandLogo from "./BrandLogo";
 import { QuizSection } from "./QuizForm";
+import MetaViewContentTracker from "./MetaViewContentTracker";
 import ValuePropositionSection from "./ValuePropositionSection";
 import RecommendedSolution from "./RecommendedSolution";
 import HowItWorks from "./HowItWorks";
@@ -12,6 +13,7 @@ export default function QuizPage() {
 
   return (
     <>
+      <MetaViewContentTracker />
       <header className="mx-auto flex max-w-4xl items-center justify-between px-5 py-5 sm:px-8">
         <BrandLogo href="/landing" />
         <a href="#contact" className="text-sm font-medium text-muted transition hover:text-navy">

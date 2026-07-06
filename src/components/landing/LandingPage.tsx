@@ -1,9 +1,11 @@
 import HeroSection from "./HeroSection";
 import Footer from "./Footer";
+import MetaViewContentTracker from "./MetaViewContentTracker";
 
 export default function LandingPage() {
   return (
     <>
+      <MetaViewContentTracker />
       <HeroSection />
       <section className="border-t border-border bg-card py-12 sm:py-14">
         <div className="mx-auto max-w-2xl px-5 text-center sm:px-8">

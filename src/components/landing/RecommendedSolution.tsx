@@ -1,5 +1,4 @@
-const BOOKING_URL =
-  "https://links.screwdrivermarketing.com.au/widget/booking/fndvYKV1tve0cVC5F2iM";
+import { BOOKING_URL, trackMeetingClicked } from "../../lib/booking";
 
 const components = [
   {
@@ -58,6 +57,7 @@ export default function RecommendedSolution() {
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackMeetingClicked("Claim Free Setup")}
             className="inline-block w-full rounded-xl bg-accent-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto"
           >
             Claim Free Setup
