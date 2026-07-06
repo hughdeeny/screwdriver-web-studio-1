@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload, isWebhookContactValid, normalizeContact } from "../../lib/result-generator";
 import { postQuizWebhook } from "../../lib/submit-quiz-client";
@@ -20,7 +20,6 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
-const AUTO_ADVANCE_MS = 3000;
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
@@ -54,16 +53,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
   const [results, setResults] = useState<QuizResults | null>(null);
-  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearAdvanceTimer = useCallback(() => {
-    if (advanceTimerRef.current) {
-      clearTimeout(advanceTimerRef.current);
-      advanceTimerRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => () => clearAdvanceTimer(), [clearAdvanceTimer]);
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -91,21 +80,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     return "results";
   };
 
-  const scheduleAutoAdvance = useCallback(
-    (advance: () => void) => {
-      clearAdvanceTimer();
-      advanceTimerRef.current = window.setTimeout(() => {
-        advanceTimerRef.current = null;
-        advance();
-      }, AUTO_ADVANCE_MS);
-    },
-    [clearAdvanceTimer],
-  );
-
-  const updateContact = (field: keyof ContactDetails, value: string) => {
-    setContact((prev) => ({ ...prev, [field]: value }));
-  };
-
   const advanceScoredQuestion = useCallback(() => {
     if (scoredIndex < SCORED_QUESTIONS.length - 1) {
       setScoredIndex((i) => i + 1);
@@ -128,6 +102,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     scrollToContainer();
   }, [situationIndex, scrollToContainer]);
 
+  const updateContact = (field: keyof ContactDetails, value: string) => {
+    setContact((prev) => ({ ...prev, [field]: value }));
+  };
+
   const selectAnswer = (questionId: keyof QuizAnswers, optionIndex: number, score?: number) => {
     if (score !== undefined) {
       trackMetaCustomEventOnce(META_STORAGE_KEYS.quizStarted, "QuizStarted", {
@@ -142,9 +120,9 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     }));
 
     if (score !== undefined) {
-      scheduleAutoAdvance(advanceScoredQuestion);
+      advanceScoredQuestion();
     } else if (questionId !== "q15") {
-      scheduleAutoAdvance(advanceSituationQuestion);
+      advanceSituationQuestion();
     }
   };
 
@@ -179,21 +157,12 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const handleContactBack = () => {
-    clearAdvanceTimer();
     setPhase("situation");
     setSituationIndex(SITUATION_STEP_COUNT - 1);
     scrollToContainer();
   };
 
-  const handleScoredNext = () => {
-    clearAdvanceTimer();
-    const current = SCORED_QUESTIONS[scoredIndex];
-    if (answers[current.id] === null) return;
-    advanceScoredQuestion();
-  };
-
   const handleScoredBack = () => {
-    clearAdvanceTimer();
     if (scoredIndex > 0) {
       setScoredIndex((i) => i - 1);
       scrollToContainer();
@@ -203,16 +172,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const isOnOpenQuestion = situationIndex === SITUATION_QUESTIONS.length;
 
   const handleSituationNext = () => {
-    clearAdvanceTimer();
-    if (!isOnOpenQuestion) {
-      const current = SITUATION_QUESTIONS[situationIndex];
-      if (answers[current.id] === null) return;
-    }
     advanceSituationQuestion();
   };
 
   const handleSituationBack = () => {
-    clearAdvanceTimer();
     if (situationIndex > 0) {
       setSituationIndex((i) => i - 1);
       scrollToContainer();
@@ -348,7 +311,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               disabled={!isContactValid() || submitting}
               className="flex-1 rounded-xl bg-accent px-6 py-4 text-lg font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {submitting ? "Saving your results..." : "See My Results"}
+              {submitting ? "Calculating your results..." : "See My Results"}
             </button>
           </div>
           {submitError && (
@@ -388,8 +351,8 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               );
             })}
           </div>
-          <div className="mt-8 flex gap-3">
-            {scoredIndex > 0 ? (
+          {scoredIndex > 0 && (
+            <div className="mt-8">
               <button
                 type="button"
                 onClick={handleScoredBack}
@@ -397,18 +360,8 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               >
                 Back
               </button>
-            ) : (
-              <div className="hidden sm:block sm:w-[88px]" aria-hidden="true" />
-            )}
-            <button
-              type="button"
-              onClick={handleScoredNext}
-              disabled={answers[currentScored.id] === null}
-              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Continue
-            </button>
-          </div>
+            </div>
+          )}
         </div>
         </QuizStepPanel>
       )}
@@ -477,21 +430,13 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               );
             })}
           </div>
-          <div className="mt-8 flex gap-3">
+          <div className="mt-8">
             <button
               type="button"
               onClick={handleSituationBack}
               className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
             >
               Back
-            </button>
-            <button
-              type="button"
-              onClick={handleSituationNext}
-              disabled={answers[currentSituation.id] === null}
-              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Continue
             </button>
           </div>
         </div>
