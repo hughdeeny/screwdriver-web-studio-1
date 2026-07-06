@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload } from "../../lib/result-generator";
 import {
@@ -19,6 +19,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
+const AUTO_ADVANCE_MS = 4500;
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
@@ -51,6 +52,16 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
   const [results, setResults] = useState<QuizResults | null>(null);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearAdvanceTimer = useCallback(() => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => clearAdvanceTimer(), [clearAdvanceTimer]);
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -78,9 +89,42 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     return "results";
   };
 
+  const scheduleAutoAdvance = useCallback(
+    (advance: () => void) => {
+      clearAdvanceTimer();
+      advanceTimerRef.current = window.setTimeout(() => {
+        advanceTimerRef.current = null;
+        advance();
+      }, AUTO_ADVANCE_MS);
+    },
+    [clearAdvanceTimer],
+  );
+
   const updateContact = (field: keyof ContactDetails, value: string) => {
     setContact((prev) => ({ ...prev, [field]: value }));
   };
+
+  const advanceScoredQuestion = useCallback(() => {
+    if (scoredIndex < SCORED_QUESTIONS.length - 1) {
+      setScoredIndex((i) => i + 1);
+    } else {
+      setPhase("situation");
+      setSituationIndex(0);
+    }
+    scrollToContainer();
+  }, [scoredIndex, scrollToContainer]);
+
+  const advanceSituationQuestion = useCallback(() => {
+    if (situationIndex < SITUATION_STEP_COUNT - 1) {
+      setSituationIndex((i) => i + 1);
+    } else {
+      trackMetaCustomEventOnce(META_STORAGE_KEYS.section2Complete, "Section2Complete", {
+        ...META_QUIZ_CONTENT,
+      });
+      setPhase("contact");
+    }
+    scrollToContainer();
+  }, [situationIndex, scrollToContainer]);
 
   const selectAnswer = (questionId: keyof QuizAnswers, optionIndex: number, score?: number) => {
     if (score !== undefined) {
@@ -94,6 +138,12 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       ...prev,
       [questionId]: score !== undefined ? score : optionIndex,
     }));
+
+    if (score !== undefined) {
+      scheduleAutoAdvance(advanceScoredQuestion);
+    } else if (questionId !== "q15") {
+      scheduleAutoAdvance(advanceSituationQuestion);
+    }
   };
 
   const updateOpenAnswer = (value: string) => {
@@ -112,25 +162,21 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const handleContactBack = () => {
+    clearAdvanceTimer();
     setPhase("situation");
     setSituationIndex(SITUATION_STEP_COUNT - 1);
     scrollToContainer();
   };
 
   const handleScoredNext = () => {
+    clearAdvanceTimer();
     const current = SCORED_QUESTIONS[scoredIndex];
     if (answers[current.id] === null) return;
-
-    if (scoredIndex < SCORED_QUESTIONS.length - 1) {
-      setScoredIndex((i) => i + 1);
-    } else {
-      setPhase("situation");
-      setSituationIndex(0);
-    }
-    scrollToContainer();
+    advanceScoredQuestion();
   };
 
   const handleScoredBack = () => {
+    clearAdvanceTimer();
     if (scoredIndex > 0) {
       setScoredIndex((i) => i - 1);
       scrollToContainer();
@@ -140,23 +186,16 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const isOnOpenQuestion = situationIndex === SITUATION_QUESTIONS.length;
 
   const handleSituationNext = () => {
+    clearAdvanceTimer();
     if (!isOnOpenQuestion) {
       const current = SITUATION_QUESTIONS[situationIndex];
       if (answers[current.id] === null) return;
     }
-
-    if (situationIndex < SITUATION_STEP_COUNT - 1) {
-      setSituationIndex((i) => i + 1);
-    } else {
-      trackMetaCustomEventOnce(META_STORAGE_KEYS.section2Complete, "Section2Complete", {
-        ...META_QUIZ_CONTENT,
-      });
-      setPhase("contact");
-    }
-    scrollToContainer();
+    advanceSituationQuestion();
   };
 
   const handleSituationBack = () => {
+    clearAdvanceTimer();
     if (situationIndex > 0) {
       setSituationIndex((i) => i - 1);
       scrollToContainer();
