@@ -43,8 +43,6 @@ const Q11_APPEND: Record<string, string> = {
     "The good news is that you likely already have happy customers — the gap is getting that proof to show up online.",
   "We get enquiries, but customers often compare us with competitors first":
     "When people compare businesses, stronger reviews, better replies, and fresher proof can influence who they contact first.",
-  "We want more consistent calls and booked jobs from Google":
-    "Your Google presence can become a stronger enquiry source if it looks active, trusted, and easy to choose.",
   "We are too busy to manually chase reviews or follow-ups":
     "The system needs to work even when the team is busy, not only when someone remembers.",
   "We are not sure where our enquiries are coming from":
@@ -56,12 +54,9 @@ function buildResultIntro(total: number, q11Label: string): string {
   if (total >= 80) {
     intro =
       "Your reputation system is already strong. The main opportunity is to make it more consistent, easier to track, and better connected to calls, enquiries, and booked jobs.";
-  } else if (total >= 60) {
-    intro =
-      "You already have a decent foundation, but there are still gaps that may be costing you trust, visibility, or enquiries when customers compare you online.";
   } else if (total >= 40) {
     intro =
-      "There is a clear opportunity to improve how your business turns happy customers into reviews, trust, visibility, and enquiries.";
+      "You already have a decent foundation, but there are still gaps that may be costing you trust, visibility, or enquiries when customers compare you online.";
   } else {
     intro =
       "Your current review process may be too manual, inconsistent, or unclear. That can make it harder for future customers to trust you before they contact you.";
