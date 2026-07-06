@@ -8,10 +8,15 @@ export const POST: APIRoute = async ({ request }) => {
     const webhookUrl = import.meta.env.GHL_WEBHOOK_URL;
 
     if (!webhookUrl) {
-      return new Response(JSON.stringify({ ok: true, webhook: "skipped" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
+      console.error("GHL_WEBHOOK_URL is not set — quiz webhook skipped");
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          webhook: "skipped",
+          error: "GHL webhook URL not configured",
+        }),
+        { status: 503, headers: { "Content-Type": "application/json" } },
+      );
     }
 
     const response = await fetch(webhookUrl, {
@@ -21,18 +26,34 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     if (!response.ok) {
-      console.error("GHL webhook failed:", response.status, await response.text());
+      const errorText = await response.text();
+      console.error("GHL webhook failed:", response.status, errorText);
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          webhook: "failed",
+          ghlStatus: response.status,
+          error: "GHL webhook rejected the payload",
+        }),
+        { status: 502, headers: { "Content-Type": "application/json" } },
+      );
     }
 
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log("GHL webhook sent successfully:", response.status);
+
+    return new Response(
+      JSON.stringify({ ok: true, webhook: "sent", ghlStatus: response.status }),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   } catch (error) {
     console.error("Quiz submission error:", error);
-    return new Response(JSON.stringify({ ok: true, webhook: "failed" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        webhook: "failed",
+        error: "Server error while sending webhook",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
   }
 };

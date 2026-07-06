@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload, isWebhookContactValid, normalizeContact } from "../../lib/result-generator";
+import { postQuizWebhook } from "../../lib/submit-quiz-client";
 import {
   META_QUIZ_CONTENT,
   META_STORAGE_KEYS,
@@ -41,6 +42,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   const [scoredIndex, setScoredIndex] = useState(0);
   const [situationIndex, setSituationIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [contact, setContact] = useState<ContactDetails>({
     firstName: "",
@@ -165,8 +167,12 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(null);
     const contactData = collectContactFromForm(e.currentTarget);
-    if (!isContactValid(contactData)) return;
+    if (!isContactValid(contactData)) {
+      setSubmitError("Please fill in your first name, business name, email, and phone.");
+      return;
+    }
 
     setContact(contactData);
     await submitQuiz(contactData);
@@ -219,6 +225,14 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const submitQuiz = async (contactData: ContactDetails) => {
     setSubmitting(true);
+    setSubmitError(null);
+
+    if (!isWebhookContactValid(contactData)) {
+      setSubmitting(false);
+      setSubmitError("Please fill in your first name, business name, email, and phone.");
+      return;
+    }
+
     const submission = buildSubmission(contactData, answers);
 
     let suburb = "";
@@ -230,36 +244,25 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       /* suburb detection is optional */
     }
 
+    const payload = buildWebhookPayload(contactData, answers, suburb);
+    const result = await postQuizWebhook(payload);
+
+    if (!result.ok || result.webhook !== "sent") {
+      setSubmitting(false);
+      setSubmitError(
+        result.webhook === "skipped"
+          ? "We could not save your details — server configuration issue. Please try again shortly or contact us directly."
+          : "We could not save your details. Please check your connection and tap See My Results again.",
+      );
+      return;
+    }
+
     setResults(submission.results);
     setPhase("results");
     onComplete?.();
     scrollToContainer();
-
-    if (!isWebhookContactValid(contactData)) {
-      setSubmitting(false);
-      return;
-    }
-
-    const payload = buildWebhookPayload(contactData, answers, suburb);
-    console.log("Webhook payload:", payload);
-
-    try {
-      const response = await fetch("/api/submit-quiz", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      console.log("Webhook response:", response.status);
-
-      if (response.ok) {
-        trackMetaEvent("Lead", META_QUIZ_CONTENT);
-      }
-    } catch {
-      // Results still shown even if webhook fails
-    } finally {
-      setSubmitting(false);
-    }
+    trackMetaEvent("Lead", META_QUIZ_CONTENT);
+    setSubmitting(false);
   };
 
   const currentScored = SCORED_QUESTIONS[scoredIndex];
@@ -345,9 +348,14 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               disabled={!isContactValid() || submitting}
               className="flex-1 rounded-xl bg-accent px-6 py-4 text-lg font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {submitting ? "Calculating..." : "See My Results"}
+              {submitting ? "Saving your results..." : "See My Results"}
             </button>
           </div>
+          {submitError && (
+            <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+              {submitError}
+            </p>
+          )}
         </form>
         </QuizStepPanel>
       )}
