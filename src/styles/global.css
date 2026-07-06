@@ -182,8 +182,7 @@ button:focus-visible {
   .animate-float-orb-delayed,
   .animate-shimmer,
   .hero-animate > *,
-  .quiz-step-enter,
-  .quiz-saved-flash {
+  .quiz-step-enter {
     animation: none !important;
   }
   .hero-animate > * {
@@ -203,31 +202,8 @@ button:focus-visible {
   }
 }
 
-@keyframes quiz-saved-flash {
-  0% {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  15% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  85% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-}
-
 .quiz-step-enter {
   animation: quiz-step-enter 0.4s ease-out;
-}
-
-.quiz-saved-flash {
-  animation: quiz-saved-flash 0.7s ease-out;
 }
 
 .glass {

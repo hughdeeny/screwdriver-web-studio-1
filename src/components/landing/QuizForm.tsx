@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
 import { buildSubmission, buildWebhookPayload } from "../../lib/result-generator";
 import {
@@ -19,24 +19,8 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
-const AUTO_ADVANCE_MS = 550;
 
 type Phase = "contact" | "scored" | "situation" | "results";
-
-function QuestionProgressDots({ current, total }: { current: number; total: number }) {
-  return (
-    <div className="mt-3 flex justify-center gap-1.5" aria-hidden="true">
-      {Array.from({ length: total }, (_, i) => (
-        <span
-          key={i}
-          className={`h-1.5 rounded-full transition-all duration-300 ${
-            i <= current ? "w-4 bg-accent" : "w-1.5 bg-border"
-          }`}
-        />
-      ))}
-    </div>
-  );
-}
 
 function QuizStepPanel({ stepKey, children }: { stepKey: string; children: React.ReactNode }) {
   return (
@@ -67,18 +51,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const [answers, setAnswers] = useState<QuizAnswers>(EMPTY_ANSWERS);
   const [results, setResults] = useState<QuizResults | null>(null);
-  const [savedFlash, setSavedFlash] = useState(false);
-  const [isAdvancing, setIsAdvancing] = useState(false);
-  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearAdvanceTimer = useCallback(() => {
-    if (advanceTimerRef.current) {
-      clearTimeout(advanceTimerRef.current);
-      advanceTimerRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => () => clearAdvanceTimer(), [clearAdvanceTimer]);
 
   const scrollToContainer = useCallback(() => {
     setTimeout(() => {
@@ -106,27 +78,22 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     return "results";
   };
 
-  const flashSaved = useCallback(() => {
-    setSavedFlash(true);
-    window.setTimeout(() => setSavedFlash(false), 700);
-  }, []);
-
-  const scheduleAutoAdvance = useCallback(
-    (advance: () => void) => {
-      clearAdvanceTimer();
-      advanceTimerRef.current = window.setTimeout(() => {
-        advanceTimerRef.current = null;
-        setIsAdvancing(true);
-        advance();
-        scrollToContainer();
-        window.setTimeout(() => setIsAdvancing(false), 200);
-      }, AUTO_ADVANCE_MS);
-    },
-    [clearAdvanceTimer, scrollToContainer],
-  );
-
   const updateContact = (field: keyof ContactDetails, value: string) => {
     setContact((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const selectAnswer = (questionId: keyof QuizAnswers, optionIndex: number, score?: number) => {
+    if (score !== undefined) {
+      trackMetaCustomEventOnce(META_STORAGE_KEYS.quizStarted, "QuizStarted", {
+        ...META_QUIZ_CONTENT,
+        question_id: questionId,
+      });
+    }
+
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: score !== undefined ? score : optionIndex,
+    }));
   };
 
   const updateOpenAnswer = (value: string) => {
@@ -145,30 +112,25 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   };
 
   const handleContactBack = () => {
-    clearAdvanceTimer();
     setPhase("situation");
     setSituationIndex(SITUATION_STEP_COUNT - 1);
     scrollToContainer();
   };
 
-  const advanceScoredQuestion = useCallback(() => {
+  const handleScoredNext = () => {
+    const current = SCORED_QUESTIONS[scoredIndex];
+    if (answers[current.id] === null) return;
+
     if (scoredIndex < SCORED_QUESTIONS.length - 1) {
       setScoredIndex((i) => i + 1);
     } else {
       setPhase("situation");
       setSituationIndex(0);
     }
-  }, [scoredIndex]);
-
-  const handleScoredNext = useCallback(() => {
-    clearAdvanceTimer();
-    const current = SCORED_QUESTIONS[scoredIndex];
-    if (answers[current.id] === null) return;
-    advanceScoredQuestion();
-  }, [advanceScoredQuestion, answers, clearAdvanceTimer, scoredIndex]);
+    scrollToContainer();
+  };
 
   const handleScoredBack = () => {
-    clearAdvanceTimer();
     if (scoredIndex > 0) {
       setScoredIndex((i) => i - 1);
       scrollToContainer();
@@ -177,7 +139,12 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
 
   const isOnOpenQuestion = situationIndex === SITUATION_QUESTIONS.length;
 
-  const advanceSituationQuestion = useCallback(() => {
+  const handleSituationNext = () => {
+    if (!isOnOpenQuestion) {
+      const current = SITUATION_QUESTIONS[situationIndex];
+      if (answers[current.id] === null) return;
+    }
+
     if (situationIndex < SITUATION_STEP_COUNT - 1) {
       setSituationIndex((i) => i + 1);
     } else {
@@ -186,19 +153,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       });
       setPhase("contact");
     }
-  }, [situationIndex]);
-
-  const handleSituationNext = useCallback(() => {
-    clearAdvanceTimer();
-    if (!isOnOpenQuestion) {
-      const current = SITUATION_QUESTIONS[situationIndex];
-      if (answers[current.id] === null) return;
-    }
-    advanceSituationQuestion();
-  }, [advanceSituationQuestion, answers, clearAdvanceTimer, isOnOpenQuestion, situationIndex]);
+    scrollToContainer();
+  };
 
   const handleSituationBack = () => {
-    clearAdvanceTimer();
     if (situationIndex > 0) {
       setSituationIndex((i) => i - 1);
       scrollToContainer();
@@ -207,44 +165,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
       setScoredIndex(SCORED_QUESTIONS.length - 1);
       scrollToContainer();
     }
-  };
-
-  const selectAnswer = (questionId: keyof QuizAnswers, optionIndex: number, score?: number) => {
-    if (score !== undefined) {
-      trackMetaCustomEventOnce(META_STORAGE_KEYS.quizStarted, "QuizStarted", {
-        ...META_QUIZ_CONTENT,
-        question_id: questionId,
-      });
-    }
-
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: score !== undefined ? score : optionIndex,
-    }));
-
-    flashSaved();
-
-    if (score !== undefined) {
-      scheduleAutoAdvance(advanceScoredQuestion);
-    } else if (questionId !== "q15") {
-      scheduleAutoAdvance(advanceSituationQuestion);
-    }
-  };
-
-  const continueScored = () => {
-    clearAdvanceTimer();
-    setIsAdvancing(true);
-    handleScoredNext();
-    scrollToContainer();
-    window.setTimeout(() => setIsAdvancing(false), 200);
-  };
-
-  const continueSituation = () => {
-    clearAdvanceTimer();
-    setIsAdvancing(true);
-    handleSituationNext();
-    scrollToContainer();
-    window.setTimeout(() => setIsAdvancing(false), 200);
   };
 
   const submitQuiz = async () => {
@@ -301,17 +221,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               style={{ width: `${getProgress()}%` }}
             />
           </div>
-          {phase === "scored" && (
-            <QuestionProgressDots current={scoredIndex} total={SCORED_QUESTIONS.length} />
-          )}
-          {phase === "situation" && (
-            <QuestionProgressDots current={situationIndex} total={SITUATION_STEP_COUNT} />
-          )}
-          {savedFlash && (
-            <p className="quiz-saved-flash mt-3 text-center text-sm font-semibold text-accent">
-              Answer saved — next question loading...
-            </p>
-          )}
         </div>
       )}
 
@@ -423,11 +332,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             )}
             <button
               type="button"
-              onClick={continueScored}
-              disabled={answers[currentScored.id] === null || isAdvancing}
+              onClick={handleScoredNext}
+              disabled={answers[currentScored.id] === null}
               className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isAdvancing ? "Next question..." : "Continue"}
+              Continue
             </button>
           </div>
         </div>
@@ -460,11 +369,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             </button>
             <button
               type="button"
-              onClick={continueSituation}
-              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isAdvancing}
+              onClick={handleSituationNext}
+              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
             >
-              {isAdvancing ? "Next question..." : "Continue"}
+              Continue
             </button>
           </div>
         </div>
@@ -509,11 +417,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             </button>
             <button
               type="button"
-              onClick={continueSituation}
-              disabled={answers[currentSituation.id] === null || isAdvancing}
+              onClick={handleSituationNext}
+              disabled={answers[currentSituation.id] === null}
               className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isAdvancing ? "Next question..." : "Continue"}
+              Continue
             </button>
           </div>
         </div>

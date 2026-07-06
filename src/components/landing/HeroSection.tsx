@@ -116,7 +116,7 @@ export default function HeroSection() {
 
         <div className="mx-auto mt-10 max-w-2xl">
           <p className="mb-4 text-lg font-semibold text-navy sm:text-xl">
-            Get your free digital reputation check
+            Start your free digital reputation audit
           </p>
           <a
             href="/landing/quiz"
