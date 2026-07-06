@@ -19,7 +19,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
-const AUTO_ADVANCE_MS = 4500;
+const AUTO_ADVANCE_MS = 3000;
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
