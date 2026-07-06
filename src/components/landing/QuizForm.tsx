@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { OPEN_QUESTION, SCORED_QUESTIONS, SITUATION_QUESTIONS } from "../../lib/quiz-questions";
-import { buildSubmission, buildWebhookPayload } from "../../lib/result-generator";
+import { buildSubmission, buildWebhookPayload, isWebhookContactValid, normalizeContact } from "../../lib/result-generator";
 import {
   META_QUIZ_CONTENT,
   META_STORAGE_KEYS,
@@ -150,15 +150,26 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     setAnswers((prev) => ({ ...prev, q15: value.trim() || null }));
   };
 
-  const isContactValid = () =>
-    contact.firstName.trim() &&
-    contact.email.trim() &&
-    contact.phone.trim();
+  const collectContactFromForm = (form: HTMLFormElement): ContactDetails => {
+    const data = new FormData(form);
+    return normalizeContact({
+      firstName: String(data.get("first_name") ?? ""),
+      businessName: String(data.get("business_name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      phone: String(data.get("phone") ?? ""),
+      role: String(data.get("role") ?? ""),
+    });
+  };
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const isContactValid = (details: ContactDetails = contact) => isWebhookContactValid(details);
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isContactValid()) return;
-    await submitQuiz();
+    const contactData = collectContactFromForm(e.currentTarget);
+    if (!isContactValid(contactData)) return;
+
+    setContact(contactData);
+    await submitQuiz(contactData);
   };
 
   const handleContactBack = () => {
@@ -206,9 +217,9 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     }
   };
 
-  const submitQuiz = async () => {
+  const submitQuiz = async (contactData: ContactDetails) => {
     setSubmitting(true);
-    const submission = buildSubmission(contact, answers);
+    const submission = buildSubmission(contactData, answers);
 
     let suburb = "";
     try {
@@ -224,12 +235,22 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     onComplete?.();
     scrollToContainer();
 
+    if (!isWebhookContactValid(contactData)) {
+      setSubmitting(false);
+      return;
+    }
+
+    const payload = buildWebhookPayload(contactData, answers, suburb);
+    console.log("Webhook payload:", payload);
+
     try {
       const response = await fetch("/api/submit-quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buildWebhookPayload(contact, answers, suburb)),
+        body: JSON.stringify(payload),
       });
+
+      console.log("Webhook response:", response.status);
 
       if (response.ok) {
         trackMetaEvent("Lead", META_QUIZ_CONTENT);
@@ -271,10 +292,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
           </p>
           {(
             [
-              { id: "firstName", label: "First name", type: "text", placeholder: "John", optional: false },
-              { id: "businessName", label: "Business name", type: "text", placeholder: "Smith Plumbing", optional: true },
-              { id: "email", label: "Email", type: "email", placeholder: "john@smithplumbing.com", optional: false },
-              { id: "phone", label: "Phone", type: "tel", placeholder: "0400 000 000", optional: false },
+              { id: "firstName", name: "first_name", label: "First name", type: "text", placeholder: "John", optional: false },
+              { id: "businessName", name: "business_name", label: "Business name", type: "text", placeholder: "Smith Plumbing", optional: false },
+              { id: "email", name: "email", label: "Email", type: "email", placeholder: "john@smithplumbing.com", optional: false },
+              { id: "phone", name: "phone", label: "Phone", type: "tel", placeholder: "0400 000 000", optional: false },
             ] as const
           ).map((field) => (
             <div key={field.id}>
@@ -286,6 +307,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               </label>
               <input
                 id={field.id}
+                name={field.name}
                 type={field.type}
                 required={!field.optional}
                 value={contact[field.id]}
@@ -301,6 +323,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             </label>
             <input
               id="role"
+              name="role"
               type="text"
               value={contact.role}
               onChange={(e) => updateContact("role", e.target.value)}

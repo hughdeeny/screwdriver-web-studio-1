@@ -441,22 +441,46 @@ export function generateResults(answers: QuizAnswers): QuizResults {
   };
 }
 
+export function isWebhookContactValid(contact: ContactDetails): boolean {
+  return Boolean(
+    contact.firstName.trim() &&
+      contact.phone.trim() &&
+      contact.email.trim() &&
+      contact.businessName.trim(),
+  );
+}
+
+export function normalizeContact(contact: ContactDetails): ContactDetails {
+  return {
+    firstName: contact.firstName.trim(),
+    businessName: contact.businessName.trim(),
+    email: contact.email.trim(),
+    phone: contact.phone.trim(),
+    role: contact.role.trim(),
+  };
+}
+
 export function buildWebhookPayload(
   contact: ContactDetails,
   answers: QuizAnswers,
   suburb: string,
 ): Record<string, unknown> {
+  const normalized = normalizeContact(contact);
   const results = generateResults(answers);
   const labels = buildAnswerLabels(answers);
   const { scores } = results;
 
   return {
-    firstName: contact.firstName,
-    businessName: contact.businessName,
-    email: contact.email,
-    phone: contact.phone,
-    role: contact.role,
-    suburb,
+    first_name: normalized.firstName,
+    name: normalized.firstName,
+    firstName: normalized.firstName,
+    email: normalized.email,
+    phone: normalized.phone,
+    business_name: normalized.businessName,
+    businessName: normalized.businessName,
+    company_name: normalized.businessName,
+    role: normalized.role,
+    suburb: suburb.trim(),
 
     totalScore: scores.total,
     scoreCategory: results.scoreCategory,
