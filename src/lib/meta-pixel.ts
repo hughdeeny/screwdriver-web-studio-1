@@ -18,28 +18,43 @@ export const META_STORAGE_KEYS = {
   sandbox: "meta_sandbox",
 } as const;
 
-export function isMetaSandbox(): boolean {
+/** Persist sandbox mode from the URL for the tab session. Does not affect any pixel events. */
+export function captureMetaSandboxMode(): void {
+  if (typeof window === "undefined") return;
+
+  const fromUrl = new URLSearchParams(window.location.search).get("sandbox") === "true";
+  if (!fromUrl) return;
+
+  try {
+    sessionStorage.setItem(META_STORAGE_KEYS.sandbox, "1");
+  } catch {
+    /* sessionStorage unavailable */
+  }
+
+  console.log("Sandbox mode active");
+}
+
+function isMetaLeadSandbox(): boolean {
   if (typeof window === "undefined") return false;
 
   const fromUrl = new URLSearchParams(window.location.search).get("sandbox") === "true";
+  if (fromUrl) return true;
 
   try {
-    if (fromUrl) {
-      sessionStorage.setItem(META_STORAGE_KEYS.sandbox, "1");
-      return true;
-    }
     return sessionStorage.getItem(META_STORAGE_KEYS.sandbox) === "1";
   } catch {
-    return fromUrl;
+    return false;
   }
 }
 
 export function trackMetaLeadEvent(params: MetaParams = {}) {
-  if (isMetaSandbox()) {
-    console.log("Sandbox mode: Meta Lead event skipped");
+  if (isMetaLeadSandbox()) {
+    console.log("Meta Lead event skipped");
     return;
   }
+
   trackMetaEvent("Lead", params);
+  console.log("Meta Lead event fired");
 }
 
 export function trackMetaEvent(eventName: string, params: MetaParams = {}) {
