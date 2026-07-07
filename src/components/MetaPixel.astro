@@ -13,6 +13,19 @@ const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID || "1345042127603466";
 ---
 
 <!-- Meta Pixel Code — ID 1345042127603466 -->
+<script is:inline>
+  (function () {
+    try {
+      var sandbox = new URLSearchParams(location.search).get("sandbox");
+      if (sandbox === "true") {
+        sessionStorage.setItem("meta_sandbox", "1");
+        console.log("Sandbox mode active");
+      } else if (sandbox === "false") {
+        sessionStorage.removeItem("meta_sandbox");
+      }
+    } catch (e) {}
+  })();
+</script>
 <script is:inline define:vars={{ pixelId }}>
   !(function (f, b, e, v, n, t, s) {
     if (f.fbq) return;
