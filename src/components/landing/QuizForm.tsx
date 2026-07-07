@@ -6,7 +6,7 @@ import {
   META_QUIZ_CONTENT,
   META_STORAGE_KEYS,
   trackMetaCustomEventOnce,
-  trackMetaEvent,
+  trackMetaLeadEvent,
 } from "../../lib/meta-pixel";
 import type { ContactDetails, QuizAnswers, QuizResults } from "../../lib/quiz-types";
 import ResultsSection from "./ResultsSection";
@@ -246,7 +246,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     setPhase("results");
     onComplete?.();
     scrollToContainer();
-    trackMetaEvent("Lead", META_QUIZ_CONTENT);
+    trackMetaLeadEvent(META_QUIZ_CONTENT);
     setSubmitting(false);
   };
 

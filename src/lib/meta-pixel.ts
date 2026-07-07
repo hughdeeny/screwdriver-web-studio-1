@@ -12,6 +12,19 @@ function cleanParams(params: MetaParams = {}) {
   );
 }
 
+export function isMetaSandbox(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("sandbox") === "true";
+}
+
+export function trackMetaLeadEvent(params: MetaParams = {}) {
+  if (isMetaSandbox()) {
+    console.log("Sandbox mode: Meta Lead event skipped");
+    return;
+  }
+  trackMetaEvent("Lead", params);
+}
+
 export function trackMetaEvent(eventName: string, params: MetaParams = {}) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") {
     return;
