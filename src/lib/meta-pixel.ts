@@ -12,9 +12,26 @@ function cleanParams(params: MetaParams = {}) {
   );
 }
 
+export const META_STORAGE_KEYS = {
+  viewContent: "meta_viewcontent",
+  quizStarted: "meta_quiz_started",
+  sandbox: "meta_sandbox",
+} as const;
+
 export function isMetaSandbox(): boolean {
   if (typeof window === "undefined") return false;
-  return new URLSearchParams(window.location.search).get("sandbox") === "true";
+
+  const fromUrl = new URLSearchParams(window.location.search).get("sandbox") === "true";
+
+  try {
+    if (fromUrl) {
+      sessionStorage.setItem(META_STORAGE_KEYS.sandbox, "1");
+      return true;
+    }
+    return sessionStorage.getItem(META_STORAGE_KEYS.sandbox) === "1";
+  } catch {
+    return fromUrl;
+  }
 }
 
 export function trackMetaLeadEvent(params: MetaParams = {}) {
@@ -76,9 +93,4 @@ export function trackMetaCustomEventOnce(
 export const META_QUIZ_CONTENT = {
   content_name: "Reputation Health Check",
   content_category: "Free Audit / Enquiry",
-} as const;
-
-export const META_STORAGE_KEYS = {
-  viewContent: "meta_viewcontent",
-  quizStarted: "meta_quiz_started",
 } as const;
