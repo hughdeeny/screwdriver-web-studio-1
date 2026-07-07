@@ -53,7 +53,7 @@ export default function HeroSection() {
       <div className="mx-auto max-w-4xl px-5 pb-16 pt-6 text-center sm:px-8 lg:pb-24 lg:pt-10">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-navy sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
-            Stop Losing Customers To Your Competitors Online
+            Ready To Stop Losing Customers To Your Competitors Online?
           </h1>
 
           <p className="mt-5 text-lg leading-relaxed text-muted">
