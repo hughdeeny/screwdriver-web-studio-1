@@ -19,10 +19,10 @@ const stats = [
       "Reviews are now part of the normal buying process. If your profile has too few reviews, old reviews, or looks unmanaged, customers may lose trust before they ever call.",
   },
   {
-    stat: "65%",
-    headline: "of consumers write a review after being asked",
+    stat: "71%",
+    headline: "of consumers use Google, 49% Facebook, and 45% AI for local recommendations",
     description:
-      "Many happy customers do not leave reviews on their own. A simple review request system helps turn real customer experiences into visible proof.",
+      "So your reviews, replies, and recent activity can decide whether your business feels like the trusted choice. 65% of customers leave a review when asked.",
   },
   {
     stat: "47%",
@@ -53,7 +53,7 @@ export default function HeroSection() {
       <div className="mx-auto max-w-4xl px-5 pb-16 pt-6 text-center sm:px-8 lg:pb-24 lg:pt-10">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-navy sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
-            Are You Ready To Stop Losing Customers To Your Competitors Online?
+            Stop Losing Customers To Your Competitors Online
           </h1>
 
           <p className="mt-5 text-lg leading-relaxed text-muted">
@@ -76,12 +76,6 @@ export default function HeroSection() {
           <h2 className="text-2xl font-bold text-navy sm:text-3xl">
             Why Your Online Reputation Decides Who Gets The Call
           </h2>
-          <p className="mt-4 text-muted leading-relaxed">
-            71% of consumers use Google, 49% use Facebook, and 45% use AI
-            tools for local business recommendations so your reviews, replies, and
-            recent activity can decide whether your business feels like the
-            trusted choice.
-          </p>
 
           <div className="mt-8 grid gap-4 text-left sm:grid-cols-3">
             {stats.map((item) => (
