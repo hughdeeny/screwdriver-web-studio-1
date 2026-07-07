@@ -68,5 +68,4 @@ export const META_QUIZ_CONTENT = {
 export const META_STORAGE_KEYS = {
   viewContent: "meta_viewcontent",
   quizStarted: "meta_quiz_started",
-  section2Complete: "meta_section2_complete",
 } as const;

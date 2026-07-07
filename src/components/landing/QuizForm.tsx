@@ -20,7 +20,7 @@ const EMPTY_ANSWERS: QuizAnswers = {
 };
 
 const STEP_LABELS = ["Reputation health", "Your goals", "Your business"];
-const ANSWER_ADVANCE_MS = 400;
+const ANSWER_ADVANCE_MS = 250;
 
 type Phase = "contact" | "scored" | "situation" | "results";
 
@@ -116,9 +116,6 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
     if (situationIndex < SITUATION_STEP_COUNT - 1) {
       setSituationIndex((i) => i + 1);
     } else {
-      trackMetaCustomEventOnce(META_STORAGE_KEYS.section2Complete, "Section2Complete", {
-        ...META_QUIZ_CONTENT,
-      });
       setPhase("contact");
     }
     scrollToContainer();
