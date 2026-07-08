@@ -2,12 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import LeadFlowVisual from "../components/LeadFlowVisual.astro";
-import ContactForm from "../components/ContactForm.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import {
   STRATEGY_MAIL,
   MISSED_CALL_MAIL,
+  CONTACT_EMAIL,
   serviceCards,
   packages,
   faqs,
@@ -63,7 +63,7 @@ import {
                   Book a free strategy call
                 </TrackedLink>
                 <TrackedLink
-                  href="#audit"
+                  href="#contact"
                   event="audit_request_click"
                   cta="hero_request_audit"
                   class="inline-flex min-h-[52px] items-center justify-center rounded-full border border-[var(--border)] px-8 text-base font-semibold text-cream transition hover:border-accent/50 hover:bg-bg-elevated"
@@ -243,7 +243,7 @@ import {
                     }
                   </ul>
                   <TrackedLink
-                    href="#audit"
+                    href="#contact"
                     event="quote_click"
                     pkg={pkg.name}
                     class:list={[
@@ -341,7 +341,7 @@ import {
                   Book a free strategy call
                 </TrackedLink>
                 <TrackedLink
-                  href="#audit"
+                  href="#contact"
                   event="audit_request_click"
                   cta="footer_request_audit"
                   class="inline-flex min-h-[52px] flex-1 items-center justify-center rounded-full border border-[var(--border)] px-8 text-base font-semibold text-cream transition hover:border-accent/50 hover:bg-bg-deep sm:flex-none"
@@ -351,8 +351,9 @@ import {
               </div>
             </div>
 
-            <div class="mx-auto mt-14 max-w-xl scroll-mt-28 border-t border-[var(--border)] pt-12">
-              <ContactForm />
+            <div class="mx-auto mt-14 max-w-xl scroll-mt-28 border-t border-[var(--border)] pt-12 text-center">
+              <p class="text-sm text-muted">Or email me directly</p>
+              <p class="font-display mt-1 text-xl font-bold text-cream">{CONTACT_EMAIL}</p>
             </div>
           </div>
         </div>
