@@ -27,17 +27,17 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-page py-14 sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <h2 className="text-2xl font-bold text-navy sm:text-3xl">
+    <section id="how-it-works" className="bg-page py-10 sm:py-14 lg:py-20">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
+        <h2 className="text-xl font-bold leading-snug text-navy sm:text-3xl">
           How the system works
         </h2>
 
-        <div className="mt-10 grid gap-6 text-left sm:grid-cols-2">
+        <div className="mt-8 grid gap-4 text-left sm:mt-10 sm:grid-cols-2 sm:gap-6">
           {steps.map((step) => (
             <div
               key={step.number}
-              className="flex gap-4 rounded-xl border border-border bg-card p-6"
+              className="flex gap-3 rounded-xl border border-border bg-card p-4 sm:gap-4 sm:p-6"
             >
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy text-sm font-bold text-white">
                 {step.number}

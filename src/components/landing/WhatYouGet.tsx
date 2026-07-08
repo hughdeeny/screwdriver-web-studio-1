@@ -12,15 +12,15 @@ const items = [
 
 export default function WhatYouGet() {
   return (
-    <section id="what-you-get" className="bg-card py-14 sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <h2 className="text-2xl font-bold text-navy sm:text-3xl">
+    <section id="what-you-get" className="bg-card py-10 sm:py-14 lg:py-20">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
+        <h2 className="text-xl font-bold leading-snug text-navy sm:text-3xl">
           What&apos;s included
         </h2>
 
-        <ul className="mx-auto mt-8 max-w-lg text-left">
+        <ul className="mx-auto mt-6 max-w-lg space-y-3 text-left sm:mt-8">
           {items.map((item) => (
-            <li key={item} className="flex items-start gap-3">
+            <li key={item} className="flex items-start gap-3 text-sm leading-relaxed sm:text-base">
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-green text-xs text-white">
                 ✓
               </span>

@@ -25,21 +25,21 @@ const components = [
 
 export default function RecommendedSolution() {
   return (
-    <section className="bg-navy py-14 text-white sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <h2 className="text-2xl font-bold sm:text-3xl">Your recommended next step</h2>
-        <p className="mx-auto mt-4 max-w-3xl text-white/75 leading-relaxed">
+    <section className="bg-navy py-10 text-white sm:py-14 lg:py-20">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
+        <h2 className="text-xl font-bold leading-snug sm:text-3xl">Your recommended next step</h2>
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">
           Based on your results, the fastest way to improve your reputation
           health is to install a system that collects reviews consistently,
           replies professionally, and turns positive feedback into social proof
           automatically.
         </p>
 
-        <div className="mt-10 grid gap-4 text-left sm:grid-cols-2">
+        <div className="mt-8 grid gap-3 text-left sm:mt-10 sm:grid-cols-2 sm:gap-4">
           {components.map((item, i) => (
             <div
               key={item.title}
-              className="rounded-xl border border-white/10 bg-white/5 p-5"
+              className="rounded-xl border border-white/10 bg-white/5 p-4 sm:p-5"
             >
               <span className="text-sm font-bold text-accent">
                 {i + 1}
@@ -52,13 +52,13 @@ export default function RecommendedSolution() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-8 text-center sm:mt-10">
           <a
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackMeetingClicked("Claim Free Setup")}
-            className="inline-block w-full rounded-xl bg-accent-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-accent-green px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto sm:text-lg"
           >
             Claim Free Setup
           </a>

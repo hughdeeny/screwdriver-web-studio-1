@@ -256,12 +256,12 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
   return (
     <div ref={containerRef}>
       {phase !== "results" && (
-        <div className="mb-8">
-          <div className="flex items-center justify-between text-sm font-medium text-muted">
-            <span>
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col gap-1 text-xs font-medium text-muted sm:flex-row sm:items-center sm:justify-between sm:text-sm">
+            <span className="leading-snug">
               Step {getStepNumber()} of 3: {STEP_LABELS[getStepNumber() - 1]}
             </span>
-            <span>{Math.round(getProgress())}%</span>
+            <span className="shrink-0">{Math.round(getProgress())}%</span>
           </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
             <div
@@ -301,7 +301,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
                 value={contact[field.id]}
                 onChange={(e) => updateContact(field.id, e.target.value)}
                 placeholder={field.placeholder}
-                className="w-full rounded-xl border border-border bg-page px-4 py-3.5 text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                className="w-full rounded-xl border border-border bg-page px-4 py-3.5 text-base text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
               />
             </div>
           ))}
@@ -316,22 +316,22 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               value={contact.role}
               onChange={(e) => updateContact("role", e.target.value)}
               placeholder="Owner, marketing team, other, etc."
-              className="w-full rounded-xl border border-border bg-page px-4 py-3.5 text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+              className="w-full rounded-xl border border-border bg-page px-4 py-3.5 text-base text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
             />
           </div>
-          <div className="mt-8 flex gap-3">
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
             <button
               type="button"
               onClick={handleContactBack}
               disabled={submitting}
-              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               Back
             </button>
             <button
               type="submit"
               disabled={!isContactValid() || submitting}
-              className="flex-1 rounded-xl bg-accent px-6 py-4 text-lg font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-xl bg-accent px-6 py-4 text-base font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50 sm:text-lg"
             >
               {submitting ? "Calculating your results..." : "See My Results"}
             </button>
@@ -351,10 +351,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
           <p className="mb-2 text-sm font-medium text-muted">
             Question {scoredIndex + 1} of {SCORED_QUESTIONS.length}
           </p>
-          <h3 className="text-xl font-bold leading-snug text-navy sm:text-2xl">
+          <h3 className="text-lg font-bold leading-snug text-navy sm:text-2xl">
             {currentScored.question}
           </h3>
-          <div className="mt-6 space-y-3">
+          <div className="mt-5 space-y-2.5 sm:mt-6 sm:space-y-3">
             {currentScored.options.map((option) => {
               const selected = answers[currentScored.id] === option.score;
               return (
@@ -362,7 +362,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
                   key={option.label}
                   type="button"
                   onClick={() => selectAnswer(currentScored.id, 0, option.score)}
-                  className={`w-full rounded-xl border-2 px-5 py-4 text-left text-base font-medium transition ${
+                  className={`inline-flex min-h-12 w-full items-center rounded-xl border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
                     selected
                       ? "border-accent bg-accent/5 text-navy"
                       : "border-border bg-card text-navy hover:border-accent/40 hover:bg-page"
@@ -374,11 +374,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             })}
           </div>
           {scoredIndex > 0 && (
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <button
                 type="button"
                 onClick={handleScoredBack}
-                className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
               >
                 Back
               </button>
@@ -392,7 +392,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
         <QuizStepPanel stepKey={getQuestionStepKey()}>
         <div>
           <p className="mb-2 text-sm font-medium text-muted">Question 15 of 15</p>
-          <h3 className="text-xl font-bold leading-snug text-navy sm:text-2xl">
+          <h3 className="text-lg font-bold leading-snug text-navy sm:text-2xl">
             {OPEN_QUESTION.question}
           </h3>
           <p className="mt-2 text-sm text-muted">Optional</p>
@@ -402,20 +402,20 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             onChange={(e) => updateOpenAnswer(e.target.value)}
             placeholder={OPEN_QUESTION.placeholder}
             rows={4}
-            className="mt-6 w-full rounded-xl border border-border bg-page px-4 py-3.5 text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+            className="mt-5 w-full rounded-xl border border-border bg-page px-4 py-3.5 text-base text-navy outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20 sm:mt-6"
           />
-          <div className="mt-8 flex gap-3">
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
             <button
               type="button"
               onClick={handleSituationBack}
-              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page sm:w-auto"
             >
               Back
             </button>
             <button
               type="button"
               onClick={handleSituationNext}
-              className="flex-1 rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
+              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
             >
               Continue
             </button>
@@ -430,10 +430,10 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
           <p className="mb-2 text-sm font-medium text-muted">
             Question {situationIndex + 11} of 15
           </p>
-          <h3 className="text-xl font-bold leading-snug text-navy sm:text-2xl">
+          <h3 className="text-lg font-bold leading-snug text-navy sm:text-2xl">
             {currentSituation.question}
           </h3>
-          <div className="mt-6 space-y-3">
+          <div className="mt-5 space-y-2.5 sm:mt-6 sm:space-y-3">
             {currentSituation.options.map((option, i) => {
               const selected = answers[currentSituation.id] === i;
               return (
@@ -441,7 +441,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
                   key={option.label}
                   type="button"
                   onClick={() => selectAnswer(currentSituation.id, i)}
-                  className={`w-full rounded-xl border-2 px-5 py-4 text-left text-base font-medium transition ${
+                  className={`inline-flex min-h-12 w-full items-center rounded-xl border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
                     selected
                       ? "border-accent bg-accent/5 text-navy"
                       : "border-border bg-card text-navy hover:border-accent/40 hover:bg-page"
@@ -452,11 +452,11 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               );
             })}
           </div>
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <button
               type="button"
               onClick={handleSituationBack}
-              className="rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
             >
               Back
             </button>
@@ -476,21 +476,21 @@ export function QuizSection({ onComplete }: { onComplete?: () => void }) {
   const [completed, setCompleted] = useState(false);
 
   return (
-    <section id="quiz" className="bg-page py-14 sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 sm:px-8">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-10">
+    <section id="quiz" className="bg-page py-10 sm:py-14 lg:py-20">
+      <div className="mx-auto max-w-4xl px-4 sm:px-8">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-6 md:p-10">
           {!completed && (
             <>
-              <h2 className="text-center text-2xl font-bold text-navy sm:text-3xl">
+              <h2 className="text-center text-xl font-bold leading-snug text-navy sm:text-3xl">
                 Get Your Free Reputation Health Score
               </h2>
-              <p className="mt-3 text-center text-muted">
+              <p className="mt-3 text-center text-sm leading-relaxed text-muted sm:text-base">
                 Answer a few quick questions and get immediate recommendations for
                 improving your online reputation.
               </p>
             </>
           )}
-          <div className={completed ? "" : "mt-8"}>
+          <div className={completed ? "" : "mt-6 sm:mt-8"}>
             <QuizForm
               onComplete={() => {
                 setCompleted(true);

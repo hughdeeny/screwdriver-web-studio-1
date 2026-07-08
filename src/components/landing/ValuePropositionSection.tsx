@@ -21,12 +21,12 @@ const pillars = [
 
 export default function ValuePropositionSection() {
   return (
-    <section className="bg-navy py-14 text-white sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <h2 className="mx-auto max-w-2xl text-2xl font-bold sm:text-3xl">
+    <section className="bg-navy py-10 text-white sm:py-14 lg:py-20">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
+        <h2 className="mx-auto max-w-2xl text-xl font-bold leading-snug sm:text-3xl">
           Make your business look as trusted online as it is in real life.
         </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-white/75 leading-relaxed">
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">
           Screwdriver Marketing helps local service businesses turn happy
           customers into Google reviews, professional review replies, and social
           proof content automatically.
@@ -36,13 +36,13 @@ export default function ValuePropositionSection() {
           The system improves
         </p>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4">
           {pillars.map((pillar) => (
             <div
               key={pillar.title}
-              className={`rounded-xl border p-5 ${pillar.color}`}
+              className={`rounded-xl border p-4 sm:p-5 ${pillar.color}`}
             >
-              <h3 className={`text-lg font-bold ${pillar.titleColor}`}>
+              <h3 className={`text-base font-bold sm:text-lg ${pillar.titleColor}`}>
                 {pillar.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-white/80">

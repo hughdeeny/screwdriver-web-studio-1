@@ -3,8 +3,8 @@ import { CONTACT_EMAIL } from "../../data/site";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="border-t border-border bg-card py-10">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
+    <footer id="contact" className="border-t border-border bg-card py-8 sm:py-10">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between sm:text-left">
           <div className="flex flex-col items-center gap-2 sm:items-start">
             <BrandLogo href="/landing" />
@@ -14,12 +14,18 @@ export default function Footer() {
           </div>
           <div className="text-sm text-muted">
             <p>
-              <a href={`mailto:${CONTACT_EMAIL}`} className="transition hover:text-navy">
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="inline-flex min-h-11 items-center justify-center transition hover:text-navy sm:min-h-0 sm:inline"
+              >
                 {CONTACT_EMAIL}
               </a>
             </p>
             <p className="mt-1">
-              <a href="tel:+61475624247" className="transition hover:text-navy">
+              <a
+                href="tel:+61475624247"
+                className="inline-flex min-h-11 items-center justify-center transition hover:text-navy sm:min-h-0 sm:inline"
+              >
                 +61 475 624 247
               </a>
             </p>
