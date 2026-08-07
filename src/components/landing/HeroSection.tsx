@@ -44,7 +44,7 @@ export default function HeroSection() {
         </nav>
         <a
           href="/landing/quiz"
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-hover sm:hidden"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-none bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-hover sm:hidden"
         >
           Start the quiz
         </a>
@@ -74,7 +74,7 @@ export default function HeroSection() {
           <div className="mt-6 sm:hidden">
             <a
               href="/landing/quiz"
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-accent px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-none bg-accent px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
             >
               Start the quiz
             </a>
@@ -129,7 +129,7 @@ export default function HeroSection() {
           </p>
           <a
             href="/landing/quiz"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-accent px-8 py-4 text-lg font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
+            className="inline-flex min-h-12 items-center justify-center rounded-none bg-accent px-8 py-4 text-lg font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover"
           >
             Start the quiz
           </a>

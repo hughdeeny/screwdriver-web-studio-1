@@ -2,26 +2,13 @@
 import TrackedLink from "./TrackedLink.astro";
 import { STRATEGY_MAIL } from "../data/site";
 
-const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#packages", label: "Packages" },
-  { href: "#proof", label: "Proof" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
-];
+const navLinks: { href: string; label: string }[] = [];
 ---
 
-<header class="sticky top-0 z-50 border-b border-[var(--border)] bg-bg-deep/90 backdrop-blur-md">
+<header class="sticky top-0 z-50 border-b border-[var(--border)] bg-bg-deep">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
-    <a href="#top" class="group flex items-center gap-2">
-      <span
-        class="font-display flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-glow text-lg font-extrabold text-bg-deep shadow-lg shadow-accent/20 transition group-hover:scale-105"
-        aria-hidden="true">S</span
-      >
-      <span class="font-display text-lg font-bold tracking-tight text-cream sm:text-xl">
-        Screwdriver <span class="text-accent">Marketing</span>
-      </span>
+    <a href="#top" class="font-display text-lg font-bold tracking-tight text-cream sm:text-xl">
+      Screwdriver <span class="text-accent">Marketing</span>
     </a>
 
     <nav class="hidden items-center gap-5 text-sm font-medium text-muted lg:flex" aria-label="Primary">
@@ -39,14 +26,14 @@ const navLinks = [
         href={STRATEGY_MAIL}
         event="cta_click"
         cta="header_book_call"
-        class="hidden min-h-[44px] items-center justify-center rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-bg-deep transition hover:bg-accent-glow sm:inline-flex"
+        class="hidden min-h-[44px] items-center justify-center rounded-none bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-glow sm:inline-flex"
       >
-        Book a free strategy call
+        Book a strategy call
       </TrackedLink>
 
       <details class="relative lg:hidden">
         <summary
-          class="flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-full border border-[var(--border)] bg-bg-elevated px-4 py-2 text-sm font-medium text-cream"
+          class="flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-none border border-[var(--border)] bg-bg-elevated px-4 py-2 text-sm font-medium text-cream"
         >
           <span class="sr-only">Open menu</span>
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -60,7 +47,7 @@ const navLinks = [
         >
           {
             navLinks.map((link) => (
-              <a href={link.href} class="block min-h-[44px] rounded-xl px-4 py-3 text-sm hover:bg-white/5">
+              <a href={link.href} class="block min-h-[44px] rounded-xl px-4 py-3 text-sm hover:bg-black/5">
                 {link.label}
               </a>
             ))
@@ -69,9 +56,9 @@ const navLinks = [
             href={STRATEGY_MAIL}
             event="cta_click"
             cta="mobile_nav_book_call"
-            class="mt-1 block min-h-[44px] rounded-xl px-4 py-3 text-sm font-semibold text-accent hover:bg-white/5"
+            class="mt-1 block min-h-[44px] rounded-xl px-4 py-3 text-sm font-semibold text-accent hover:bg-black/5"
           >
-            Book a free strategy call
+            Book a strategy call
           </TrackedLink>
         </div>
       </details>

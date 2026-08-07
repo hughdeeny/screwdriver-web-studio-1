@@ -324,14 +324,14 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               type="button"
               onClick={handleContactBack}
               disabled={submitting}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-none border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               Back
             </button>
             <button
               type="submit"
               disabled={!isContactValid() || submitting}
-              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-xl bg-accent px-6 py-4 text-base font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50 sm:text-lg"
+              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-none bg-accent px-6 py-4 text-base font-bold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50 sm:text-lg"
             >
               {submitting ? "Calculating your results..." : "See My Results"}
             </button>
@@ -362,7 +362,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
                   key={option.label}
                   type="button"
                   onClick={() => selectAnswer(currentScored.id, 0, option.score)}
-                  className={`inline-flex min-h-12 w-full items-center rounded-xl border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
+                  className={`inline-flex min-h-12 w-full items-center rounded-none border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
                     selected
                       ? "border-accent bg-accent/5 text-navy"
                       : "border-border bg-card text-navy hover:border-accent/40 hover:bg-page"
@@ -378,7 +378,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
               <button
                 type="button"
                 onClick={handleScoredBack}
-                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+                className="inline-flex min-h-12 items-center justify-center rounded-none border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
               >
                 Back
               </button>
@@ -408,14 +408,14 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             <button
               type="button"
               onClick={handleSituationBack}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page sm:w-auto"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-none border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page sm:w-auto"
             >
               Back
             </button>
             <button
               type="button"
               onClick={handleSituationNext}
-              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-xl bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
+              className="inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-none bg-accent px-6 py-3.5 font-bold text-white transition hover:bg-accent-hover"
             >
               Continue
             </button>
@@ -441,7 +441,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
                   key={option.label}
                   type="button"
                   onClick={() => selectAnswer(currentSituation.id, i)}
-                  className={`inline-flex min-h-12 w-full items-center rounded-xl border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
+                  className={`inline-flex min-h-12 w-full items-center rounded-none border-2 px-4 py-3.5 text-left text-[0.9375rem] font-medium leading-snug transition sm:px-5 sm:py-4 sm:text-base ${
                     selected
                       ? "border-accent bg-accent/5 text-navy"
                       : "border-border bg-card text-navy hover:border-accent/40 hover:bg-page"
@@ -456,7 +456,7 @@ export default function QuizForm({ onComplete }: QuizFormProps) {
             <button
               type="button"
               onClick={handleSituationBack}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
+              className="inline-flex min-h-12 items-center justify-center rounded-none border border-border px-6 py-3.5 font-semibold text-muted transition hover:bg-page"
             >
               Back
             </button>

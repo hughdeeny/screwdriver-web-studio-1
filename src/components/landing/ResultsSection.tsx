@@ -66,7 +66,7 @@ export default function ResultsSection({ results, businessName }: ResultsSection
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackMeetingClicked(results.recommendedCTA)}
-            className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-accent px-8 py-4 text-base font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover sm:w-auto sm:text-lg"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-none bg-accent px-8 py-4 text-base font-bold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-hover sm:w-auto sm:text-lg"
           >
             {results.recommendedCTA}
           </a>

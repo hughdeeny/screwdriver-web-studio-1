@@ -58,7 +58,7 @@ export default function RecommendedSolution() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackMeetingClicked("Claim Free Setup")}
-            className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-accent-green px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto sm:text-lg"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-none bg-accent-green px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-accent-green-hover sm:w-auto sm:text-lg"
           >
             Claim Free Setup
           </a>

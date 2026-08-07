@@ -1,38 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
-import LeadFlowVisual from "../components/LeadFlowVisual.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import {
-  STRATEGY_MAIL,
-  MISSED_CALL_MAIL,
-  CONTACT_EMAIL,
-  serviceCards,
-  packages,
-  faqs,
-  problemItems,
-  howItWorks,
-  trustPoints,
-  leadRecoveryItems,
-  testimonials,
-  caseStudy,
-} from "../data/site";
+import { STRATEGY_MAIL } from "../data/site";
 ---
 
 <Layout>
   <div class="relative overflow-x-hidden">
-    <div
-      class="pointer-events-none fixed -left-40 top-20 h-[520px] w-[520px] rounded-full bg-accent/10 blur-[120px] animate-float-orb"
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="pointer-events-none fixed -right-32 bottom-0 h-[480px] w-[480px] rounded-full bg-signal/10 blur-[100px] animate-float-orb-delayed"
-      aria-hidden="true"
-    >
-    </div>
-
     <SiteHeader />
 
     <main id="top">
@@ -43,13 +18,18 @@ import {
             <div class="flex flex-col gap-5">
               <h1
                 id="hero-heading"
-                class="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-cream sm:text-5xl lg:text-[3.25rem]"
+                class="font-headline text-4xl font-extrabold leading-[1.08] tracking-tight text-cream sm:text-5xl lg:text-[3.25rem]"
               >
-                More calls. Better leads.{" "}
-                <span class="text-accent">Less wasted time.</span>
+                Marketing that generates revenue
+                <span class="mt-4 block text-2xl font-bold sm:text-3xl lg:text-4xl">
+                  Call now:{" "}
+                  <a href="tel:+61475624247" class="text-accent underline-offset-4 transition hover:underline">
+                    0475 624 247
+                  </a>
+                </span>
               </h1>
               <p class="text-lg leading-relaxed text-muted sm:text-xl">
-                We help Adelaide tradies and service businesses turn Google searches into phone calls, quote requests,
+                We help tradies and service businesses turn Google searches into phone calls, quote requests,
                 and booked jobs with a better website, Google Business Profile setup, lead tracking, and practical
                 follow-up systems.
               </p>
@@ -58,302 +38,25 @@ import {
                   href={STRATEGY_MAIL}
                   event="cta_click"
                   cta="hero_book_strategy_call"
-                  class="inline-flex min-h-[52px] items-center justify-center rounded-full bg-accent px-8 text-base font-bold text-bg-deep shadow-lg shadow-accent/20 transition hover:bg-accent-glow"
+                  class="inline-flex min-h-[52px] items-center justify-center rounded-none bg-accent px-8 text-base font-bold text-white shadow-md shadow-accent/15 transition hover:bg-accent-glow"
                 >
-                  Book a free strategy call
-                </TrackedLink>
-                <TrackedLink
-                  href="#contact"
-                  event="audit_request_click"
-                  cta="hero_request_audit"
-                  class="inline-flex min-h-[52px] items-center justify-center rounded-full border border-[var(--border)] px-8 text-base font-semibold text-cream transition hover:border-accent/50 hover:bg-bg-elevated"
-                >
-                  Request a free website audit
+                  Book a strategy call
                 </TrackedLink>
               </div>
               <p class="text-sm text-muted">
                 For tradies, gardeners, landscapers, cleaners, clinics, and local service businesses.
               </p>
             </div>
-            <LeadFlowVisual />
-          </div>
-        </div>
-      </section>
-
-      <!-- Problem -->
-      <section id="problem" class="relative z-10 scroll-mt-24 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-3xl">
-          <h2 class="font-display text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-            Most local businesses do not need more traffic first — they need to stop losing good leads.
-          </h2>
-          <p class="mt-4 text-lg text-muted">
-            If your website is unclear, your Google profile is disconnected, or you are missing calls and quote
-            requests, you are probably losing customers who were already ready to contact you.
-          </p>
-          <ul class="mt-8 space-y-3 text-cream/90">
-            {
-              problemItems.map((item) => (
-                <li class="flex gap-3">
-                  <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </section>
-
-      <!-- Services -->
-      <section id="services" class="relative z-10 scroll-mt-24 bg-bg-elevated/50 px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-6xl">
-          <div class="max-w-3xl">
-            <h2 class="font-display text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-              A simple local lead system: get found, build trust, make contact easy, and track what matters.
-            </h2>
-            <p class="mt-4 text-lg text-muted">
-              We are not just building a pretty website. We tighten the digital system around your business so local
-              customers can find you, trust you, contact you, and get followed up properly.
-            </p>
-          </div>
-          <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {
-              serviceCards.map((card) => (
-                <article class="glass rounded-2xl p-6">
-                  <h3 class="font-display text-lg font-bold text-cream">{card.title}</h3>
-                  <p class="mt-3 text-sm leading-relaxed text-muted">{card.body}</p>
-                </article>
-              ))
-            }
-          </div>
-        </div>
-      </section>
-
-      <!-- How it works -->
-      <section
-        id="how-it-works"
-        class="relative z-10 scroll-mt-24 border-y border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24"
-      >
-        <div class="mx-auto max-w-6xl">
-          <h2 class="font-display text-center text-3xl font-bold text-cream sm:text-4xl">How it works</h2>
-          <p class="mx-auto mt-3 max-w-2xl text-center text-muted">
-            Four practical steps — diagnose first, then build, track, and improve.
-          </p>
-          <ol class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {
-              howItWorks.map((step, i) => (
-                <li class="glass rounded-2xl p-6">
-                  <span class="font-display text-3xl font-extrabold text-accent/50">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 class="font-display mt-2 text-xl font-bold text-cream">{step.title}</h3>
-                  <p class="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-      </section>
-
-      <!-- Proof -->
-      <section id="proof" class="relative z-10 scroll-mt-24 px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-6xl">
-          <h2 class="font-display text-3xl font-bold text-cream sm:text-4xl">Early proof from local work</h2>
-
-          <article class="glass mt-10 max-w-3xl rounded-2xl p-6 sm:p-8">
-            <p class="text-xs font-semibold uppercase tracking-widest text-accent">Case study</p>
-            <h3 class="font-display mt-2 text-2xl font-bold text-cream">{caseStudy.title}</h3>
-            <p class="mt-4 leading-relaxed text-muted">{caseStudy.body}</p>
-          </article>
-
-          <div class="mt-10 grid gap-6 md:grid-cols-2">
-            {
-              testimonials.map((t) => (
-                <blockquote class="glass rounded-2xl p-6 sm:p-8">
-                  <p class="leading-relaxed text-cream/90">&ldquo;{t.quote}&rdquo;</p>
-                </blockquote>
-              ))
-            }
-          </div>
-        </div>
-      </section>
-
-      <!-- Trust -->
-      <section id="trust" class="relative z-10 scroll-mt-24 bg-bg-elevated/50 px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-6xl lg:grid lg:grid-cols-2 lg:gap-12 lg:items-start">
-          <div>
-            <h2 class="font-display text-3xl font-bold text-cream sm:text-4xl">
-              Built for busy local operators, not marketing departments.
-            </h2>
-            <p class="mt-4 text-lg text-muted">
-              Most small businesses do not need complicated marketing software. They need a clear website, a trustworthy
-              Google presence, simple lead capture, faster follow-up, and reporting that makes sense.
-            </p>
-          </div>
-          <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-0">
-            {
-              trustPoints.map((point) => (
-                <li class="flex gap-3 rounded-xl border border-[var(--border)] bg-bg-deep px-4 py-3 text-sm text-cream/90">
-                  <span class="text-accent" aria-hidden="true">✓</span>
-                  {point}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </section>
-
-      <!-- Packages -->
-      <section
-        id="packages"
-        class="relative z-10 scroll-mt-24 border-y border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24"
-      >
-        <div class="mx-auto max-w-6xl">
-          <h2 class="font-display text-center text-3xl font-bold text-cream sm:text-4xl">Simple packages</h2>
-          <p class="mx-auto mt-3 max-w-2xl text-center text-muted">
-            Start lean, then add tracking, SEO pages, and follow-up systems as the business grows.
-          </p>
-          <div class="mt-12 grid gap-6 lg:grid-cols-3">
-            {
-              packages.map((pkg) => (
-                <article
-                  class:list={[
-                    "flex flex-col rounded-2xl border bg-bg-elevated p-6 sm:p-8",
-                    pkg.recommended
-                      ? "border-accent/60 ring-1 ring-accent/30"
-                      : "border-[var(--border)]",
-                  ]}
-                >
-                  {
-                    pkg.recommended && (
-                      <p class="mb-3 w-fit rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent">
-                        Recommended
-                      </p>
-                    )
-                  }
-                  <h3 class="font-display text-xl font-bold text-cream">{pkg.name}</h3>
-                  <p class="mt-2 text-sm text-muted">{pkg.blurb}</p>
-                  <ul class="mt-6 flex-1 space-y-2.5 text-sm text-cream/90">
-                    {
-                      pkg.outcomes.map((o) => (
-                        <li class="flex gap-2">
-                          <span class="text-accent" aria-hidden="true">✓</span>
-                          {o}
-                        </li>
-                      ))
-                    }
-                  </ul>
-                  <TrackedLink
-                    href="#contact"
-                    event="quote_click"
-                    pkg={pkg.name}
-                    class:list={[
-                      "mt-6 inline-flex min-h-[48px] w-full items-center justify-center rounded-full text-sm font-semibold transition",
-                      pkg.recommended
-                        ? "bg-accent text-bg-deep hover:bg-accent-glow"
-                        : "border border-[var(--border)] text-cream hover:border-accent/50 hover:bg-bg-deep",
-                    ]}
-                  >
-                    Discuss this option
-                  </TrackedLink>
-                </article>
-              ))
-            }
-          </div>
-          <p class="mx-auto mt-8 max-w-2xl text-center text-sm text-muted">
-            Pricing depends on scope. A simple starting option is available for businesses that want to get moving
-            quickly.
-          </p>
-        </div>
-      </section>
-
-      <!-- Lead recovery -->
-      <section id="lead-recovery" class="relative z-10 scroll-mt-24 px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-6xl lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
-          <div>
-            <h2 class="font-display text-3xl font-bold text-cream sm:text-4xl">
-              Do not lose leads just because you missed the call.
-            </h2>
-            <p class="mt-4 text-lg text-muted">
-              Many tradies and service businesses miss calls because they are on-site, driving, or working with clients.
-              A missed-call text-back or simple follow-up system can help keep the enquiry warm until you can respond.
-            </p>
-            <TrackedLink
-              href={MISSED_CALL_MAIL}
-              event="cta_click"
-              cta="lead_recovery_missed_call"
-              class="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full border border-accent/40 bg-accent/10 px-6 text-sm font-semibold text-accent transition hover:bg-accent/20"
-            >
-              Ask about missed-call text-back
-            </TrackedLink>
-          </div>
-          <ul class="mt-8 space-y-3 lg:mt-0">
-            {
-              leadRecoveryItems.map((item) => (
-                <li class="flex gap-3 rounded-xl border border-[var(--border)] bg-bg-elevated px-4 py-3 text-sm text-cream/90">
-                  <span class="text-signal" aria-hidden="true">→</span>
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section id="faq" class="relative z-10 scroll-mt-24 border-t border-[var(--border)] bg-bg-elevated/50 px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-3xl">
-          <h2 class="font-display text-3xl font-bold text-cream sm:text-4xl">FAQ</h2>
-          <div class="mt-8 divide-y divide-[var(--border)] rounded-2xl border border-[var(--border)] bg-bg-deep">
-            {
-              faqs.map((faq) => (
-                <details class="group px-5 py-4 first:rounded-t-2xl last:rounded-b-2xl">
-                  <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-cream marker:content-[''] [&::-webkit-details-marker]:hidden">
-                    {faq.q}
-                    <span class="shrink-0 text-muted transition group-open:rotate-45" aria-hidden="true">+</span>
-                  </summary>
-                  <p class="mt-3 pb-1 text-sm leading-relaxed text-muted">{faq.a}</p>
-                </details>
-              ))
-            }
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact + audit form -->
-      <section id="contact" class="relative z-10 scroll-mt-24 px-5 pb-24 sm:px-6" aria-labelledby="contact-heading">
-        <div class="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[var(--border)] bg-bg-elevated">
-          <div class="px-6 py-12 sm:px-10 sm:py-16">
-            <div class="mx-auto max-w-2xl text-center">
-              <h2 id="contact-heading" class="font-display text-3xl font-bold text-cream sm:text-4xl">
-                Want more of the right customers finding and contacting you?
-              </h2>
-              <p class="mt-4 text-lg text-muted">
-                Let&apos;s look at your website, Google presence, and lead flow. You will get practical advice on what to
-                fix first — no fluff and no pressure.
-              </p>
-              <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap">
-                <TrackedLink
-                  href={STRATEGY_MAIL}
-                  event="cta_click"
-                  cta="footer_book_strategy_call"
-                  class="inline-flex min-h-[52px] flex-1 items-center justify-center rounded-full bg-accent px-8 text-base font-bold text-bg-deep transition hover:bg-accent-glow sm:flex-none"
-                >
-                  Book a free strategy call
-                </TrackedLink>
-                <TrackedLink
-                  href="#contact"
-                  event="audit_request_click"
-                  cta="footer_request_audit"
-                  class="inline-flex min-h-[52px] flex-1 items-center justify-center rounded-full border border-[var(--border)] px-8 text-base font-semibold text-cream transition hover:border-accent/50 hover:bg-bg-deep sm:flex-none"
-                >
-                  Request a website audit
-                </TrackedLink>
-              </div>
-            </div>
-
-            <div class="mx-auto mt-14 max-w-xl scroll-mt-28 border-t border-[var(--border)] pt-12 text-center">
-              <p class="text-sm text-muted">Or email me directly</p>
-              <p class="font-display mt-1 text-xl font-bold text-cream">{CONTACT_EMAIL}</p>
+            <div class="mx-auto w-full max-w-md lg:max-w-none">
+              <img
+                src="/hugh-portrait.png"
+                alt="Hugh from Screwdriver Marketing"
+                width="768"
+                height="1024"
+                class="h-auto w-full object-cover object-top"
+                loading="eager"
+                decoding="async"
+              />
             </div>
           </div>
         </div>
