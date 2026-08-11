@@ -1,6 +1,7 @@
 import HeroSection from "./HeroSection";
 import Footer from "./Footer";
 import MetaViewContentTracker from "./MetaViewContentTracker";
+import CustomerReviews from "./CustomerReviews";
 
 export default function LandingPage() {
   return (
@@ -16,6 +17,7 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+      <CustomerReviews />
       <Footer />
     </>
   );
