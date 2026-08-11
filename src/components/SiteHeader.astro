@@ -1,15 +1,15 @@
 ---
 import TrackedLink from "./TrackedLink.astro";
-import { STRATEGY_MAIL } from "../data/site";
+import { STRATEGY_CALL_HREF } from "../data/site";
 
 const navLinks: { href: string; label: string }[] = [
-  { href: "#about", label: "About" },
+  { href: "/#about", label: "About" },
 ];
 ---
 
 <header class="sticky top-0 z-50 border-b border-[var(--border)] bg-bg-deep">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
-    <a href="#top" class="font-display text-lg font-bold tracking-tight text-cream sm:text-xl">
+    <a href="/" class="font-display text-lg font-bold tracking-tight text-cream sm:text-xl">
       Screwdriver <span class="text-accent">Marketing</span>
     </a>
 
@@ -25,7 +25,7 @@ const navLinks: { href: string; label: string }[] = [
 
     <div class="flex items-center gap-2 sm:gap-3">
       <TrackedLink
-        href={STRATEGY_MAIL}
+        href={STRATEGY_CALL_HREF}
         event="cta_click"
         cta="header_book_call"
         class="hidden min-h-[44px] items-center justify-center rounded-none bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-glow sm:inline-flex"
@@ -55,7 +55,7 @@ const navLinks: { href: string; label: string }[] = [
             ))
           }
           <TrackedLink
-            href={STRATEGY_MAIL}
+            href={STRATEGY_CALL_HREF}
             event="cta_click"
             cta="mobile_nav_book_call"
             class="mt-1 block min-h-[44px] rounded-xl px-4 py-3 text-sm font-semibold text-accent hover:bg-black/5"

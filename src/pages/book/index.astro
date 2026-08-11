@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<Layout
+  title="Book a Strategy Call | Screwdriver Marketing"
+  description="Book a strategy call with Screwdriver Marketing to review your website, Google presence, and lead flow."
+>
+  <div class="relative overflow-x-hidden">
+    <SiteHeader />
+
+    <main id="top" class="px-5 py-12 sm:px-6 sm:py-16">
+      <div class="mx-auto max-w-4xl">
+        <h1 class="font-headline text-3xl font-black tracking-tight text-cream sm:text-4xl">
+          Book a strategy call
+        </h1>
+        <p class="mt-3 max-w-2xl text-lg leading-relaxed text-muted">
+          Pick a time that works for you and we&apos;ll look at your website, Google presence, and lead flow.
+        </p>
+
+        <div class="mt-10 w-full overflow-hidden">
+          <iframe
+            src="https://links.screwdrivermarketing.com.au/widget/booking/fndvYKV1tve0cVC5F2iM"
+            allow="payment"
+            style="width:100%;min-height:1100px;border:none;overflow:hidden"
+            scrolling="no"
+            id="fndvYKV1tve0cVC5F2iM_1786443918222"
+            title="Book a strategy call"
+          >
+          </iframe>
+          <script is:inline src="https://links.screwdrivermarketing.com.au/js/form_embed.js" type="text/javascript"
+          ></script>
+        </div>
+      </div>
+    </main>
+
+    <SiteFooter />
+  </div>
+</Layout>

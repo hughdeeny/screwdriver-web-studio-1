@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import { STRATEGY_MAIL } from "../data/site";
+import { STRATEGY_CALL_HREF } from "../data/site";
 ---
 
 <Layout>
@@ -35,7 +35,7 @@ import { STRATEGY_MAIL } from "../data/site";
               </p>
               <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap">
                 <TrackedLink
-                  href={STRATEGY_MAIL}
+                  href={STRATEGY_CALL_HREF}
                   event="cta_click"
                   cta="hero_book_strategy_call"
                   class="inline-flex min-h-[52px] items-center justify-center rounded-none bg-accent px-8 text-base font-bold text-white shadow-md shadow-accent/15 transition hover:bg-accent-glow"
