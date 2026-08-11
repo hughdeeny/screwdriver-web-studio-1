@@ -2,7 +2,7 @@ export const SITE_URL = "https://screwdrivermarketing.com.au";
 export const OG_IMAGE_PATH = "/og-image.jpg";
 
 export const STRATEGY_MAIL =
-  "mailto:hugh@screwdrivermarketing.com.au?subject=Strategy%20call%20request";
+  "mailto:hugh@screwdrivermarketing.com.au?subject=Demo%20call%20request";
 
 export const STRATEGY_CALL_HREF = "/book/";
 
