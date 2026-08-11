@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import { STRATEGY_CALL_HREF, servicePages, packages } from "../data/site";
+import { STRATEGY_CALL_HREF, packages } from "../data/site";
 ---
 
 <Layout>
@@ -74,36 +74,6 @@ import { STRATEGY_CALL_HREF, servicePages, packages } from "../data/site";
             Google Business Profile you can get in front of the customers actively searching for your services and
             build trust fast to start getting more calls and clients without spending money on ads.
           </p>
-        </div>
-      </section>
-
-      <!-- Services -->
-      <section id="services" class="relative z-10 scroll-mt-24 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
-        <div class="mx-auto max-w-6xl">
-          <div class="max-w-3xl">
-            <h2 class="font-headline text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-              Services built around getting found and getting contacted
-            </h2>
-            <p class="mt-4 text-lg leading-relaxed text-muted">
-              We tighten the system around your business so local customers can find you, trust you, contact you, and
-              get followed up properly.
-            </p>
-          </div>
-          <div class="mt-12 grid gap-8 sm:grid-cols-2">
-            {
-              servicePages.map((service) => (
-                <a href={`/services/${service.slug}/`} class="group block border-t border-[var(--border)] pt-5">
-                  <h3 class="font-headline text-xl font-bold text-cream transition group-hover:text-accent">
-                    {service.title}
-                  </h3>
-                  <p class="mt-2 text-sm leading-relaxed text-muted">{service.summary}</p>
-                  <span class="mt-4 inline-block text-sm font-semibold text-accent">
-                    Learn more →
-                  </span>
-                </a>
-              ))
-            }
-          </div>
         </div>
       </section>
 
