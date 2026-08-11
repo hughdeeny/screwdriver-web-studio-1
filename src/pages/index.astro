@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import { STRATEGY_CALL_HREF } from "../data/site";
+import { STRATEGY_CALL_HREF, servicePages, packages } from "../data/site";
 ---
 
 <Layout>
@@ -73,6 +73,97 @@ import { STRATEGY_CALL_HREF } from "../data/site";
             lose clients to their competitors because of this. By improving your website, social media presence and
             Google Business Profile you can get in front of the customers actively searching for your services and
             build trust fast to start getting more calls and clients without spending money on ads.
+          </p>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="relative z-10 scroll-mt-24 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
+        <div class="mx-auto max-w-6xl">
+          <div class="max-w-3xl">
+            <h2 class="font-headline text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+              Services built around getting found and getting contacted
+            </h2>
+            <p class="mt-4 text-lg leading-relaxed text-muted">
+              We tighten the system around your business so local customers can find you, trust you, contact you, and
+              get followed up properly.
+            </p>
+          </div>
+          <div class="mt-12 grid gap-8 sm:grid-cols-2">
+            {
+              servicePages.map((service) => (
+                <a href={`/services/${service.slug}/`} class="group block border-t border-[var(--border)] pt-5">
+                  <h3 class="font-headline text-xl font-bold text-cream transition group-hover:text-accent">
+                    {service.title}
+                  </h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">{service.summary}</p>
+                  <span class="mt-4 inline-block text-sm font-semibold text-accent">
+                    Learn more →
+                  </span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing -->
+      <section id="pricing" class="relative z-10 scroll-mt-24 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
+        <div class="mx-auto max-w-6xl">
+          <h2 class="font-headline text-center text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            Simple packages
+          </h2>
+          <p class="mx-auto mt-3 max-w-2xl text-center text-lg text-muted">
+            Start lean, then add tracking, SEO pages, and follow-up systems as the business grows.
+          </p>
+          <div class="mt-12 grid gap-6 lg:grid-cols-3">
+            {
+              packages.map((pkg) => (
+                <article
+                  class:list={[
+                    "flex flex-col border bg-bg-elevated p-6 sm:p-8",
+                    pkg.recommended ? "border-accent" : "border-[var(--border)]",
+                  ]}
+                >
+                  {
+                    pkg.recommended && (
+                      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-accent">Recommended</p>
+                    )
+                  }
+                  <h3 class="font-headline text-xl font-bold text-cream">{pkg.name}</h3>
+                  <p class="mt-2 text-sm text-muted">{pkg.blurb}</p>
+                  <ul class="mt-6 flex-1 space-y-2.5 text-sm text-cream/90">
+                    {
+                      pkg.outcomes.map((o) => (
+                        <li class="flex gap-2">
+                          <span class="text-accent" aria-hidden="true">
+                            ✓
+                          </span>
+                          {o}
+                        </li>
+                      ))
+                    }
+                  </ul>
+                  <TrackedLink
+                    href={STRATEGY_CALL_HREF}
+                    event="quote_click"
+                    pkg={pkg.name}
+                    class:list={[
+                      "mt-6 inline-flex min-h-[48px] w-full items-center justify-center rounded-none text-sm font-semibold transition",
+                      pkg.recommended
+                        ? "bg-accent text-white hover:bg-accent-glow"
+                        : "border border-[var(--border)] text-cream hover:border-accent hover:bg-bg-deep",
+                    ]}
+                  >
+                    Discuss this option
+                  </TrackedLink>
+                </article>
+              ))
+            }
+          </div>
+          <p class="mx-auto mt-8 max-w-2xl text-center text-sm text-muted">
+            Pricing depends on scope. A simple starting option is available for businesses that want to get moving
+            quickly.
           </p>
         </div>
       </section>

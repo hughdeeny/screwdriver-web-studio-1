@@ -38,6 +38,116 @@ export const serviceCards = [
   },
 ];
 
+export type ServicePage = {
+  slug: string;
+  title: string;
+  navLabel: string;
+  headline: string;
+  summary: string;
+  description: string;
+  outcomes: string[];
+  includes: string[];
+};
+
+export const servicePages: ServicePage[] = [
+  {
+    slug: "web-design",
+    title: "Web Design",
+    navLabel: "Web design",
+    headline: "Websites built to get calls and quote requests",
+    summary:
+      "Fast, mobile-friendly websites for tradies and service businesses — clear services, obvious contact paths, and a design that builds trust.",
+    description:
+      "Your website should do more than look professional. It should explain what you do, make it easy to call or request a quote, and work properly on mobile for people searching on the go.",
+    outcomes: [
+      "A clean site that matches the quality of your real-world work",
+      "Clear service and area messaging so visitors know you are the right fit",
+      "Phone and quote buttons that are easy to use on mobile",
+      "A stronger first impression when customers compare you to competitors",
+    ],
+    includes: [
+      "Mobile-friendly website design and build",
+      "Clear services and service-area structure",
+      "Contact forms and call-focused CTAs",
+      "Basic on-page SEO setup",
+      "Review and trust placement",
+    ],
+  },
+  {
+    slug: "seo",
+    title: "SEO",
+    navLabel: "SEO",
+    headline: "Show up when local customers are searching",
+    summary:
+      "Local SEO and Google presence work that helps your business get found for the searches that turn into jobs.",
+    description:
+      "Most local customers start on Google. We help your website and Google Business Profile work together so you are easier to find for the services and suburbs that matter.",
+    outcomes: [
+      "Better visibility for local service searches",
+      "Service and location pages built around real customer intent",
+      "A clearer path from Google search to your website or phone",
+      "Less reliance on paid ads to stay in front of buyers",
+    ],
+    includes: [
+      "Local SEO page structure and content",
+      "Google Business Profile support",
+      "Service and suburb page planning",
+      "On-page SEO basics",
+      "Practical improvements based on what people search for",
+    ],
+  },
+  {
+    slug: "reputation-management",
+    title: "Reputation Management",
+    navLabel: "Reputation management",
+    headline: "Turn good jobs into more reviews and more trust",
+    summary:
+      "Reputation systems that help you collect reviews, look stronger online, and convert more of the customers already considering you.",
+    description:
+      "Strong reviews make it easier for new customers to choose you. We set up simple systems so completed jobs turn into reviews, and your online reputation reflects the work you actually do.",
+    outcomes: [
+      "More consistent review flow after completed jobs",
+      "A stronger Google presence that builds trust faster",
+      "Fewer missed opportunities when competitors look more established",
+      "A clearer process for asking and following up for reviews",
+    ],
+    includes: [
+      "Review request and follow-up flow",
+      "Google review and profile support",
+      "Reputation widget and testimonial placement",
+      "Practical response and monitoring habits",
+      "Setup that fits busy operators, not marketing teams",
+    ],
+  },
+  {
+    slug: "sales-automation",
+    title: "Sales Automation",
+    navLabel: "Sales automation",
+    headline: "Stop losing leads when you miss the call",
+    summary:
+      "Simple follow-up and automation systems that keep enquiries warm, organised, and moving toward booked jobs.",
+    description:
+      "Busy operators miss calls, forget follow-ups, and lose leads that were ready to book. We put simple automation in place so missed enquiries get a reply and leads stay organised.",
+    outcomes: [
+      "Faster response when a call or form comes in",
+      "Fewer leads going cold because follow-up slipped",
+      "Enquiries organised in one place instead of scattered messages",
+      "A clearer view of which contact paths are creating jobs",
+    ],
+    includes: [
+      "Missed-call text-back and lead follow-up",
+      "Quote request and enquiry automation",
+      "Lead capture connected to your website",
+      "Basic tracking for calls, forms, and key actions",
+      "Simple systems you can run without extra admin load",
+    ],
+  },
+];
+
+export function getServiceBySlug(slug: string): ServicePage | undefined {
+  return servicePages.find((service) => service.slug === slug);
+}
+
 export const packages = [
   {
     name: "Starter Website",
