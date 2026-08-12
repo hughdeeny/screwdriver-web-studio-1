@@ -2,6 +2,8 @@
 import TrackedLink from "./TrackedLink.astro";
 import { STRATEGY_CALL_HREF, servicePages } from "../data/site";
 
+const LOGIN_HREF = "https://members.screwdrivermarketing.com.au/";
+
 const navButtonClass =
   "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-bg-elevated px-5 py-2.5 text-base font-bold text-cream transition hover:border-accent hover:bg-white";
 ---
@@ -12,46 +14,48 @@ const navButtonClass =
       Screwdriver <span class="text-accent">Marketing</span>
     </a>
 
-    <nav class="hidden items-center gap-3 lg:flex" aria-label="Primary">
-      <details class="group relative">
-        <summary class={`${navButtonClass} cursor-pointer list-none`}>
-          Services
-          <svg
-            class="h-4 w-4 transition group-open:rotate-180"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </summary>
-        <div
-          class="absolute left-0 top-full z-20 mt-2 min-w-[16rem] border border-[var(--border)] bg-bg-elevated p-2 shadow-lg"
-        >
-          {
-            servicePages.map((service) => (
-              <a
-                href={`/services/${service.slug}/`}
-                class="block min-h-[44px] px-4 py-3 text-base font-bold text-cream transition hover:bg-bg-deep hover:text-accent"
-              >
-                {service.title}
-              </a>
-            ))
-          }
-        </div>
-      </details>
-    </nav>
-
     <div class="flex items-center gap-2 sm:gap-3">
-      <TrackedLink
-        href={STRATEGY_CALL_HREF}
-        event="cta_click"
-        cta="header_book_call"
-        class="hidden min-h-[44px] items-center justify-center rounded-none bg-accent px-5 py-2.5 text-base font-bold text-white transition hover:bg-accent-glow sm:inline-flex"
-      >
-        Book a Demo Call
-      </TrackedLink>
+      <nav class="hidden items-center gap-3 lg:flex" aria-label="Primary">
+        <details class="group relative">
+          <summary class={`${navButtonClass} cursor-pointer list-none`}>
+            Services
+            <svg
+              class="h-4 w-4 transition group-open:rotate-180"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div
+            class="absolute right-0 top-full z-20 mt-2 min-w-[16rem] border border-[var(--border)] bg-bg-elevated p-2 shadow-lg"
+          >
+            {
+              servicePages.map((service) => (
+                <a
+                  href={`/services/${service.slug}/`}
+                  class="block min-h-[44px] px-4 py-3 text-base font-bold text-cream transition hover:bg-bg-deep hover:text-accent"
+                >
+                  {service.title}
+                </a>
+              ))
+            }
+          </div>
+        </details>
+
+        <a href={LOGIN_HREF} class={navButtonClass}>Login</a>
+
+        <TrackedLink
+          href={STRATEGY_CALL_HREF}
+          event="cta_click"
+          cta="header_book_call"
+          class={navButtonClass}
+        >
+          Book a Demo Call
+        </TrackedLink>
+      </nav>
 
       <details class="relative lg:hidden">
         <summary
@@ -76,11 +80,17 @@ const navButtonClass =
               </a>
             ))
           }
+          <a
+            href={LOGIN_HREF}
+            class="mt-1 block min-h-[44px] border-t border-[var(--border)] px-4 py-3 text-base font-bold text-cream hover:bg-bg-deep hover:text-accent"
+          >
+            Login
+          </a>
           <TrackedLink
             href={STRATEGY_CALL_HREF}
             event="cta_click"
             cta="mobile_nav_book_call"
-            class="mt-1 block min-h-[44px] border-t border-[var(--border)] px-4 py-3 text-base font-bold text-accent hover:bg-bg-deep"
+            class="block min-h-[44px] px-4 py-3 text-base font-bold text-cream hover:bg-bg-deep hover:text-accent"
           >
             Book a Demo Call
           </TrackedLink>
