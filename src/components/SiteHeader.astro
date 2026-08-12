@@ -3,6 +3,8 @@ import TrackedLink from "./TrackedLink.astro";
 import { STRATEGY_CALL_HREF, servicePages } from "../data/site";
 
 const LOGIN_HREF = "https://members.screwdrivermarketing.com.au/";
+const PHONE_DISPLAY = "0475 624 247";
+const PHONE_TEL = "tel:+61475624247";
 
 const navButtonClass =
   "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-bg-elevated px-5 py-2.5 text-base font-bold text-cream transition hover:border-accent hover:bg-white";
@@ -47,6 +49,8 @@ const navButtonClass =
 
         <a href={LOGIN_HREF} class={navButtonClass}>Login</a>
 
+        <a href={PHONE_TEL} class={navButtonClass}>{PHONE_DISPLAY}</a>
+
         <TrackedLink
           href={STRATEGY_CALL_HREF}
           event="cta_click"
@@ -85,6 +89,12 @@ const navButtonClass =
             class="mt-1 block min-h-[44px] border-t border-[var(--border)] px-4 py-3 text-base font-bold text-cream hover:bg-bg-deep hover:text-accent"
           >
             Login
+          </a>
+          <a
+            href={PHONE_TEL}
+            class="block min-h-[44px] px-4 py-3 text-base font-bold text-cream hover:bg-bg-deep hover:text-accent"
+          >
+            {PHONE_DISPLAY}
           </a>
           <TrackedLink
             href={STRATEGY_CALL_HREF}
