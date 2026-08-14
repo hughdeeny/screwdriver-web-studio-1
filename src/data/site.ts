@@ -78,7 +78,7 @@ export const servicePages: ServicePage[] = [
     slug: "reputation-management",
     title: "Reputation Management",
     navLabel: "Reputation management",
-    headline: "Turn good jobs into more reviews and more trust",
+    headline: "How to turn good jobs and past happy customers into more google reviews and more jobs",
     summary:
       "Reputation systems that help you collect reviews, look stronger online, and convert more of the customers already considering you.",
     description:

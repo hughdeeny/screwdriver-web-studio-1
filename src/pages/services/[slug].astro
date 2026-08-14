@@ -39,6 +39,18 @@ const otherServices = servicePages.filter((item) => item.slug !== service.slug);
           <h1 class="font-headline mt-4 text-4xl font-black tracking-tight text-cream sm:text-5xl">
             {service.headline}
           </h1>
+          {
+            service.loomEmbedUrl && (
+              <div class="relative mt-8 h-0 pb-[56.25%]">
+                <iframe
+                  src={service.loomEmbedUrl}
+                  title={service.headline}
+                  allowFullScreen
+                  class="absolute left-0 top-0 h-full w-full border-0"
+                />
+              </div>
+            )
+          }
           <p class="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{service.summary}</p>
           <div class="mt-8">
             <TrackedLink
@@ -52,24 +64,6 @@ const otherServices = servicePages.filter((item) => item.slug !== service.slug);
           </div>
         </div>
       </section>
-
-      {
-        service.loomEmbedUrl && (
-          <section class="relative z-10 border-t border-[var(--border)] px-5 py-16 sm:px-6 sm:py-20">
-            <div class="mx-auto max-w-4xl">
-              <h2 class="font-headline text-3xl font-bold tracking-tight text-cream sm:text-4xl">How it works</h2>
-              <div class="relative mt-8 h-0 pb-[56.25%]">
-                <iframe
-                  src={service.loomEmbedUrl}
-                  title="How it works"
-                  allowFullScreen
-                  class="absolute left-0 top-0 h-full w-full border-0"
-                />
-              </div>
-            </div>
-          </section>
-        )
-      }
 
       <section class="relative z-10 border-t border-[var(--border)] px-5 py-16 sm:px-6 sm:py-20">
         <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
