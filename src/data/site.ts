@@ -47,6 +47,7 @@ export type ServicePage = {
   description: string;
   outcomes: string[];
   includes: string[];
+  loomEmbedUrl?: string;
 };
 
 export const servicePages: ServicePage[] = [
@@ -95,6 +96,7 @@ export const servicePages: ServicePage[] = [
       "Practical response and monitoring habits",
       "Setup that fits busy operators, not marketing teams",
     ],
+    loomEmbedUrl: "https://www.loom.com/embed/9b1bbc9f35d4480eafc7c65b4a75f987",
   },
   {
     slug: "sales-automation",
