@@ -74,29 +74,6 @@ export const servicePages: ServicePage[] = [
     ],
   },
   {
-    slug: "seo",
-    title: "SEO",
-    navLabel: "SEO",
-    headline: "Show up when local customers are searching",
-    summary:
-      "Local SEO and Google presence work that helps your business get found for the searches that turn into jobs.",
-    description:
-      "Most local customers start on Google. We help your website and Google Business Profile work together so you are easier to find for the services and suburbs that matter.",
-    outcomes: [
-      "Better visibility for local service searches",
-      "Service and location pages built around real customer intent",
-      "A clearer path from Google search to your website or phone",
-      "Less reliance on paid ads to stay in front of buyers",
-    ],
-    includes: [
-      "Local SEO page structure and content",
-      "Google Business Profile support",
-      "Service and suburb page planning",
-      "On-page SEO basics",
-      "Practical improvements based on what people search for",
-    ],
-  },
-  {
     slug: "reputation-management",
     title: "Reputation Management",
     navLabel: "Reputation management",
