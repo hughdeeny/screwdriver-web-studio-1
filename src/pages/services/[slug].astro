@@ -18,7 +18,8 @@ if (!service) {
   throw new Error(`Unknown service slug: ${slug}`);
 }
 
-const otherServices = servicePages.filter((item) => item.slug !== service.slug);
+const formId = "eEBGmwDUUSauLVfx0aPz";
+const formIframeId = `inline-${formId}-${service.slug}`;
 ---
 
 <Layout
@@ -99,37 +100,42 @@ const otherServices = servicePages.filter((item) => item.slug !== service.slug);
       </section>
 
       <section class="relative z-10 border-t border-[var(--border)] px-5 py-16 sm:px-6 sm:py-20">
-        <div class="mx-auto max-w-6xl">
-          <h2 class="font-headline text-3xl font-bold tracking-tight text-cream">Other services</h2>
-          <div class="mt-8 grid gap-6 sm:grid-cols-3">
-            {
-              otherServices.map((item) => (
-                <a href={`/services/${item.slug}/`} class="group block border-t border-[var(--border)] pt-4">
-                  <h3 class="font-headline text-lg font-bold text-cream transition group-hover:text-accent">
-                    {item.title}
-                  </h3>
-                  <p class="mt-2 text-sm leading-relaxed text-muted">{item.summary}</p>
-                </a>
-              ))
-            }
+        <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+          <div>
+            <h2 class="font-headline text-3xl font-bold tracking-tight text-cream">Want to talk through fit?</h2>
+            <p class="mt-4 text-lg leading-relaxed text-muted">
+              Book a Demo Call and we&apos;ll look at where {service.navLabel.toLowerCase()} fits your business.
+            </p>
+            <TrackedLink
+              href={STRATEGY_CALL_HREF}
+              event="cta_click"
+              cta={`service_${service.slug}_bottom_book_call`}
+              class="mt-8 inline-flex min-h-[52px] items-center justify-center rounded-none bg-accent px-8 text-base font-bold text-white transition hover:bg-accent-glow"
+            >
+              Book a Demo Call
+            </TrackedLink>
           </div>
-        </div>
-      </section>
-
-      <section class="relative z-10 border-t border-[var(--border)] px-5 py-16 sm:px-6 sm:py-20">
-        <div class="mx-auto max-w-3xl text-center">
-          <h2 class="font-headline text-3xl font-bold tracking-tight text-cream">Want to talk through fit?</h2>
-          <p class="mt-4 text-lg text-muted">
-            Book a Demo Call and we&apos;ll look at where {service.navLabel.toLowerCase()} fits your business.
-          </p>
-          <TrackedLink
-            href={STRATEGY_CALL_HREF}
-            event="cta_click"
-            cta={`service_${service.slug}_bottom_book_call`}
-            class="mt-8 inline-flex min-h-[52px] items-center justify-center rounded-none bg-accent px-8 text-base font-bold text-white transition hover:bg-accent-glow"
-          >
-            Book a Demo Call
-          </TrackedLink>
+          <div class="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
+            <iframe
+              src={`https://links.screwdrivermarketing.com.au/widget/form/${formId}`}
+              style="width:100%;height:723px;border:none;border-radius:0px"
+              id={formIframeId}
+              data-layout="{'id':'INLINE'}"
+              data-trigger-type="alwaysShow"
+              data-trigger-value=""
+              data-activation-type="alwaysActivated"
+              data-activation-value=""
+              data-deactivation-type="neverDeactivate"
+              data-deactivation-value=""
+              data-form-name="3.0 Contact Form"
+              data-height="723"
+              data-layout-iframe-id={formIframeId}
+              data-form-id={formId}
+              title="Quote form"
+            >
+            </iframe>
+            <script is:inline src="https://links.screwdrivermarketing.com.au/js/form_embed.js"></script>
+          </div>
         </div>
       </section>
     </main>
