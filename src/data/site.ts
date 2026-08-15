@@ -99,9 +99,9 @@ export const servicePages: ServicePage[] = [
     loomEmbedUrl: "https://www.loom.com/embed/9b1bbc9f35d4480eafc7c65b4a75f987",
   },
   {
-    slug: "sales-automation",
-    title: "Sales Automation",
-    navLabel: "Sales automation",
+    slug: "automations",
+    title: "Automations",
+    navLabel: "Automations",
     headline: "Stop losing leads when you miss the call",
     summary:
       "Simple follow-up and automation systems that keep enquiries warm, organised, and moving toward booked jobs.",
