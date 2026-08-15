@@ -8,7 +8,7 @@ import { STRATEGY_CALL_HREF, packages } from "../../data/site";
 
 <Layout
   title="Pricing | Screwdriver Marketing"
-  description="Simple packages for website design, local lead systems, and ongoing support for construction and trades businesses."
+  description="Reputation Management and Business Growth packages for construction and trades businesses."
 >
   <div class="relative overflow-x-hidden">
     <SiteHeader />
@@ -18,14 +18,14 @@ import { STRATEGY_CALL_HREF, packages } from "../../data/site";
         <div class="mx-auto max-w-3xl text-center">
           <h1 class="font-headline text-4xl font-black tracking-tight text-cream sm:text-5xl">Pricing</h1>
           <p class="mt-4 text-lg leading-relaxed text-muted sm:text-xl">
-            Start lean, then add tracking, SEO pages, and follow-up systems as the business grows.
+            Simple monthly packages built to help you get more reviews, more enquiries, and more booked jobs.
           </p>
         </div>
       </section>
 
       <section class="relative z-10 px-5 pb-16 sm:px-6 sm:pb-24">
-        <div class="mx-auto max-w-6xl">
-          <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="mx-auto max-w-5xl">
+          <div class="grid gap-6 lg:grid-cols-2">
             {
               packages.map((pkg) => (
                 <article
@@ -37,8 +37,10 @@ import { STRATEGY_CALL_HREF, packages } from "../../data/site";
                   {pkg.recommended && (
                     <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-accent">Recommended</p>
                   )}
-                  <h2 class="font-headline text-xl font-bold text-cream">{pkg.name}</h2>
-                  <p class="mt-2 text-sm text-muted">{pkg.blurb}</p>
+                  <h2 class="font-headline text-2xl font-bold text-cream">{pkg.name}</h2>
+                  <p class="mt-2 font-headline text-3xl font-black text-accent">{pkg.price}</p>
+                  <p class="mt-4 text-lg font-semibold text-cream">{pkg.blurb}</p>
+                  <p class="mt-3 text-base leading-relaxed text-muted">{pkg.body}</p>
                   <ul class="mt-6 flex-1 space-y-2.5 text-sm text-cream/90">
                     {pkg.outcomes.map((o) => (
                       <li class="flex gap-2">
@@ -49,6 +51,7 @@ import { STRATEGY_CALL_HREF, packages } from "../../data/site";
                       </li>
                     ))}
                   </ul>
+                  {pkg.note && <p class="mt-4 text-sm font-medium text-muted">{pkg.note}</p>}
                   <TrackedLink
                     href={STRATEGY_CALL_HREF}
                     event="quote_click"
@@ -66,10 +69,6 @@ import { STRATEGY_CALL_HREF, packages } from "../../data/site";
               ))
             }
           </div>
-          <p class="mx-auto mt-8 max-w-2xl text-center text-sm text-muted">
-            Pricing depends on scope. A simple starting option is available for businesses that want to get moving
-            quickly.
-          </p>
         </div>
       </section>
     </main>
