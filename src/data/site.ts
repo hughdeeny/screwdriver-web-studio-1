@@ -156,6 +156,19 @@ export const packages = [
     note: "Ideal when you want calls, quotes, and tracking working together from day one.",
   },
   {
+    name: "Reputation System",
+    recommended: false,
+    blurb: "For businesses that want more Google reviews from the good work they already do.",
+    outcomes: [
+      "Review request and follow-up flow",
+      "Google review and profile support",
+      "Reputation widget and testimonial placement",
+      "Simple process after completed jobs",
+      "Setup that fits busy operators",
+    ],
+    note: "Built to turn past happy customers into more reviews and more jobs.",
+  },
+  {
     name: "Care + Growth Plan",
     recommended: false,
     blurb: "For businesses that want ongoing updates, reporting, and small improvements.",
