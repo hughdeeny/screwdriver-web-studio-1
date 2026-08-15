@@ -157,6 +157,20 @@ export const packages = [
     ],
     note: "Includes everything in Reputation Management.",
   },
+  {
+    name: "Custom Builds and CMS",
+    price: "Contact me for pricing",
+    recommended: false,
+    blurb: "Custom websites and content systems built around how your business actually runs.",
+    body: "For businesses that need something more tailored than a standard package — custom builds, CMS setups, and systems designed around your workflows.",
+    outcomes: [
+      "Custom website builds",
+      "CMS setup and structure",
+      "Tailored to your business workflows",
+      "Scoped and priced to suit the project",
+    ],
+    note: "Contact me for pricing.",
+  },
 ];
 
 export const faqs = [
