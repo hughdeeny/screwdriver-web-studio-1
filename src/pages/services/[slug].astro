@@ -53,7 +53,22 @@ const formIframeId = `inline-${formId}-${service.slug}`;
             )
           }
           <p class="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{service.summary}</p>
-          <div class="mt-8">
+          {
+            service.exampleTool && (
+              <p class="mt-5 text-lg leading-relaxed text-cream">
+                {service.exampleTool.label}:{" "}
+                <a
+                  href={service.exampleTool.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-semibold text-accent underline-offset-4 transition hover:underline"
+                >
+                  {service.exampleTool.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                </a>
+              </p>
+            )
+          }
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <TrackedLink
               href={STRATEGY_CALL_HREF}
               event="cta_click"
@@ -62,6 +77,18 @@ const formIframeId = `inline-${formId}-${service.slug}`;
             >
               Book a Demo Call
             </TrackedLink>
+            {
+              service.exampleTool && (
+                <a
+                  href={service.exampleTool.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex min-h-[52px] items-center justify-center rounded-none border border-[var(--border)] bg-bg-elevated px-8 text-base font-bold text-cream transition hover:border-accent"
+                >
+                  Try the free trucker tool
+                </a>
+              )
+            }
           </div>
         </div>
       </section>
