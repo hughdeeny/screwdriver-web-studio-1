@@ -121,6 +121,29 @@ export const servicePages: ServicePage[] = [
       "Simple systems you can run without extra admin load",
     ],
   },
+  {
+    slug: "custom-application-development",
+    title: "Custom Application Development and Tools",
+    navLabel: "Custom apps & tools",
+    headline: "Custom applications and tools built around how your business actually runs",
+    summary:
+      "When off-the-shelf software does not fit, we build custom applications and internal tools that match your workflows, save time, and keep operations cleaner.",
+    description:
+      "Many construction and trades businesses outgrow spreadsheets, shared inboxes, and generic software. We design and build custom applications and tools that fit the way your team already works — quoting, job tracking, client portals, internal dashboards, and more.",
+    outcomes: [
+      "Tools that match your real process instead of forcing a generic workflow",
+      "Less admin time spent jumping between spreadsheets and messages",
+      "Clearer visibility across jobs, clients, and follow-up",
+      "A system you can grow with as the business gets busier",
+    ],
+    includes: [
+      "Custom application and tool scoping",
+      "Workflow design around your operations",
+      "Build and setup for internal or client-facing tools",
+      "CMS and content systems where needed",
+      "Ongoing refinement as your process evolves",
+    ],
+  },
 ];
 
 export function getServiceBySlug(slug: string): ServicePage | undefined {
