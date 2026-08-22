@@ -48,6 +48,10 @@ export type ServicePage = {
   outcomes: string[];
   includes: string[];
   loomEmbedUrl?: string;
+  exampleTool?: {
+    label: string;
+    href: string;
+  };
 };
 
 export const servicePages: ServicePage[] = [
@@ -143,6 +147,10 @@ export const servicePages: ServicePage[] = [
       "CMS and content systems where needed",
       "Ongoing refinement as your process evolves",
     ],
+    exampleTool: {
+      label: "Try this free tool built for truckers",
+      href: "https://dan-app.vercel.app/",
+    },
   },
 ];
 
