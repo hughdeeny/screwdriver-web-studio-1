@@ -80,7 +80,17 @@ const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Market
                     </span>
                   )}
                 </a>
-                <p class="max-w-sm text-base leading-relaxed text-muted">{service.exampleTool.label}</p>
+                <div class="flex flex-col gap-3">
+                  <p class="max-w-sm text-base leading-relaxed text-muted">{service.exampleTool.label}</p>
+                  <a
+                    href={`${service.exampleTool.href}?install=1`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex min-h-[48px] w-fit items-center justify-center rounded-none border border-[var(--border)] bg-bg-elevated px-5 text-sm font-bold text-cream transition hover:border-accent"
+                  >
+                    Install for Android
+                  </a>
+                </div>
               </div>
             )
           }
