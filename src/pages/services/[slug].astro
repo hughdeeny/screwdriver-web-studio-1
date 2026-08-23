@@ -56,20 +56,35 @@ const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Market
           <p class="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{service.summary}</p>
           {
             service.exampleTool && (
-              <p class="mt-5 text-lg leading-relaxed text-cream">
-                {service.exampleTool.label}:{" "}
+              <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
                   href={service.exampleTool.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="font-semibold text-accent underline-offset-4 transition hover:underline"
+                  class="inline-flex w-fit transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  aria-label={`${service.exampleTool.label} — open Tank Tally`}
                 >
-                  {service.exampleTool.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                  {service.exampleTool.iconSrc ? (
+                    <img
+                      src={service.exampleTool.iconSrc}
+                      alt={service.exampleTool.iconAlt ?? "App icon"}
+                      width="160"
+                      height="130"
+                      class="h-auto w-40 rounded-2xl shadow-lg"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span class="font-semibold text-accent underline-offset-4 hover:underline">
+                      {service.exampleTool.label}
+                    </span>
+                  )}
                 </a>
-              </p>
+                <p class="max-w-sm text-base leading-relaxed text-muted">{service.exampleTool.label}</p>
+              </div>
             )
           }
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div class="mt-8">
             <TrackedLink
               href={STRATEGY_CALL_HREF}
               event="cta_click"
@@ -78,18 +93,6 @@ const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Market
             >
               Book a Demo Call
             </TrackedLink>
-            {
-              service.exampleTool && (
-                <a
-                  href={service.exampleTool.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex min-h-[52px] items-center justify-center rounded-none border border-[var(--border)] bg-bg-elevated px-8 text-base font-bold text-cream transition hover:border-accent"
-                >
-                  Try the free trucker tool
-                </a>
-              )
-            }
           </div>
         </div>
       </section>

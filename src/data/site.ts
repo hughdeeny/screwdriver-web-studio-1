@@ -51,6 +51,8 @@ export type ServicePage = {
   exampleTool?: {
     label: string;
     href: string;
+    iconSrc?: string;
+    iconAlt?: string;
   };
 };
 
@@ -150,6 +152,8 @@ export const servicePages: ServicePage[] = [
     exampleTool: {
       label: "Try this free tool built for truckers",
       href: "https://dan-app.vercel.app/",
+      iconSrc: "/tank-tally-icon.png",
+      iconAlt: "Tank Tally app icon",
     },
   },
 ];
