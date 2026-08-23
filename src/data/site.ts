@@ -131,7 +131,7 @@ export const servicePages: ServicePage[] = [
     navLabel: "Screwdriver Toolbox",
     headline: "Screwdriver Toolbox — custom applications and tools for your business",
     summary:
-      "When off-the-shelf software does not fit, we build custom applications and internal tools that match your workflows, save time, and keep operations cleaner.",
+      "When off-the-shelf software doesn't fit, we build custom tools to automate work, save you time, and save you money.",
     description:
       "Many construction and trades businesses outgrow spreadsheets, shared inboxes, and generic software. Screwdriver Toolbox is where we design and build custom applications and tools that fit the way your team already works — quoting, job tracking, client portals, internal dashboards, and more.",
     outcomes: [
