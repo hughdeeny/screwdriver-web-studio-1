@@ -56,44 +56,49 @@ const showContactForm = service.slug !== "screwdriver-toolbox";
           }
           <p class="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{service.summary}</p>
           {
-            service.exampleTool && (
+            service.freeApps && service.freeApps.length > 0 && (
               <div class="mt-10">
                 <h2 class="font-headline text-2xl font-bold tracking-tight text-cream sm:text-3xl">Free apps</h2>
-                <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
-                  <a
-                    href={service.exampleTool.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex w-fit transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                    aria-label={`${service.exampleTool.label} — open Tank Tally`}
-                  >
-                    {service.exampleTool.iconSrc ? (
-                      <img
-                        src={service.exampleTool.iconSrc}
-                        alt={service.exampleTool.iconAlt ?? "App icon"}
-                        width="160"
-                        height="130"
-                        class="h-auto w-40 rounded-2xl shadow-lg"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span class="font-semibold text-accent underline-offset-4 hover:underline">
-                        {service.exampleTool.label}
-                      </span>
-                    )}
-                  </a>
-                  <div class="flex flex-col gap-3">
-                    <p class="max-w-sm text-base leading-relaxed text-muted">{service.exampleTool.label}</p>
-                    <a
-                      href={`${service.exampleTool.href}?install=1`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex min-h-[48px] w-fit items-center justify-center rounded-none border border-[var(--border)] bg-bg-elevated px-5 text-sm font-bold text-cream transition hover:border-accent"
-                    >
-                      Install for Android
-                    </a>
-                  </div>
+                <div class="mt-6 grid gap-8 sm:grid-cols-2">
+                  {service.freeApps.map((app) => (
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <a
+                        href={app.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex w-fit transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        aria-label={`${app.name} — ${app.label}`}
+                      >
+                        {app.iconSrc ? (
+                          <img
+                            src={app.iconSrc}
+                            alt={app.iconAlt ?? `${app.name} icon`}
+                            width="160"
+                            height="160"
+                            class="h-40 w-40 rounded-2xl object-cover shadow-lg"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <span class="font-semibold text-accent underline-offset-4 hover:underline">{app.name}</span>
+                        )}
+                      </a>
+                      <div class="flex flex-col gap-3">
+                        <p class="font-headline text-lg font-bold text-cream">{app.name}</p>
+                        <p class="max-w-sm text-base leading-relaxed text-muted">{app.label}</p>
+                        {app.showInstall && (
+                          <a
+                            href={`${app.href}?install=1`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex min-h-[48px] w-fit items-center justify-center rounded-none border border-[var(--border)] bg-bg-elevated px-5 text-sm font-bold text-cream transition hover:border-accent"
+                          >
+                            Install for Android
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )

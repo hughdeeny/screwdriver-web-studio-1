@@ -48,12 +48,14 @@ export type ServicePage = {
   outcomes: string[];
   includes: string[];
   loomEmbedUrl?: string;
-  exampleTool?: {
+  freeApps?: {
+    name: string;
     label: string;
     href: string;
     iconSrc?: string;
     iconAlt?: string;
-  };
+    showInstall?: boolean;
+  }[];
 };
 
 export const servicePages: ServicePage[] = [
@@ -149,12 +151,23 @@ export const servicePages: ServicePage[] = [
       "CMS and content systems where needed",
       "Ongoing refinement as your process evolves",
     ],
-    exampleTool: {
-      label: "Try this free tool built for truckers",
-      href: "https://dan-app.vercel.app/",
-      iconSrc: "/tank-tally-icon.png",
-      iconAlt: "Tank Tally app icon",
-    },
+    freeApps: [
+      {
+        name: "Tank Tally",
+        label: "Try this free tool built for truckers",
+        href: "https://dan-app.vercel.app/",
+        iconSrc: "/tank-tally-icon.png",
+        iconAlt: "Tank Tally app icon",
+        showInstall: true,
+      },
+      {
+        name: "Prospector GPT",
+        label: "Try this free lead generation tool to find qualified local businesses. (ChatGPT based)",
+        href: "https://chatgpt.com/g/g-6a73f80ebd908191be3224457ad38d66-prospecter",
+        iconSrc: "/prospector-gpt-icon.png",
+        iconAlt: "Prospector GPT app icon",
+      },
+    ],
   },
 ];
 
