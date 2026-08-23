@@ -23,4 +23,12 @@ export const clientBrands = [
     name: "Terra-Villa",
     src: "/brands/terra-villa.png",
   },
+  {
+    name: "Extreme Pest Control",
+    src: "/brands/extreme-pest-control.png",
+  },
+  {
+    name: "Premier Salt Damp & Stone Removal",
+    src: "/brands/premier-salt-damp.png",
+  },
 ] as const;
