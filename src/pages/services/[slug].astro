@@ -20,6 +20,7 @@ if (!service) {
 
 const formId = "eEBGmwDUUSauLVfx0aPz";
 const formIframeId = `inline-${formId}-${service.slug}`;
+const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Marketing";
 ---
 
 <Layout
@@ -27,7 +28,7 @@ const formIframeId = `inline-${formId}-${service.slug}`;
   description={service.summary}
 >
   <div class="relative overflow-x-hidden">
-    <SiteHeader />
+    <SiteHeader brandAccent={brandAccent} />
 
     <main id="top">
       <section class="relative z-10 px-5 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16">

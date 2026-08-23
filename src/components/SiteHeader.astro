@@ -2,6 +2,12 @@
 import TrackedLink from "./TrackedLink.astro";
 import { STRATEGY_CALL_HREF, servicePages } from "../data/site";
 
+interface Props {
+  brandAccent?: string;
+}
+
+const { brandAccent = "Marketing" } = Astro.props;
+
 const LOGIN_HREF = "https://members.screwdrivermarketing.com.au/";
 
 const navButtonClass =
@@ -11,7 +17,7 @@ const navButtonClass =
 <header class="sticky top-0 z-50 border-b border-[var(--header-border)] bg-[var(--header-bg)]">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
     <a href="/" class="font-display text-lg font-bold tracking-tight text-[var(--header-text)] sm:text-xl">
-      Screwdriver <span class="text-accent">Marketing</span>
+      Screwdriver <span class="text-accent">{brandAccent}</span>
     </a>
 
     <div class="flex items-center gap-2 sm:gap-3">
