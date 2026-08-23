@@ -11,4 +11,16 @@ export const clientBrands = [
     name: "Pegasus",
     src: "/brands/pegasus.png",
   },
+  {
+    name: "Fresko Cleaning",
+    src: "/brands/fresko-cleaning.png",
+  },
+  {
+    name: "Forest Landscapes",
+    src: "/brands/forest-landscapes.png",
+  },
+  {
+    name: "Terra-Villa",
+    src: "/brands/terra-villa.png",
+  },
 ] as const;
