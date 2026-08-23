@@ -126,14 +126,14 @@ export const servicePages: ServicePage[] = [
     ],
   },
   {
-    slug: "custom-application-development",
-    title: "Custom Application Development and Tools",
-    navLabel: "Custom apps & tools",
-    headline: "Custom applications and tools built around how your business actually runs",
+    slug: "screwdriver-toolbox",
+    title: "Screwdriver Toolbox",
+    navLabel: "Screwdriver Toolbox",
+    headline: "Screwdriver Toolbox — custom applications and tools for your business",
     summary:
       "When off-the-shelf software does not fit, we build custom applications and internal tools that match your workflows, save time, and keep operations cleaner.",
     description:
-      "Many construction and trades businesses outgrow spreadsheets, shared inboxes, and generic software. We design and build custom applications and tools that fit the way your team already works — quoting, job tracking, client portals, internal dashboards, and more.",
+      "Many construction and trades businesses outgrow spreadsheets, shared inboxes, and generic software. Screwdriver Toolbox is where we design and build custom applications and tools that fit the way your team already works — quoting, job tracking, client portals, internal dashboards, and more.",
     outcomes: [
       "Tools that match your real process instead of forcing a generic workflow",
       "Less admin time spent jumping between spreadsheets and messages",
