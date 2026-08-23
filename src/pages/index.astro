@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import TrackedLink from "../components/TrackedLink.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import BrandLogoCarousel from "../components/BrandLogoCarousel.astro";
 import { STRATEGY_CALL_HREF } from "../data/site";
 ---
 
@@ -54,6 +55,8 @@ import { STRATEGY_CALL_HREF } from "../data/site";
           </div>
         </div>
       </section>
+
+      <BrandLogoCarousel />
 
       <!-- About -->
       <section id="about" class="relative z-10 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">

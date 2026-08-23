@@ -1,4 +1,5 @@
 import HeroSection from "./HeroSection";
+import BrandLogoCarousel from "./BrandLogoCarousel";
 import Footer from "./Footer";
 import MetaViewContentTracker from "./MetaViewContentTracker";
 
@@ -7,6 +8,7 @@ export default function LandingPage() {
     <>
       <MetaViewContentTracker />
       <HeroSection />
+      <BrandLogoCarousel />
       <section className="border-t border-border bg-card py-10 sm:py-14">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-8">
           <p className="text-sm leading-relaxed text-muted sm:text-base">

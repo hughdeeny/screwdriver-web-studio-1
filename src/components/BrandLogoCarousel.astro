@@ -1,0 +1,107 @@
+---
+import { clientBrands } from "../data/brands";
+
+interface Props {
+  tone?: "dark" | "light";
+}
+
+const { tone = "dark" } = Astro.props;
+const logos = [...clientBrands, ...clientBrands, ...clientBrands, ...clientBrands];
+const isLight = tone === "light";
+---
+
+<section
+  class:list={[
+    "brand-carousel relative z-10 overflow-hidden border-t py-10 sm:py-12",
+    isLight ? "border-border bg-card" : "border-[var(--border)]",
+  ]}
+  aria-label="Brands we've worked with"
+>
+  <div class="mx-auto max-w-6xl px-5 sm:px-6">
+    <p
+      class:list={[
+        "text-center text-sm font-semibold uppercase tracking-widest",
+        isLight ? "text-muted" : "text-muted",
+      ]}
+    >
+      Brands we&apos;ve worked with
+    </p>
+  </div>
+
+  <div class="brand-carousel-track mt-6" aria-hidden="true">
+    <div class="brand-carousel-row">
+      {
+        logos.map((brand, index) => (
+          <div class="brand-carousel-item">
+            <img
+              src={brand.src}
+              alt=""
+              width="220"
+              height="120"
+              class="brand-carousel-logo"
+              loading={index < clientBrands.length ? "eager" : "lazy"}
+              decoding="async"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <ul class="sr-only">
+    {clientBrands.map((brand) => <li>{brand.name}</li>)}
+  </ul>
+</section>
+
+<style>
+  .brand-carousel-track {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .brand-carousel-row {
+    display: flex;
+    width: max-content;
+    gap: 2.5rem;
+    align-items: center;
+    animation: brand-marquee 28s linear infinite;
+  }
+
+  .brand-carousel-item {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 11rem;
+    height: 5.5rem;
+  }
+
+  .brand-carousel-logo {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @keyframes brand-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-carousel-row {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 72rem;
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+  }
+</style>
