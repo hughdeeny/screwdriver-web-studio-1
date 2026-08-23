@@ -21,6 +21,7 @@ if (!service) {
 const formId = "eEBGmwDUUSauLVfx0aPz";
 const formIframeId = `inline-${formId}-${service.slug}`;
 const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Marketing";
+const showContactForm = service.slug !== "screwdriver-toolbox";
 ---
 
 <Layout
@@ -141,7 +142,12 @@ const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Market
       </section>
 
       <section class="relative z-10 border-t border-[var(--border)] px-5 py-16 sm:px-6 sm:py-20">
-        <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+        <div
+          class:list={[
+            "mx-auto max-w-6xl gap-10 lg:items-start lg:gap-14",
+            showContactForm ? "grid lg:grid-cols-2" : "max-w-3xl",
+          ]}
+        >
           <div>
             <h2 class="font-headline text-3xl font-bold tracking-tight text-cream">Want to talk through fit?</h2>
             <p class="mt-4 text-lg leading-relaxed text-muted">
@@ -156,27 +162,31 @@ const brandAccent = service.slug === "screwdriver-toolbox" ? "Toolbox" : "Market
               Book a Demo Call
             </TrackedLink>
           </div>
-          <div class="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
-            <iframe
-              src={`https://links.screwdrivermarketing.com.au/widget/form/${formId}`}
-              style="width:100%;height:723px;border:none;border-radius:0px"
-              id={formIframeId}
-              data-layout="{'id':'INLINE'}"
-              data-trigger-type="alwaysShow"
-              data-trigger-value=""
-              data-activation-type="alwaysActivated"
-              data-activation-value=""
-              data-deactivation-type="neverDeactivate"
-              data-deactivation-value=""
-              data-form-name="3.0 Contact Form"
-              data-height="723"
-              data-layout-iframe-id={formIframeId}
-              data-form-id={formId}
-              title="Quote form"
-            >
-            </iframe>
-            <script is:inline src="https://links.screwdrivermarketing.com.au/js/form_embed.js"></script>
-          </div>
+          {
+            showContactForm && (
+              <div class="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
+                <iframe
+                  src={`https://links.screwdrivermarketing.com.au/widget/form/${formId}`}
+                  style="width:100%;height:723px;border:none;border-radius:0px"
+                  id={formIframeId}
+                  data-layout="{'id':'INLINE'}"
+                  data-trigger-type="alwaysShow"
+                  data-trigger-value=""
+                  data-activation-type="alwaysActivated"
+                  data-activation-value=""
+                  data-deactivation-type="neverDeactivate"
+                  data-deactivation-value=""
+                  data-form-name="3.0 Contact Form"
+                  data-height="723"
+                  data-layout-iframe-id={formIframeId}
+                  data-form-id={formId}
+                  title="Quote form"
+                >
+                </iframe>
+                <script is:inline src="https://links.screwdrivermarketing.com.au/js/form_embed.js"></script>
+              </div>
+            )
+          }
         </div>
       </section>
     </main>
