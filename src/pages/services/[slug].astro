@@ -59,7 +59,7 @@ const showContactForm = service.slug !== "screwdriver-toolbox";
             service.freeApps && service.freeApps.length > 0 && (
               <div class="mt-10">
                 <h2 class="font-headline text-2xl font-bold tracking-tight text-cream sm:text-3xl">Free apps</h2>
-                <div class="mt-6 grid gap-8 sm:grid-cols-2">
+                <div class="mt-6 flex flex-col gap-10">
                   {service.freeApps.map((app) => (
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                       <a
@@ -75,7 +75,7 @@ const showContactForm = service.slug !== "screwdriver-toolbox";
                             alt={app.iconAlt ?? `${app.name} icon`}
                             width="160"
                             height="160"
-                            class="h-40 w-40 rounded-2xl object-cover shadow-lg"
+                            class="aspect-square h-40 w-40 rounded-2xl object-contain shadow-lg"
                             loading="lazy"
                             decoding="async"
                           />
