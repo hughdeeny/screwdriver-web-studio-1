@@ -206,7 +206,7 @@ export const packages = [
   },
   {
     name: "Scale",
-    price: "$349/month",
+    price: "$387/month",
     recommended: false,
     blurb: "Up to 300 review requests",
     body: "For higher-volume operators who want reputation systems that keep up with a full job book.",
