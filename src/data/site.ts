@@ -175,50 +175,156 @@ export function getServiceBySlug(slug: string): ServicePage | undefined {
   return servicePages.find((service) => service.slug === slug);
 }
 
+export const websitePackages = [
+  {
+    name: "Starter",
+    price: "$1,490 / year",
+    priceAlt: "or $149/month",
+    recommended: false,
+    blurb: "1 page website",
+    body: "Your professional online home — a clear, mobile-friendly site with the basics covered.",
+    outcomes: [
+      "Mobile-friendly website",
+      "Hosting + SSL",
+      "Contact forms",
+      "Basic on-site SEO",
+      "Small updates quarterly",
+    ],
+    note: "",
+  },
+  {
+    name: "Business",
+    price: "$2,490 / year",
+    priceAlt: "or $249/month",
+    recommended: true,
+    blurb: "5 page website",
+    body: "Website + customer tools for local businesses that need more than a single page.",
+    outcomes: [
+      "Everything in Starter",
+      "Small updates monthly",
+      "Shared customer inbox",
+      "On-page SEO",
+      "Google profile optimisation",
+    ],
+    note: "",
+  },
+  {
+    name: "Advanced Smart Website",
+    price: "$3,990 / year",
+    priceAlt: "or $399/month",
+    recommended: false,
+    blurb: "15–20 page website",
+    body: "Website + follow-up system — reconnect past customers and keep new leads moving.",
+    outcomes: [
+      "Everything in Business",
+      "Missed-call text-back",
+      "Automated lead follow-up",
+      "1-click marketing system",
+      "Extensive keyword research",
+      "Backlinks",
+      "Database reactivation + SMS & email marketing",
+    ],
+    note: "Includes one campaign per month to existing opted-in contacts. SMS and email usage charged separately.",
+  },
+];
+
+export const websitePlanExtras = [
+  "Mobile-friendly design",
+  "Hosting + SSL",
+  "Contact forms",
+  "Basic on-site SEO",
+];
+
+export const websiteYearlyBonus =
+  "Yearly bonus: buy any yearly website plan and get 2 free months of organic social media management (2 posts per week across Facebook, Instagram and Google Business Profile; you supply the raw images).";
+
+/** @deprecated Use reputationPackages — kept as alias for existing imports */
 export const packages = [
   {
     name: "Starter",
-    price: "$149/month",
+    price: "$1,490 / year",
+    priceAlt: "or $149/month",
     recommended: false,
     blurb: "Up to 50 review requests",
-    body: "Reputation management for smaller operators who want a steady flow of reviews without the admin chase.",
+    body: "For smaller operators who want a steady flow of reviews without the admin chase.",
     outcomes: [
-      "Up to 50 review requests per month",
-      "Automatic review request flow",
-      "Respond to customer feedback",
-      "Stronger Google reputation",
+      "Up to 50 review requests",
+      "Automatic review requests",
+      "AI smart messaging",
+      "Review replies + social sharing",
+      "CRM / Zapier connection",
     ],
     note: "",
   },
   {
     name: "Growth",
-    price: "$249/month",
+    price: "$2,490 / year",
+    priceAlt: "or $249/month",
     recommended: true,
     blurb: "Up to 100 review requests",
-    body: "Built for busier trades businesses that need more review volume to keep winning work.",
+    body: "For growing businesses that want more customer feedback and a stronger Google reputation.",
     outcomes: [
-      "Up to 100 review requests per month",
-      "Automatic review request flow",
-      "Respond to customer feedback",
-      "Stronger Google reputation",
+      "Up to 100 review requests",
+      "Automatic review requests",
+      "AI smart messaging",
+      "Review replies + social sharing",
+      "CRM / Zapier connection",
     ],
     note: "",
   },
   {
     name: "Scale",
-    price: "$389/month",
+    price: "$3,890 / year",
+    priceAlt: "or $389/month",
     recommended: false,
     blurb: "Up to 300 review requests",
-    body: "For higher-volume operators who want reputation systems that keep up with a full job book.",
+    body: "For higher-volume businesses that need a review system to match a busy customer base.",
     outcomes: [
-      "Up to 300 review requests per month",
-      "Automatic review request flow",
-      "Respond to customer feedback",
-      "Stronger Google reputation",
+      "Up to 300 review requests",
+      "Automatic review requests",
+      "AI smart messaging",
+      "Review replies + social sharing",
+      "CRM / Zapier connection",
     ],
     note: "",
   },
 ];
+
+export const reputationPackages = packages;
+
+export const reputationIncludes = [
+  {
+    title: "Automatic review requests",
+    body: "Text and email requests, reactivation of past customers, and dynamic follow-ups.",
+  },
+  {
+    title: "Smarter customer messages",
+    body: "AI smart messaging and personalised image requests.",
+  },
+  {
+    title: "Review replies + sharing",
+    body: "Automatic AI review replies and social media review posting.",
+  },
+  {
+    title: "Connected to your workflow",
+    body: "Custom CRM integration, Zapier access, and unlimited users.",
+  },
+];
+
+export const socialMediaAddon = {
+  name: "Organic Social Media Management",
+  price: "$1,490 AUD / year",
+  priceAlt: "or $149/month",
+  blurb: "2 posts per week",
+  body: "Stay active on Facebook, Instagram and Google Business Profile when you do not have time to post yourself.",
+  outcomes: [
+    "2 posts per week across Facebook, Instagram and Google Business Profile",
+    "Custom designs and static posts from raw images you supply",
+    "SEO-focused captions with product, service and location terms",
+    "Content that showcases products, projects, offers and updates",
+  ],
+  note: "You supply the raw images. We handle design, captions and publishing. Annual payment upfront saves 2 months.",
+};
 
 export const faqs = [
   {
@@ -311,7 +417,70 @@ export const testimonials = [
   },
 ];
 
-export const caseStudy = {
-  title: "Green Theory Turf & Garden Care",
-  body: "We helped a local Adelaide gardening business create a professional website and connect it with their Google Business Profile. Early profile data showed website clicks and phone calls after setup, creating a clearer path from Google search to enquiry.",
+export type CaseStudy = {
+  slug: string;
+  client: string;
+  category: string;
+  headline: string;
+  summary: string;
+  body: string;
+  metrics: { value: string; label: string }[];
+  note?: string;
+  relatedService?: string;
 };
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "unity-barbershop",
+    client: "Unity Barbershop",
+    category: "Google Reputation Management",
+    headline: "63 Google reviews in the first month",
+    summary:
+      "In his first month with Screwdriver Marketing, the owner of Unity Barbershop received 63 Google reviews — and booking-page link clicks rose 25%.",
+    body: "For a busy business owner, asking for reviews can become another job on the list. Reputation management makes that process part of the customer journey, with review requests and follow-ups that keep it moving. Alongside the 63 Google reviews received in the first month, Unity Barbershop reported a 25% increase in link clicks to its booking page.",
+    metrics: [
+      { value: "63", label: "Google reviews" },
+      { value: "1", label: "Month" },
+      { value: "+25%", label: "Booking-page link clicks" },
+    ],
+    note: "Results supplied by Screwdriver Marketing; review total attributed to the business owner.",
+    relatedService: "reputation-management",
+  },
+  {
+    slug: "water-to-waste",
+    client: "Water to Waste Plumbing & Gas Solutions",
+    category: "Plumbing + Gas",
+    headline: "More ways for local customers to get in touch",
+    summary:
+      "In its first three months with Screwdriver Marketing, this plumbing business recorded 24 call actions and 43 website clicks through its Google Business Profile.",
+    body: "Customers used the Google profile to take the next step: tapping to call the business or clicking through to its website. These actions show people moving beyond finding the listing and choosing to engage with the business — a clearer path from search to enquiry.",
+    metrics: [
+      { value: "24", label: "Call actions from Google" },
+      { value: "43", label: "Clicks through to the website" },
+      { value: "3", label: "Months" },
+    ],
+    note: "Source: Google Business Profile charts, August–October 2026. Call actions are not confirmed connected calls or jobs, and website clicks are not unique visitors.",
+    relatedService: "web-design",
+  },
+  {
+    slug: "green-theory",
+    client: "Green Theory Turf & Garden Care",
+    category: "Website + Google Business Profile",
+    headline: "A clearer path from Google search to enquiry",
+    summary:
+      "We helped a local Adelaide gardening business create a professional website and connect it with their Google Business Profile.",
+    body: "Early profile data showed website clicks and phone calls after setup, creating a clearer path from Google search to enquiry for a local Adelaide gardening business.",
+    metrics: [
+      { value: "Web", label: "Professional website" },
+      { value: "GBP", label: "Profile connected" },
+      { value: "Local", label: "Adelaide garden care" },
+    ],
+    relatedService: "web-design",
+  },
+];
+
+export const caseStudy = caseStudies[2];
+
+export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
+  return caseStudies.find((study) => study.slug === slug);
+}

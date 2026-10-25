@@ -1,0 +1,78 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TrackedLink from "../../components/TrackedLink.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { STRATEGY_CALL_HREF, caseStudies } from "../../data/site";
+---
+
+<Layout
+  title="Case Studies | Screwdriver Marketing"
+  description="Client results from Screwdriver Marketing — Google reviews, local visibility, and clearer paths from search to enquiry for trades and service businesses."
+>
+  <div class="relative overflow-x-hidden">
+    <SiteHeader />
+
+    <main id="top">
+      <section class="relative z-10 px-5 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
+        <div class="mx-auto max-w-3xl text-center">
+          <h1 class="font-headline text-4xl font-black tracking-tight text-cream sm:text-5xl">Case studies</h1>
+          <p class="mt-4 text-lg leading-relaxed text-muted sm:text-xl">
+            Real local businesses. Clearer Google presence, stronger review flow, and more ways for customers to get in
+            touch.
+          </p>
+        </div>
+      </section>
+
+      <section class="relative z-10 px-5 pb-16 sm:px-6 sm:pb-24">
+        <div class="mx-auto flex max-w-6xl flex-col gap-10">
+          {
+            caseStudies.map((study) => (
+              <article class="border border-[var(--border)] bg-bg-elevated p-6 sm:p-10">
+                <p class="text-sm font-semibold uppercase tracking-wide text-accent">{study.category}</p>
+                <h2 class="font-headline mt-2 text-2xl font-bold tracking-tight text-cream sm:text-3xl">
+                  {study.client}
+                </h2>
+                <p class="mt-2 text-xl font-semibold text-cream/90">{study.headline}</p>
+                <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">{study.summary}</p>
+
+                <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+                  {study.metrics.map((metric) => (
+                    <div class="border border-[var(--border)] bg-bg-deep px-4 py-5 text-center">
+                      <dt class="font-headline text-3xl font-black text-accent sm:text-4xl">{metric.value}</dt>
+                      <dd class="mt-2 text-sm text-muted">{metric.label}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <p class="mt-8 max-w-3xl text-base leading-relaxed text-cream/90">{study.body}</p>
+                {study.note && <p class="mt-4 text-sm text-muted">{study.note}</p>}
+
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <TrackedLink
+                    href={STRATEGY_CALL_HREF}
+                    event="cta_click"
+                    cta={`case_study_${study.slug}_book_call`}
+                    class="inline-flex min-h-[48px] items-center justify-center rounded-none bg-accent px-6 text-sm font-bold text-white transition hover:bg-accent-glow"
+                  >
+                    Book a Demo Call
+                  </TrackedLink>
+                  {study.relatedService && (
+                    <a
+                      href={`/services/${study.relatedService}/`}
+                      class="inline-flex min-h-[48px] items-center justify-center rounded-none border border-[var(--border)] px-6 text-sm font-semibold text-cream transition hover:border-accent"
+                    >
+                      Related service
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+
+    <SiteFooter />
+  </div>
+</Layout>

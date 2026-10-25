@@ -4,7 +4,9 @@ import TrackedLink from "../components/TrackedLink.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import BrandLogoCarousel from "../components/BrandLogoCarousel.astro";
-import { STRATEGY_CALL_HREF } from "../data/site";
+import { STRATEGY_CALL_HREF, caseStudies, servicePages } from "../data/site";
+
+const featuredCaseStudies = caseStudies.slice(0, 2);
 ---
 
 <Layout>
@@ -57,6 +59,87 @@ import { STRATEGY_CALL_HREF } from "../data/site";
       </section>
 
       <BrandLogoCarousel />
+
+      <!-- Services -->
+      <section id="services" class="relative z-10 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
+        <div class="mx-auto max-w-6xl">
+          <div class="max-w-3xl">
+            <h2 class="font-headline text-3xl font-bold tracking-tight text-cream sm:text-4xl">Services</h2>
+            <p class="mt-4 text-lg leading-relaxed text-muted">
+              Websites, Google reputation, automations, and custom tools — built for construction and trades businesses
+              that need clearer paths from search to enquiry.
+            </p>
+          </div>
+          <div class="mt-10 grid gap-6 sm:grid-cols-2">
+            {
+              servicePages.map((service) => (
+                <a
+                  href={`/services/${service.slug}/`}
+                  class="group border border-[var(--border)] bg-bg-elevated p-6 transition hover:border-accent sm:p-8"
+                >
+                  <h3 class="font-headline text-xl font-bold text-cream group-hover:text-accent">{service.title}</h3>
+                  <p class="mt-3 text-base leading-relaxed text-muted">{service.summary}</p>
+                </a>
+              ))
+            }
+          </div>
+          <div class="mt-8">
+            <a
+              href="/pricing/"
+              class="inline-flex min-h-[48px] items-center justify-center rounded-none border border-[var(--border)] px-6 text-sm font-semibold text-cream transition hover:border-accent"
+            >
+              See website &amp; reputation packages
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Case studies -->
+      <section id="case-studies" class="relative z-10 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
+        <div class="mx-auto max-w-6xl">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div class="max-w-2xl">
+              <h2 class="font-headline text-3xl font-bold tracking-tight text-cream sm:text-4xl">Case studies</h2>
+              <p class="mt-4 text-lg leading-relaxed text-muted">
+                Results from local operators using reputation systems and a stronger Google presence.
+              </p>
+            </div>
+            <a
+              href="/case-studies/"
+              class="text-sm font-semibold text-accent underline-offset-2 transition hover:underline"
+            >
+              View all case studies
+            </a>
+          </div>
+
+          <div class="mt-10 grid gap-6 lg:grid-cols-2">
+            {
+              featuredCaseStudies.map((study) => (
+                <article class="flex flex-col border border-[var(--border)] bg-bg-elevated p-6 sm:p-8">
+                  <p class="text-sm font-semibold uppercase tracking-wide text-accent">{study.category}</p>
+                  <h3 class="font-headline mt-2 text-2xl font-bold text-cream">{study.client}</h3>
+                  <p class="mt-2 text-lg font-semibold text-cream/90">{study.headline}</p>
+                  <dl class="mt-6 grid grid-cols-3 gap-3">
+                    {study.metrics.map((metric) => (
+                      <div class="text-center">
+                        <dt class="font-headline text-2xl font-black text-accent sm:text-3xl">{metric.value}</dt>
+                        <dd class="mt-1 text-xs text-muted sm:text-sm">{metric.label}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p class="mt-6 flex-1 text-base leading-relaxed text-muted">{study.summary}</p>
+                  <a
+                    href="/case-studies/"
+                    class="mt-6 text-sm font-semibold text-accent underline-offset-2 transition hover:underline"
+                  >
+                    Read the story
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
 
       <!-- About -->
       <section id="about" class="relative z-10 border-t border-[var(--border)] px-5 py-20 sm:px-6 sm:py-24">
